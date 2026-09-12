@@ -14,24 +14,41 @@ type Project = {
   lead: string;
 };
 
-const PAGE_SIZE = 6;
-
 const getStatusStyles = (status: string) => {
   const normalized = (status || "").toLowerCase();
+
   switch (normalized) {
-    case 'ongoing':
-      return { cls: 'bg-[#ecf7f2] text-[#0e6144] border border-[#c3ebd7]', label: 'Active' };
-    case 'completed':
-      return { cls: 'bg-[#f3f4f6] text-[#4b5563] border border-[#d1d5db]', label: 'Completed' };
-    case 'proposed':
-      return { cls: 'bg-[#fffbeb] text-[#92400e] border border-[#fde68a]', label: 'Proposed' };
+    case "ongoing":
+      return {
+        cls: "bg-[#ecf7f2] text-[#0e6144] border border-[#c3ebd7]",
+        label: "Active",
+      };
+
+    case "completed":
+      return {
+        cls: "bg-[#f3f4f6] text-[#4b5563] border border-[#d1d5db]",
+        label: "Completed",
+      };
+
+    case "proposed":
+      return {
+        cls: "bg-[#fffbeb] text-[#92400e] border border-[#fde68a]",
+        label: "Proposed",
+      };
+
     default:
-      return { cls: 'bg-[#f5f2ea] text-[#68726c] border border-[#e2ded5]', label: status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown' };
+      return {
+        cls: "bg-[#f5f2ea] text-[#68726c] border border-[#e2ded5]",
+        label: status
+          ? status.charAt(0).toUpperCase() + status.slice(1)
+          : "Unknown",
+      };
   }
 };
 
 export function ProjectList({ projects }: { projects: Project[] }) {
   const searchParams = useSearchParams();
+
   const status = searchParams.get("status") || "all";
   const area = searchParams.get("area") || "all";
   const query = (searchParams.get("query") || "").trim().toLowerCase();
@@ -39,16 +56,20 @@ export function ProjectList({ projects }: { projects: Project[] }) {
   const filtered = projects.filter((project) => {
     if (status !== "all" && project.status !== status) return false;
     if (area !== "all" && project.area !== area) return false;
+
     if (query) {
-      const haystack = `${project.title} ${project.summary}`.toLowerCase();
+      const haystack =
+        `${project.title} ${project.summary}`.toLowerCase();
+
       if (!haystack.includes(query)) return false;
     }
+
     return true;
   });
 
   if (filtered.length === 0) {
     return (
-      <p className="text-sm text-[#627068] py-12 text-center">
+      <p className="py-12 text-center text-sm text-[#627068]">
         No projects match your filters.
       </p>
     );
@@ -56,54 +77,53 @@ export function ProjectList({ projects }: { projects: Project[] }) {
 
   return (
     <div className="space-y-4">
-      {filtered.map((project) => (
-        <article
-          className="bg-white border border-[#e5dfd3] hover:border-[#0e2820] rounded-sm p-6 sm:p-7 shadow-xs hover:shadow-md transition-all duration-200 group"
-          key={project.slug}
-        >
-          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                {(() => {
-                  const style = getStatusStyles(project.status);
-                  return (
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${style.cls}`}>
-                      {style.label}
-                    </span>
-                  );
-                })()}
-                <span className="text-xs font-mono text-[#68726c] bg-[#f5f2ea] px-2 py-0.5 rounded">
-                  {project.area}
-                </span>
-              </div>
-              <h2 className="font-serif text-2xl md:text-[1.7rem] font-semibold text-[#141d18] group-hover:text-[#0e2820] transition-colors mb-2.5 tracking-tight">
-                {project.title}
-              </h2>
-              <p className="text-sm md:text-[15px] text-[#425048] leading-relaxed max-w-4xl font-light">
-                {project.summary}
-              </p>
-            </div>
+      {filtered.map((project) => {
+        const style = getStatusStyles(project.status);
 
-            <div className="flex lg:flex-col items-center justify-end gap-3 self-end lg:self-start shrink-0 pt-4 lg:pt-0">
-              <Link
-                aria-label="View project detail"
-                className="w-10 h-10 rounded-full border border-[#ded8cc] group-hover:border-[#0e2820] group-hover:bg-[#0e2820] flex items-center justify-center text-[#55645d] group-hover:text-white transition-all"
-                href={`/projects/${project.slug}`}
-              >
-                <ArrowUpRight
-                  className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-                  aria-hidden="true"
-                  className="w-10 h-10 rounded-full border border-[#ded8cc] group-hover:border-[#0e2820] group-hover:bg-[#0e2820] flex items-center justify-center text-[#55645d] group-hover:text-white transition-all"
+        return (
+          <article
+            key={project.slug}
+            className="group rounded-sm border border-[#e5dfd3] bg-white p-6 shadow-xs transition-all duration-200 hover:border-[#0e2820] hover:shadow-md sm:p-7"
+          >
+            <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-start">
+              <div className="flex-1">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                  <span
+                    className={`inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium ${style.cls}`}
+                  >
+                    {style.label}
+                  </span>
+
+                  <span className="rounded bg-[#f5f2ea] px-2 py-0.5 font-mono text-xs text-[#68726c]">
+                    {project.area}
+                  </span>
+                </div>
+
+                <h2 className="mb-2.5 font-inter text-2xl font-semibold tracking-tight text-[#141d18] transition-colors group-hover:text-[#0e2820] md:text-[1.7rem]">
+                  {project.title}
+                </h2>
+
+                <p className="max-w-4xl text-sm font-light leading-relaxed text-[#425048] md:text-[15px]">
+                  {project.summary}
+                </p>
+              </div>
+
+              <div className="flex shrink-0 items-center justify-end self-end pt-4 lg:self-start lg:pt-0">
+                <Link
+                  aria-label={`View ${project.title} project`}
+                  href={`/projects/${project.slug}`}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ded8cc] text-[#55645d] transition-all group-hover:border-[#0e2820] group-hover:bg-[#0e2820] group-hover:text-white"
                 >
                   <ArrowUpRight
-                    className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                    className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden="true"
                   />
-                </span>
+                </Link>
               </div>
             </div>
-          </div>
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </div>
   );
 }
