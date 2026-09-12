@@ -58,12 +58,14 @@ function countByPublishStatus(rows: { publish_status: string | null }[]) {
     (totals, row) => {
       if (row.publish_status === "published") {
         totals.published += 1;
+      } else if (row.publish_status === "preview") {
+        totals.preview += 1;
       } else {
-        totals.review += 1;
+        totals.draft += 1;
       }
       return totals;
     },
-    { published: 0, review: 0 },
+    { published: 0, preview: 0, draft: 0 },
   );
 }
 
@@ -187,16 +189,10 @@ export async function OverviewData() {
         </div>
       </section>
 
-      <section className="mt-6 border border-[#d4d5ce] bg-[#fffefb] [--chart-published:#153c2e] [--chart-review:#c1951b] [&>header]:flex [&>header]:items-start [&>header]:justify-between [&>header]:gap-5 [&>header]:border-b [&>header]:border-[#d4d5ce] [&>header]:px-6 [&>header]:py-[22px] max-[720px]:[&>header]:block max-[720px]:[&>header]:px-5">
+      <section className="mt-6 border border-[#d4d5ce] bg-[#fffefb] [&>header]:border-b [&>header]:border-[#d4d5ce] [&>header]:px-6 [&>header]:py-[22px] max-[720px]:[&>header]:px-5">
         <header>
-          <div>
-            <div className="flex items-center gap-2.5 text-[#36594b]"><ChartColumnBig size={20} /><h2 className="m-0 font-sans text-[23px] font-medium text-[#17251f]">Publishing status</h2></div>
-            <p className="mt-1.5 text-[13px] text-[#68756f]">Published records compared with drafts and previews across the core content types.</p>
-          </div>
-          <div className="flex shrink-0 items-center gap-4 pt-1 text-xs text-[#53645c] max-[720px]:mt-4 [&_span]:inline-flex [&_span]:items-center [&_span]:gap-1.5 [&_i]:h-2.5 [&_i]:w-2.5 [&_i]:rounded-full">
-            <span><i className="bg-[var(--chart-published)]" />Published</span>
-            <span><i className="bg-[var(--chart-review)]" />Draft/preview</span>
-          </div>
+          <div className="flex items-center gap-2.5 text-[#36594b]"><ChartColumnBig size={20} /><h2 className="m-0 font-sans text-[23px] font-medium text-[#17251f]">Content visibility</h2></div>
+          <p className="mt-1.5 text-[13px] text-[#68756f]">Publishing readiness across the four core content collections.</p>
         </header>
         <OverviewStatusChart data={chartData} />
       </section>
