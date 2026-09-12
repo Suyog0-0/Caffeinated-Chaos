@@ -9,6 +9,7 @@ export type Grant = {
     title: string;
     funder: string | null;
     description: string | null;
+    eligibility: string | null;
     amount: number | null;
     currency: string | null;
     deadline: string | null;
@@ -49,7 +50,7 @@ export function GrantList({ grants }: { grants: Grant[] }) {
     const filtered = grants.filter((g) => {
         if (tab !== "all" && g.status !== tab) return false;
         if (query) {
-            const haystack = `${g.title} ${g.funder ?? ""} ${g.description ?? ""}`.toLowerCase();
+            const haystack = `${g.title} ${g.funder ?? ""} ${g.description ?? ""} ${g.eligibility ?? ""}`.toLowerCase();
             if (!haystack.includes(query)) return false;
         }
         return true;
@@ -124,6 +125,16 @@ export function GrantList({ grants }: { grants: Grant[] }) {
                             <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#425048]">
                                 {grant.description ?? "No further details available."}
                             </p>
+                            {grant.eligibility && (
+                                <div className="border-l-2 border-[#c3ebd7] pl-4">
+                                    <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-[#8a938c]">
+                                        Eligibility
+                                    </p>
+                                    <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-[#425048]">
+                                        {grant.eligibility}
+                                    </p>
+                                </div>
+                            )}
                             {grant.external_url && grant.status === "open" && (
                                 <a
                                     href={grant.external_url}
