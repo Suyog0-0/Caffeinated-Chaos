@@ -1,3 +1,5 @@
+// src/components/partners/partner-detail-hero.tsx
+
 import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -9,14 +11,6 @@ export function PartnerDetailHero({
 }: {
   partner: PartnerRecord;
 }) {
-  const initials = partner.name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
-
   return (
     <section className="bg-[#f4f2ec] px-6 pb-14 pt-10 md:px-10 lg:px-16">
       <div className="mx-auto max-w-5xl">
@@ -29,7 +23,11 @@ export function PartnerDetailHero({
         </Link>
 
         <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-          <PartnerLogo className="h-20 w-20 font-serif text-2xl" logoUrl={partner.logo_url} name={partner.name} />
+          <PartnerLogo
+            className="h-20 w-20 font-serif text-2xl"
+            logoUrl={partner.logo_url}
+            name={partner.name}
+          />
 
           <div>
             <h1 className="font-serif text-4xl text-[#0d2818] md:text-5xl">
@@ -73,3 +71,4 @@ export function PartnerDetailHero({
     </section>
   );
 }
+

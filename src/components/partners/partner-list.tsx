@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -61,8 +61,22 @@ export function PartnerList({ partners }: PartnerListProps) {
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
+  useEffect(() => {
+    setPage(1);
+  }, [filters.query, filters.category, filters.researchType]);
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [page, totalPages]);
+
   const currentPage = Math.min(page, totalPages);
-  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const paginated = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
 
   return (
     <div>
@@ -176,19 +190,16 @@ function PartnerCard({
 }: {
   partner: PartnerRecord;
 }) {
-  const initials = partner.name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
-
   return (
     <Link href={`/partners/${partner.id}`}>
       <Card className="h-full rounded-md border border-neutral-200 bg-white p-6 transition-colors hover:border-[#0d2818]">
         <div className="flex items-center gap-3">
-          <PartnerLogo className="h-11 w-11 text-sm font-medium" logoUrl={partner.logo_url} name={partner.name} />
+          <PartnerLogo
+            className="h-11 w-11 text-sm font-medium"
+            logoUrl={partner.logo_url}
+            name={partner.name}
+          />
+
           <div>
             <h3 className="font-serif text-lg text-[#0d2818]">
               {partner.name}

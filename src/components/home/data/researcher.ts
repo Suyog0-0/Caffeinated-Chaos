@@ -5,6 +5,7 @@ export type Researcher = {
   name: string;
   position: string | null;
   department: string | null;
+  photo_url: string | null;
 };
 
 export async function getResearchers(): Promise<Researcher[]> {
@@ -12,7 +13,7 @@ export async function getResearchers(): Promise<Researcher[]> {
 
   const { data, error } = await supabase
     .from("researcher")
-    .select("id, name, position, department")
+    .select("id, name, position, department, photo_url")
     .eq("publish_status", "published")
     .order("name", { ascending: true })
     .limit(3);

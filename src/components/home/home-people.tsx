@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { getResearchers } from "./data/researcher";
 import { kicker, pageShell, sectionTitle } from "./shared";
+import Image from "next/image";
 
 export async function People() {
   const researchers = await getResearchers();
@@ -53,10 +54,21 @@ export async function People() {
       href={`/people/${person.id}`}
       key={person.id}
     >
-      <span className="grid size-11 place-items-center rounded-full bg-[#eeeae0] font-sans text-[10px] font-bold text-[#153c2e]">
-        {initials}
-      </span>
-
+ <div className="relative size-11 overflow-hidden rounded-full bg-[#eeeae0]">
+  {person.photo_url ? (
+    <Image
+      src={person.photo_url}
+      alt={person.name}
+      fill
+      sizes="44px"
+      className="object-cover"
+    />
+  ) : (
+    <span className="grid size-full place-items-center font-sans text-[10px] font-bold text-[#153c2e]">
+      {initials}
+    </span>
+  )}
+</div> 
       <span>
         <strong className="block text-xl font-medium">
           {person.name}

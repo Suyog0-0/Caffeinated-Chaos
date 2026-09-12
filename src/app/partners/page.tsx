@@ -1,7 +1,7 @@
-import { PartnersHero } from "@/components/partners/partners-hero";
+import { PartnersHero } from "@/components/partners/partner-hero";
 import { PartnerList } from "@/components/partners/partner-list";
-import { IJMRSection } from "@/components/partners/ijmr-section";
-import { getPartners } from "@/components/partners/partners-actions";
+import { IJMRSection } from "@/components/partners/partner-ijmr-section";
+import { getPartners } from "@/components/partners/partner-actions";
 
 export const metadata = {
   title: "Partners | Islington Research",

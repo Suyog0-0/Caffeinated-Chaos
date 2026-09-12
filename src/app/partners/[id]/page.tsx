@@ -6,7 +6,7 @@ import {
   getPartnerById,
   getProjectsForPartner,
   getPublicationsForPartner,
-} from "@/components/partners/partners-actions";
+} from "@/components/partners/partner-actions";
 
 interface PartnerPageProps {
   params: Promise<{ id: string }>;

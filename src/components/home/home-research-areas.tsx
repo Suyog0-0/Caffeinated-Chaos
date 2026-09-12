@@ -12,7 +12,7 @@ export async function ResearchAreas() {
         <div>
           <p className={kicker}>Find your starting point</p>
 
-          <h2 className={sectionTitle}>
+          <h2 className={sectionTitle} >
             Explore research areas
           </h2>
         </div>

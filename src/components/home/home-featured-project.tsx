@@ -50,21 +50,22 @@ export async function FeaturedProject() {
             </h3>
 
             {project.description && (
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#d7e0db]">
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#d7e0db] font-sans">
                 {project.description}
               </p>
             )}
 
-            <Link
-              className={buttonVariants({
-                variant: "link",
-                className: "mt-10 w-fit px-0 text-[#fffefb]",
-              })}
-              href={`/projects/${project.slug}`}
-            >
-              View project
-              <ArrowUpRight aria-hidden size={16} />
-            </Link>
+<Link
+  className={buttonVariants({
+    variant: "link",
+    className: "mt-10 w-fit px-0 text-[#d7d5cd]",
+  })}
+  href={`/projects/${project.slug}`}
+>
+  View project
+  <ArrowUpRight aria-hidden size={16} />
+</Link>
+           
           </div>
 
           <div className="border-t border-[#6f8a7d] p-8 sm:p-10 lg:border-l lg:border-t-0">
