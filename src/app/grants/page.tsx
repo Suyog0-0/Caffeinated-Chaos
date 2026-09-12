@@ -14,7 +14,7 @@ export default async function GrantsPage() {
 
     const { data } = await supabase
         .from("grant")
-        .select("id, title, funder, description, amount, currency, deadline, external_url, status")
+        .select("id, title, funder, description, eligibility, amount, currency, deadline, external_url, status")
         .eq("publish_status", "published")
         .order("deadline", { ascending: true });
 
