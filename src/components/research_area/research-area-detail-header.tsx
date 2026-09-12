@@ -4,6 +4,7 @@ import Link from "next/link";
 type ResearchArea = {
   name: string;
   description: string;
+  status: string;
   projects: number;
   publications: number;
 };
@@ -23,6 +24,10 @@ export function ResearchAreaDetailHeader({ area }: { area: ResearchArea }) {
       </h1>
       <p className="mt-6 max-w-2xl text-xl text-[#405149]">{area.description}</p>
       <dl className="mt-12 flex gap-14 max-sm:grid max-sm:gap-4">
+        <div>
+          <dt className="font-sans text-[11px] text-[#405149]">Status</dt>
+          <dd className="mt-1 text-xl">{area.status}</dd>
+        </div>
         <div>
           <dt className="font-sans text-[9px] text-[#405149]">Active projects</dt>
           <dd className="mt-1 text-lg">{area.projects}</dd>

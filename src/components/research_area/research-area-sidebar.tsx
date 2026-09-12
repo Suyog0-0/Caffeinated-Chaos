@@ -1,3 +1,4 @@
+import { Users } from "lucide-react";
 import Link from "next/link";
 
 type Researcher = { id: string; initials: string; name: string };
@@ -12,19 +13,24 @@ export function ResearchAreaSidebar({
 }) {
   return (
     <aside>
-      <h2 className="mb-6 text-4xl font-medium">People</h2>
-      {researchers.map((researcher) => (
-        <Link
-          className="flex items-center gap-3 border-t border-[#d7d5cd] py-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#153c2e]"
-          href={`/people/${researcher.id}`}
-          key={researcher.id}
-        >
-          <span className="grid size-10 place-items-center rounded-full bg-[#eeeae0] font-sans text-[9px]">
-            {researcher.initials}
-          </span>
-          <strong className="font-medium">{researcher.name}</strong>
-        </Link>
-      ))}
+      <h2 className="mb-6 flex items-center gap-3 text-4xl font-medium">
+        <Users size={24} aria-hidden="true" /> People
+      </h2>
+      <ul className="flex flex-col">
+        {researchers.map((researcher) => (
+          <li key={researcher.id} className="border-t border-[#d7d5cd] first:border-t-0">
+            <Link
+              className="flex items-center gap-3 py-3 transition-colors hover:text-[#153c2e]"
+              href={`/people/${researcher.id}`}
+            >
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#eeeae0] font-sans text-[9px]">
+                {researcher.initials}
+              </span>
+              <span className="text-lg font-medium">{researcher.name}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
 
       <h2 className="mt-12 mb-6 text-4xl font-medium">Recent outputs</h2>
       {publications.map((publication) => (
