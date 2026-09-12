@@ -2,7 +2,7 @@ import { Users } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 
-type Publication = { type: string; venue: string };
+type Publication = { type: string; venue: string; doi?: string | null };
 type Researcher = { id: string; initials: string; name: string };
 
 export function PublicationSidebar({
@@ -15,7 +15,7 @@ export function PublicationSidebar({
   const details = [
     ["Type", publication.type],
     ["Venue", publication.venue],
-    ["DOI", "Added when published"],
+    ["DOI", publication.doi || "Added when published"],
   ];
 
   return (
