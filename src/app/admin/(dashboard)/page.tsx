@@ -8,7 +8,6 @@ export default function AdminOverviewPage() {
     <div className={adminTw.pageContent}>
       <header className={adminTw.pageHeader}>
         <div><p>Admin workspace</p><h1>Overview</h1></div>
-        <span>Live data from Supabase</span>
       </header>
       <Suspense fallback={<OverviewDataLoading />}>
         <OverviewData />
