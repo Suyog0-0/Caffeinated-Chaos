@@ -101,10 +101,7 @@ export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
         </div>
       </div>
 
-      <div className="mt-auto flex justify-between items-center pt-5 border-t border-gray-100">
-        <span className="text-xs font-semibold text-gray-500 flex items-center gap-1 group-hover:text-[#0B3B24] transition-colors">
-          Learn more <ArrowRight size={12}/>
-        </span>
+      <div className="mt-auto flex justify-end items-center pt-5 border-t border-gray-100">
         <Link 
           href={`/opportunities/${opportunity.id}`}
           className="bg-[#0B3B24] hover:bg-[#072517] text-white px-5 py-2 rounded-lg text-xs font-medium transition-colors"
