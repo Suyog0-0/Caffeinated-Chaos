@@ -3,7 +3,8 @@ import Link from "next/link";
 export function SiteFooter() {
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
 /* Footer base */
 .site-footer {
   background: #0d2a20;
