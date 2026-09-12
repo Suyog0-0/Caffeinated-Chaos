@@ -4,7 +4,19 @@ import { Badge } from "@/components/ui/badge";
 import type { PartnerRecord } from "./partners-actions";
 import { PartnerLogo } from "./partner-logo";
 
-export function PartnerDetailHero({ partner }: { partner: PartnerRecord }) {
+export function PartnerDetailHero({
+  partner,
+}: {
+  partner: PartnerRecord;
+}) {
+  const initials = partner.name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+
   return (
     <section className="bg-[#f4f2ec] px-6 pb-14 pt-10 md:px-10 lg:px-16">
       <div className="mx-auto max-w-5xl">
@@ -23,6 +35,7 @@ export function PartnerDetailHero({ partner }: { partner: PartnerRecord }) {
             <h1 className="font-serif text-4xl text-[#0d2818] md:text-5xl">
               {partner.name}
             </h1>
+
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {partner.partner_type && (
                 <Badge
@@ -32,6 +45,7 @@ export function PartnerDetailHero({ partner }: { partner: PartnerRecord }) {
                   {partner.partner_type}
                 </Badge>
               )}
+
               {partner.research_area_name && (
                 <Badge
                   variant="outline"

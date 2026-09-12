@@ -37,6 +37,7 @@ export interface PartnerPublicationLink {
 
 export async function getPartners(): Promise<PartnerRecord[]> {
   const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("partner")
     .select("*")
@@ -47,11 +48,15 @@ export async function getPartners(): Promise<PartnerRecord[]> {
     console.error("getPartners error:", error.message);
     return [];
   }
+
   return data ?? [];
 }
 
-export async function getPartnerById(id: string): Promise<PartnerRecord | null> {
+export async function getPartnerById(
+  id: string
+): Promise<PartnerRecord | null> {
   const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("partner")
     .select("*")
@@ -62,17 +67,15 @@ export async function getPartnerById(id: string): Promise<PartnerRecord | null> 
     console.error("getPartnerById error:", error.message);
     return null;
   }
+
   return data;
 }
 
-// Cross-link lookups. These assume join tables such as
-// `project_partner (project_id, partner_id)` and
-// `publication_partner (publication_id, partner_id)` — swap the table
-// and column names for whatever you actually use.
 export async function getProjectsForPartner(
   partnerId: string
 ): Promise<PartnerProjectLink[]> {
   const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("project_partner")
     .select("project:project_id(id, title, slug, status)")
@@ -82,21 +85,49 @@ export async function getProjectsForPartner(
     console.error("getProjectsForPartner error:", error.message);
     return [];
   }
-  return (data ?? []).map((row: any) => row.project).filter(Boolean);
+
+  return (data ?? [])
+    .map((row: any) => row.project)
+    .filter(Boolean);
 }
 
 export async function getPublicationsForPartner(
   partnerId: string
 ): Promise<PartnerPublicationLink[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("publication_partner")
-    .select("publication:publication_id(id, title, year)")
+
+  // Find projects linked to this partner.
+  const { data: projectLinks, error: projectError } = await supabase
+    .from("project_partner")
+    .select("project_id")
     .eq("partner_id", partnerId);
+
+  if (projectError) {
+    console.error(
+      "getPublicationsForPartner project lookup error:",
+      projectError.message
+    );
+    return [];
+  }
+
+  const projectIds = (projectLinks ?? []).map((row) => row.project_id);
+
+  if (projectIds.length === 0) {
+    return [];
+  }
+
+  // Find published publications belonging to those projects.
+  const { data, error } = await supabase
+    .from("publication")
+    .select("id, title, year")
+    .in("project_id", projectIds)
+    .eq("publish_status", "published")
+    .order("year", { ascending: false });
 
   if (error) {
     console.error("getPublicationsForPartner error:", error.message);
     return [];
   }
-  return (data ?? []).map((row: any) => row.publication).filter(Boolean);
+
+  return data ?? [];
 }
