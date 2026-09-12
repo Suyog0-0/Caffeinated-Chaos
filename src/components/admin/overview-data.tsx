@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   Bell,
   BookOpen,
+  BriefcaseBusiness,
   CalendarClock,
   CalendarDays,
   Clock,
@@ -17,7 +18,7 @@ import { adminTw, statusTw } from "@/components/admin/admin-tailwind";
 
 type RecentItem = {
   id: string;
-  kind: "researcher" | "project" | "publication" | "event" | "grant" | "announcement";
+  kind: "researcher" | "project" | "publication" | "event" | "grant" | "announcement" | "opportunity";
   title: string;
   status: string;
   created_at: string;
@@ -30,6 +31,7 @@ const KIND_META: Record<RecentItem["kind"], { label: string; icon: typeof Users;
   event: { label: "Event", icon: CalendarDays, href: (id) => `/admin/events/${id}/edit` },
   grant: { label: "Grant", icon: Bell, href: (id) => `/admin/grants/${id}/edit` },
   announcement: { label: "Announcement", icon: Megaphone, href: (id) => `/admin/announcements/${id}/edit` },
+  opportunity: { label: "Opportunity", icon: BriefcaseBusiness, href: (id) => `/admin/opportunities/${id}/edit` },
 };
 
 function timeAgo(iso: string) {
@@ -65,6 +67,7 @@ export async function OverviewData() {
     supabase.from("event").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("grant").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("announcement").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
+    supabase.from("opportunity").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("event").select("id,title,start_at").eq("publish_status", "published").gte("start_at", new Date().toISOString()).order("start_at", { ascending: true }).limit(4),
     supabase.from("grant").select("id,title,deadline").eq("status", "open").gte("deadline", new Date().toISOString().slice(0, 10)).order("deadline", { ascending: true }).limit(4),
   ]);
@@ -92,6 +95,7 @@ export async function OverviewData() {
     recentEvents,
     recentGrants,
     recentAnnouncements,
+    recentOpportunities,
     upcomingEvents,
     upcomingDeadlines,
   ] = results;
@@ -115,6 +119,7 @@ export async function OverviewData() {
     ...(recentEvents.data ?? []).map((r) => ({ id: r.id, kind: "event" as const, title: r.title, status: r.publish_status, created_at: r.created_at })),
     ...(recentGrants.data ?? []).map((r) => ({ id: r.id, kind: "grant" as const, title: r.title, status: r.publish_status, created_at: r.created_at })),
     ...(recentAnnouncements.data ?? []).map((r) => ({ id: r.id, kind: "announcement" as const, title: r.title, status: r.publish_status, created_at: r.created_at })),
+    ...(recentOpportunities.data ?? []).map((r) => ({ id: r.id, kind: "opportunity" as const, title: r.title, status: r.publish_status ?? "draft", created_at: r.created_at ?? new Date(0).toISOString() })),
   ]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, 8);
