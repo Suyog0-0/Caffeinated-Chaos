@@ -12,7 +12,7 @@ export type FeaturedProjectData = {
 };
 
 export async function getRandomProject(): Promise<FeaturedProjectData | null> {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("project")
@@ -39,8 +39,14 @@ export async function getRandomProject(): Promise<FeaturedProjectData | null> {
     return null;
   }
 
-  const randomIndex = Math.floor(Math.random() * data.length);
+  const project = data[Math.floor(Math.random() * data.length)];
 
-  return data[randomIndex] as FeaturedProjectData;
+  return {
+    id: project.id,
+    slug: project.slug,
+    title: project.title,
+    description: project.description,
+    status: project.status,
+    research_area: project.research_area?.[0] ?? null,
+  };
 }
-
