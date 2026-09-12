@@ -23,7 +23,7 @@ export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; n
   const status = searchParams.get("status") || "all";
 
   return (
-    <section className="sticky top-16 md:top-20 z-40 bg-[#f4f0e8] border-b border-[#e2ded5] py-4">
+    <section className="sticky top-16 md:top-20 z-40 bg-[#f4f0e8] border-b border-[#e2ded5] py-5">
       <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
 
         {/* Primary row: search + 2 selects */}
@@ -35,7 +35,7 @@ export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; n
               <Search size={16} aria-hidden="true" />
             </div>
             <input
-              className="w-full pl-10 pr-20 py-2.5 text-sm bg-white border border-[#ded8cc] rounded-sm placeholder-[#7c8b83] text-[#141d18] focus:outline-none focus:ring-1 focus:ring-[#0e2820] focus:border-[#0e2820] transition-colors"
+              className="w-full py-3 pl-10 pr-20 text-[15px] bg-white border border-[#ded8cc] rounded-sm placeholder-[#7c8b83] text-[#141d18] focus:outline-none focus:ring-1 focus:ring-[#0e2820] focus:border-[#0e2820] transition-colors"
               placeholder="Search projects by title or keyword..."
               type="text"
               defaultValue={searchParams.get("query") || ""}
@@ -43,7 +43,7 @@ export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; n
               aria-label="Search projects"
             />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 bg-[#ede8de] rounded text-[#67756f]">ESC</span>
+              <span className="rounded bg-[#ede8de] px-1.5 py-0.5 text-[10px] font-semibold uppercase text-[#67756f]">ESC</span>
             </div>
           </div>
 
@@ -51,7 +51,7 @@ export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; n
           <div className="md:col-span-3">
             <div className="relative">
               <select
-                className="w-full py-2.5 pl-3.5 pr-8 text-sm bg-white border border-[#ded8cc] rounded-sm text-[#27352e] focus:outline-none focus:ring-1 focus:ring-[#0e2820] focus:border-[#0e2820] appearance-none font-sans cursor-pointer"
+                className="w-full appearance-none rounded-sm border border-[#ded8cc] bg-white py-3 pl-3.5 pr-8 text-[15px] text-[#27352e] [font-family:inherit] cursor-pointer focus:border-[#0e2820] focus:outline-none focus:ring-1 focus:ring-[#0e2820]"
                 aria-label="Filter by status"
                 defaultValue={status}
                 onChange={(e) => handleFilter("status", e.target.value)}
@@ -74,7 +74,7 @@ export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; n
           <div className="md:col-span-3">
             <div className="relative">
               <select
-                className="w-full py-2.5 pl-3.5 pr-8 text-sm bg-white border border-[#ded8cc] rounded-sm text-[#27352e] focus:outline-none focus:ring-1 focus:ring-[#0e2820] focus:border-[#0e2820] appearance-none font-sans cursor-pointer"
+                className="w-full appearance-none rounded-sm border border-[#ded8cc] bg-white py-3 pl-3.5 pr-8 text-[15px] text-[#27352e] [font-family:inherit] cursor-pointer focus:border-[#0e2820] focus:outline-none focus:ring-1 focus:ring-[#0e2820]"
                 aria-label="Filter by research area"
                 defaultValue={searchParams.get("area") || "all"}
                 onChange={(e) => handleFilter("area", e.target.value)}
@@ -96,31 +96,31 @@ export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; n
         </div>
 
         {/* Quick chips + sort row */}
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-[13px]">
           <div className="flex flex-wrap items-center gap-1.5">
             <button
-              className={`px-3 py-1 rounded-full font-medium transition-all ${status === "all" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
+              className={`px-3.5 py-1.5 rounded-full font-medium transition-all ${status === "all" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
               onClick={() => handleFilter("status", "all")}
               type="button"
             >
               All Initiatives
             </button>
             <button
-              className={`px-3 py-1 rounded-full font-medium transition-all ${status === "ongoing" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
+              className={`px-3.5 py-1.5 rounded-full font-medium transition-all ${status === "ongoing" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
               onClick={() => handleFilter("status", "ongoing")}
               type="button"
             >
               Ongoing
             </button>
             <button
-              className={`px-3 py-1 rounded-full font-medium transition-all ${status === "completed" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
+              className={`px-3.5 py-1.5 rounded-full font-medium transition-all ${status === "completed" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
               onClick={() => handleFilter("status", "completed")}
               type="button"
             >
               Completed
             </button>
             <button
-              className={`px-3 py-1 rounded-full font-medium transition-all ${status === "proposed" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
+              className={`px-3.5 py-1.5 rounded-full font-medium transition-all ${status === "proposed" ? "bg-[#0e2820] text-white" : "bg-white hover:bg-[#ebe6dc] border border-[#ded8cc] text-[#46534d]"}`}
               onClick={() => handleFilter("status", "proposed")}
               type="button"
             >
@@ -130,7 +130,7 @@ export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; n
           <div className="flex items-center gap-1.5 text-[#627068] ml-auto">
             <span>Sort:</span>
             <select
-              className="bg-transparent border-none text-xs font-semibold text-[#0e2820] focus:ring-0 cursor-pointer p-0 pr-4"
+              className="cursor-pointer border-none bg-transparent p-0 pr-4 text-[13px] font-semibold text-[#0e2820] [font-family:inherit] focus:ring-0"
               aria-label="Sort projects"
               defaultValue={searchParams.get("sort") || "recent"}
               onChange={(e) => handleFilter("sort", e.target.value)}

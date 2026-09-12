@@ -119,7 +119,7 @@ export function EventList({ events }: { events: Event[] }) {
                                                 </Link>
                                             </h3>
                                             {event.description && (
-                                                <p className="max-w-[62ch] text-sm text-[#425048] leading-relaxed">{event.description}</p>
+                                                <p className="max-w-[62ch] text-justify text-sm text-[#425048] leading-relaxed">{event.description}</p>
                                             )}
                                             <div className="pt-1.5 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-[#68726c]">
                                                 {chair && (

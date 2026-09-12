@@ -51,7 +51,7 @@ function FilterSelect({
                 onChange={(e) => onChange(e.target.value)}
                 className={[
                     "w-full cursor-pointer appearance-none rounded-xl border bg-white py-2.5 pl-4 pr-10",
-                    "text-sm font-medium text-[#1c2b24] shadow-[0_1px_2px_rgba(20,29,24,0.04)]",
+                    "text-sm font-medium text-[#1c2b24] [font-family:inherit] shadow-[0_1px_2px_rgba(20,29,24,0.04)]",
                     "transition-all duration-200 outline-none",
                     "hover:border-[#b8c4bc] hover:shadow-[0_2px_8px_rgba(20,29,24,0.06)]",
                     "focus-visible:border-[#0e2820] focus-visible:ring-4 focus-visible:ring-[#0e2820]/10",
@@ -105,7 +105,10 @@ export function EventFilters({ typeOptions, areaOptions, totalCount }: EventFilt
     const searchRef = useRef<HTMLInputElement>(null);
     const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-    useEffect(() => setSearchInput(query), [query]);
+    useEffect(() => {
+        const frame = window.requestAnimationFrame(() => setSearchInput(query));
+        return () => window.cancelAnimationFrame(frame);
+    }, [query]);
 
     /* Push a param update, preserving the rest of the URL */
     const handleFilter = useCallback(
@@ -201,7 +204,7 @@ export function EventFilters({ typeOptions, areaOptions, totalCount }: EventFilt
                                 <X size={13} strokeWidth={2.5} />
                             </button>
                         ) : (
-                            <kbd className="pointer-events-none absolute right-3.5 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 rounded-md border border-[#e2ded5] bg-[#ede8de] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#67756f] sm:flex">
+                            <kbd className="pointer-events-none absolute right-3.5 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 rounded-md border border-[#e2ded5] bg-[#ede8de] px-1.5 py-0.5 text-[10px] font-semibold text-[#67756f] sm:flex">
                                 ESC
                             </kbd>
                         )}

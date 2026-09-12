@@ -35,7 +35,7 @@ export function PersonList({ researchers }: { researchers: ResearcherSummary[] }
                           className="w-[52px] h-[52px] md:w-14 md:h-14 rounded-full object-cover shadow-inner"
                         />
                       ) : (
-                        <div className="w-[52px] h-[52px] md:w-14 md:h-14 rounded-full bg-[#374151] md:bg-[#374151] text-white flex items-center justify-center font-serif text-lg font-medium shadow-inner tracking-wide">
+                        <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#374151] text-lg font-medium tracking-wide text-white shadow-inner md:h-14 md:w-14 md:bg-[#374151]">
                           {researcher.initials}
                         </div>
                       )}
