@@ -18,7 +18,7 @@ export async function Publications() {
         <Link
           className={buttonVariants({
             variant: "outline",
-            className: "max-sm:mt-6",
+            className: "h-11 rounded-md border-[#c9c7bd] bg-[#fffefb] px-5 font-sans text-[14px] font-semibold text-[#153c2e] shadow-none transition-all hover:-translate-y-0.5 hover:border-[#153c2e] hover:bg-[#153c2e] hover:text-white max-sm:mt-6",
           })}
           href="/publications"
         >
@@ -29,32 +29,32 @@ export async function Publications() {
       <div className="border-t border-[#17251f]">
         {publications.map((publication) => (
           <article
-            className="grid min-h-40 grid-cols-[54px_1fr_230px_40px] items-center gap-6 border-b border-[#d7d5cd] max-sm:grid-cols-[45px_1fr_36px] max-sm:py-6"
+            className="group grid min-h-[154px] grid-cols-[58px_minmax(0,1fr)_280px_44px] items-center gap-7 border-b border-[#d7d5cd] py-7 transition-colors duration-300 hover:bg-[#faf9f5] max-lg:grid-cols-[52px_minmax(0,1fr)_210px_42px] max-sm:grid-cols-[45px_1fr_38px] max-sm:gap-4 max-sm:py-6"
             key={publication.id}
           >
-            <span className="grid h-14 w-10 place-items-center border border-[#d7d5cd] bg-white text-[#153c2e]">
+            <span className="grid h-14 w-10 place-items-center border border-[#d7d5cd] bg-white text-[#153c2e] transition-all duration-300 group-hover:border-[#153c2e] group-hover:bg-[#edf4f0]">
               <BookOpen aria-hidden size={21} />
             </span>
 
             <div>
-              <div className="mb-2 flex gap-2">
+              <div className="mb-3 flex gap-2">
                 {publication.publication_type && (
-                  <Badge>{publication.publication_type}</Badge>
+                  <Badge className="font-sans text-[11px] font-semibold capitalize">{publication.publication_type}</Badge>
                 )}
 
                 {publication.year && (
-                  <Badge>{publication.year}</Badge>
+                  <Badge className="font-sans text-[11px] font-semibold">{publication.year}</Badge>
                 )}
               </div>
 
-              <h3 className="max-w-3xl text-[22px] leading-tight font-medium">
-                <Link href={`/publications/${publication.id}`}>
+              <h3 className="max-w-4xl text-[25px] font-medium leading-snug tracking-[-0.01em] max-sm:text-[20px]">
+                <Link className="transition-colors group-hover:text-[#153c2e]" href={`/publications/${publication.id}`}>
                   {publication.title}
                 </Link>
               </h3>
             </div>
 
-            <p className="text-[13px] leading-tight text-[#405149] max-sm:col-start-2">
+            <p className="font-sans text-[14px] leading-6 text-[#405149] max-sm:col-start-2 max-sm:text-[13px]">
               {publication.venue}
             </p>
 
@@ -63,7 +63,7 @@ export async function Publications() {
                 variant: "outline",
                 size: "icon",
                 className:
-                  "max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1",
+                  "size-10 rounded-md border-[#d7d5cd] bg-white text-[#153c2e] transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#153c2e] group-hover:bg-[#153c2e] group-hover:text-white max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1",
               })}
               href={`/publications/${publication.id}`}
               aria-label={`Open ${publication.title}`}

@@ -22,7 +22,7 @@ export async function People() {
             Meet the people behind the work.
           </h2>
 
-          <p className="mt-5 max-w-md text-[#405149]">
+          <p className="mt-5 max-w-md font-sans text-[18px] leading-8 text-[#405149]">
             Find expertise, shared interests and opportunities to collaborate
             across the college.
           </p>
@@ -30,7 +30,7 @@ export async function People() {
           <Link
             className={buttonVariants({
               variant: "link",
-              className: "mt-8",
+              className: "mt-8 font-sans text-[16px] font-semibold text-[#153c2e] transition-transform hover:translate-x-1",
             })}
             href="/people"
           >
@@ -50,7 +50,7 @@ export async function People() {
 
   return (
     <Link
-      className="grid min-h-28 grid-cols-[54px_1fr_24px] items-center gap-4 border-b border-[#d7d5cd] max-sm:grid-cols-[50px_1fr_22px]"
+      className="group grid min-h-28 grid-cols-[54px_1fr_24px] items-center gap-4 border-b border-[#d7d5cd] transition-colors duration-300 hover:bg-[#faf9f5] max-sm:grid-cols-[50px_1fr_22px]"
       href={`/people/${person.id}`}
       key={person.id}
     >
@@ -70,17 +70,17 @@ export async function People() {
   )}
 </div> 
       <span>
-        <strong className="block text-xl font-medium">
+        <strong className="block text-[24px] font-medium leading-tight transition-colors group-hover:text-[#153c2e] max-sm:text-[20px]">
           {person.name}
         </strong>
 
-        <small className="block font-sans text-[10px] text-[#405149]">
+        <small className="mt-1 block font-sans text-[12px] leading-5 text-[#405149]">
           {person.position}
           {person.department && ` · ${person.department}`}
         </small>
       </span>
 
-      <ArrowUpRight aria-hidden size={18} />
+      <ArrowUpRight aria-hidden className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" size={18} />
     </Link>
   );
 })}        </div>

@@ -128,14 +128,14 @@ export function SiteFooter() {
               <span className="text-[#e9dfc8]">Meaningful change.</span>
             </p>
 
-            <address className="flex items-start gap-2.5 text-sm not-italic leading-relaxed text-[#7f958a]">
+            <address className="flex items-start gap-2.5 font-sans text-sm not-italic leading-relaxed text-[#7f958a]">
               <MapPin size={15} className="mt-1 shrink-0" aria-hidden />
               <span>{ADDRESS_LINES.join(" · ")}</span>
             </address>
 
             <Link
               href="/research-areas"
-              className="group mt-6 inline-flex items-center gap-2.5 rounded-full border border-[#d9c08a]/35 px-5 py-2.5 text-sm font-medium text-[#e9dfc8] transition-all duration-200 hover:border-[#d9c08a]/70 hover:bg-[#d9c08a]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9c08a]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1b14]"
+              className="group mt-6 inline-flex items-center gap-2.5 rounded-full border border-[#d9c08a]/35 px-5 py-2.5 font-sans text-sm font-medium text-[#e9dfc8] transition-all duration-200 hover:border-[#d9c08a]/70 hover:bg-[#d9c08a]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9c08a]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1b14]"
             >
               View research areas
               <ArrowRight
@@ -158,7 +158,7 @@ export function SiteFooter() {
             </h3>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="group inline-flex max-w-full items-center gap-2.5 rounded-sm py-1 text-[15px] text-[#c4d4ca] transition-colors duration-200 hover:text-[#f2ede2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9c08a]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1b14]"
+              className="group inline-flex max-w-full items-center gap-2.5 rounded-sm py-1 font-sans text-[15px] text-[#c4d4ca] transition-colors duration-200 hover:text-[#f2ede2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9c08a]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1b14]"
             >
               <Mail size={15} className="shrink-0 text-[#7f958a] transition-colors group-hover:text-[#d9c08a]" aria-hidden />
               <span className="relative break-all">
@@ -169,7 +169,7 @@ export function SiteFooter() {
                 />
               </span>
             </a>
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-[#7f958a]">
+            <p className="mt-5 max-w-xs font-sans text-sm leading-relaxed text-[#7f958a]">
               For collaboration, partnerships, or research inquiries, reach out to the
               R&amp;D office.
             </p>
@@ -178,7 +178,7 @@ export function SiteFooter() {
 
         {/* Legal strip */}
         <div className="flex flex-col items-center justify-between gap-4 pt-9 sm:flex-row">
-          <p className="text-[13px] tracking-[0.01em] text-[#7f958a]">
+          <p className="font-sans text-[13px] tracking-[0.01em] text-[#7f958a]">
             © {year} Islington College Research &amp; Development. All rights reserved.
           </p>
           <p className="font-serif text-[15px] italic tracking-[0.02em] text-[#9db4a8]">

@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   Bell,
   BookOpen,
+  ChartColumnBig,
   BriefcaseBusiness,
   CalendarClock,
   CalendarDays,
@@ -14,6 +15,7 @@ import {
   Users,
 } from "lucide-react";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { OverviewStatusChart } from "@/components/admin/overview-status-chart";
 import { adminTw, statusTw } from "@/components/admin/admin-tailwind";
 
 type RecentItem = {
@@ -51,6 +53,20 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
+function countByPublishStatus(rows: { publish_status: string | null }[]) {
+  return rows.reduce(
+    (totals, row) => {
+      if (row.publish_status === "published") {
+        totals.published += 1;
+      } else {
+        totals.review += 1;
+      }
+      return totals;
+    },
+    { published: 0, review: 0 },
+  );
+}
+
 export async function OverviewData() {
   const { supabase } = await requireAdmin();
   const results = await Promise.all([
@@ -70,6 +86,10 @@ export async function OverviewData() {
     supabase.from("opportunity").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("event").select("id,title,start_at").eq("publish_status", "published").gte("start_at", new Date().toISOString()).order("start_at", { ascending: true }).limit(4),
     supabase.from("grant").select("id,title,deadline").eq("status", "open").gte("deadline", new Date().toISOString().slice(0, 10)).order("deadline", { ascending: true }).limit(4),
+    supabase.from("researcher").select("publish_status"),
+    supabase.from("project").select("publish_status"),
+    supabase.from("publication").select("publish_status"),
+    supabase.from("research_area").select("publish_status"),
   ]);
 
   if (results.some((result) => result.error)) {
@@ -98,6 +118,10 @@ export async function OverviewData() {
     recentOpportunities,
     upcomingEvents,
     upcomingDeadlines,
+    researcherStatuses,
+    projectStatuses,
+    publicationStatuses,
+    areaStatuses,
   ] = results;
 
   const stats = [
@@ -110,6 +134,13 @@ export async function OverviewData() {
     { label: "Incomplete researcher profiles", count: incomplete.count, href: "/admin/researchers" },
     { label: "Projects without a research area", count: unlinked.count, href: "/admin/projects" },
     { label: "Publications missing metadata", count: metadata.count, href: "/admin/publications" },
+  ];
+  const allAttentionClear = attention.every((item) => (item.count ?? 0) === 0);
+  const chartData = [
+    { type: "Researchers", ...countByPublishStatus(researcherStatuses.data ?? []) },
+    { type: "Projects", ...countByPublishStatus(projectStatuses.data ?? []) },
+    { type: "Publications", ...countByPublishStatus(publicationStatuses.data ?? []) },
+    { type: "Research areas", ...countByPublishStatus(areaStatuses.data ?? []) },
   ];
 
   const recentItems: RecentItem[] = [
@@ -142,18 +173,32 @@ export async function OverviewData() {
 
       <section className="mt-[30px] border border-[#d4d5ce] bg-[#fffefb] [&>header]:flex [&>header]:justify-between [&>header]:gap-6 [&>header]:border-b [&>header]:border-[#d4d5ce] [&>header]:px-[26px] [&>header]:py-6 [&>div]:grid [&>div]:grid-cols-3 max-[980px]:[&>div]:grid-cols-1 max-[720px]:[&>header]:block max-[720px]:[&>header]:p-5">
         <header>
-          <div className="flex items-center gap-2.5 text-[#9a7d11]"><AlertCircle size={20} /><h2 className="m-0 font-sans text-[27px] font-medium text-[#17251f]">Needs attention</h2></div>
-          <p className="mt-1.5 text-[13px] text-[#68756f] max-[720px]:mt-[9px]">Records that may need a quick review.</p>
+          <div className={`flex items-center gap-2.5 ${allAttentionClear ? "text-[#24724c]" : "text-[#9a7d11]"}`}><AlertCircle size={20} /><h2 className="m-0 font-sans text-[27px] font-medium text-[#17251f]">{allAttentionClear ? "Everything is in perfect condition" : "Needs attention"}</h2></div>
+          <p className="mt-1.5 text-[13px] text-[#68756f] max-[720px]:mt-[9px]">{allAttentionClear ? "All tracked records are complete and ready." : "Records that may need a quick review."}</p>
         </header>
         <div>
           {attention.map((item) => (
             <Link className="grid min-h-[108px] grid-cols-[42px_1fr_auto] items-center gap-3 border-r border-[#d4d5ce] px-[26px] py-[22px] last:border-r-0 max-[980px]:border-b max-[980px]:border-r-0 max-[980px]:last:border-b-0 max-[720px]:min-h-[88px] max-[720px]:px-5 max-[720px]:py-4" href={item.href} key={item.label}>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#f4ecd0] font-bold text-[#715d15]">{item.count ?? "—"}</span>
+              <span className={`grid h-9 w-9 place-items-center rounded-full font-bold ${allAttentionClear ? "bg-[#e4f1e9] text-[#24724c]" : "bg-[#f4ecd0] text-[#715d15]"}`}>{item.count ?? "—"}</span>
               <p>{item.label}</p>
               <ArrowUpRight size={17} />
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className="mt-6 border border-[#d4d5ce] bg-[#fffefb] [--chart-published:#153c2e] [--chart-review:#c1951b] [&>header]:flex [&>header]:items-start [&>header]:justify-between [&>header]:gap-5 [&>header]:border-b [&>header]:border-[#d4d5ce] [&>header]:px-6 [&>header]:py-[22px] max-[720px]:[&>header]:block max-[720px]:[&>header]:px-5">
+        <header>
+          <div>
+            <div className="flex items-center gap-2.5 text-[#36594b]"><ChartColumnBig size={20} /><h2 className="m-0 font-sans text-[23px] font-medium text-[#17251f]">Publishing status</h2></div>
+            <p className="mt-1.5 text-[13px] text-[#68756f]">Published records compared with drafts and previews across the core content types.</p>
+          </div>
+          <div className="flex shrink-0 items-center gap-4 pt-1 text-xs text-[#53645c] max-[720px]:mt-4 [&_span]:inline-flex [&_span]:items-center [&_span]:gap-1.5 [&_i]:h-2.5 [&_i]:w-2.5 [&_i]:rounded-full">
+            <span><i className="bg-[var(--chart-published)]" />Published</span>
+            <span><i className="bg-[var(--chart-review)]" />Draft/preview</span>
+          </div>
+        </header>
+        <OverviewStatusChart data={chartData} />
       </section>
 
       <div className="mt-6 grid grid-cols-[1.4fr_1fr] items-start gap-6 max-[980px]:grid-cols-1">
