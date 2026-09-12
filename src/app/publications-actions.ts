@@ -15,7 +15,7 @@ const postgresUuidSchema = z.string().regex(
 const optionalUuidSchema = z.union([z.literal(""), postgresUuidSchema]);
 const publicationSchema = z.object({
   title: z.string().trim().min(1, "Enter the publication title."),
-  publication_type: z.string().trim(),
+  publication_type: z.union([z.literal(""), z.enum(["journal", "conference", "report"])]),
   year: z.union([
     z.literal(""),
     z.string().regex(/^\d{4}$/, "Enter a four-digit year.").refine(
@@ -62,6 +62,31 @@ function nullable(value: string) {
   return value || null;
 }
 
+async function syncPublicationAuthors(supabase: Awaited<ReturnType<typeof import("@/app/admin/admin-auth").getAdminContext>> extends infer T ? T extends { supabase: infer S } ? S : never : never, publicationId: string, formData: FormData) {
+  const authorIds = formData.getAll("author_ids").map(String).filter(Boolean);
+
+  const { error: deleteError } = await supabase.from("publication_author").delete().eq("publication_id", publicationId);
+  if (deleteError) {
+    console.error("Publication authors clear failed:", deleteError.message);
+    return "The publication was saved, but its authors could not be updated. Try editing the publication again.";
+  }
+
+  if (authorIds.length === 0) return null;
+
+  const rows = authorIds.map((researcherId, index) => ({
+    publication_id: publicationId,
+    researcher_id: researcherId,
+    author_order: index + 1,
+  }));
+
+  const { error: insertError } = await supabase.from("publication_author").insert(rows);
+  if (insertError) {
+    console.error("Publication authors save failed:", insertError.message);
+    return "The publication was saved, but its authors could not be updated. Check that each researcher still exists.";
+  }
+  return null;
+}
+
 function publicationPayload(formData: FormData, values: z.infer<typeof publicationSchema>) {
   return {
     title: values.title,
@@ -93,6 +118,9 @@ function publicationSaveError(error: { code?: string }) {
   if (error.code === "23502") {
     return "A required database field is missing. Complete the required details and try again.";
   }
+  if (error.code === "23514") {
+    return "One of the values doesn't match the allowed options (e.g. publication type must be Journal, Conference, or Report). Fix it and try again.";
+  }
   return "The publication could not be saved. Check your connection and try again.";
 }
 
@@ -104,16 +132,26 @@ export async function createPublicationAction(
   if (!context) return { error: "Your admin session expired. Sign in again." };
 
   const parsed = parsePublication(formData);
-  if (!parsed.success) return { error: parsed.error.issues[0].message };
-
-  const { error } = await context.supabase
-    .from("publication")
-    .insert(publicationPayload(formData, parsed.data));
-
-  if (error) {
-    console.error("Publication create failed:", error.message);
-    return { error: publicationSaveError(error) };
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    const field = issue.path.join(".") || "form";
+    const raw = formData.get(String(issue.path[0]));
+    return { error: `${field}: ${issue.message} (received: ${JSON.stringify(raw)})` };
   }
+
+  const { data: inserted, error } = await context.supabase
+    .from("publication")
+    .insert(publicationPayload(formData, parsed.data))
+    .select("id")
+    .single();
+
+  if (error || !inserted) {
+    if (error) console.error("Publication create failed:", error.message);
+    return { error: error ? publicationSaveError(error) : "The publication could not be saved. Check your connection and try again." };
+  }
+
+  const authorsError = await syncPublicationAuthors(context.supabase, inserted.id, formData);
+  if (authorsError) return { error: authorsError };
 
   revalidatePath("/admin");
   revalidatePath("/admin/publications");
@@ -133,7 +171,12 @@ export async function updatePublicationAction(
   if (!context) return { error: "Your admin session expired. Sign in again." };
 
   const parsed = parsePublication(formData);
-  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    const field = issue.path.join(".") || "form";
+    const raw = formData.get(String(issue.path[0]));
+    return { error: `${field}: ${issue.message} (received: ${JSON.stringify(raw)})` };
+  }
 
   const { data: updated, error } = await context.supabase
     .from("publication")
@@ -150,6 +193,9 @@ export async function updatePublicationAction(
         : "No publication was updated. It may have been removed or your account may not have permission to edit it.",
     };
   }
+
+  const authorsError = await syncPublicationAuthors(context.supabase, id.data, formData);
+  if (authorsError) return { error: authorsError };
 
   revalidatePath("/admin");
   revalidatePath("/admin/publications");

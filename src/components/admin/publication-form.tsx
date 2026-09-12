@@ -7,6 +7,7 @@ import {
   createPublicationAction,
   updatePublicationAction,
 } from "@/app/publications-actions";
+import { PeoplePicker, type PersonOption, type SelectedPerson } from "@/components/admin/people-picker";
 
 export type PublicationFormValues = {
   id: string;
@@ -32,10 +33,14 @@ export function PublicationForm({
   publication,
   projects,
   researchAreas,
+  researchers,
+  authors = [],
 }: {
   publication?: PublicationFormValues;
   projects: ProjectOption[];
   researchAreas: RelationOption[];
+  researchers: PersonOption[];
+  authors?: SelectedPerson[];
 }) {
   const submitAction = publication
     ? updatePublicationAction.bind(null, publication.id)
@@ -78,7 +83,12 @@ export function PublicationForm({
           </label>
           <label>
             Publication type
-            <input name="publication_type" onChange={(event) => updateValue("publication_type", event.target.value)} placeholder="Journal article" value={values.publication_type} />
+            <select name="publication_type" onChange={(event) => updateValue("publication_type", event.target.value)} value={values.publication_type}>
+              <option value="">Not set</option>
+              <option value="journal">Journal</option>
+              <option value="conference">Conference</option>
+              <option value="report">Report</option>
+            </select>
           </label>
           <label>
             Publication status
@@ -134,6 +144,21 @@ export function PublicationForm({
             <input checked={values.is_demo_data} name="is_demo_data" onChange={(event) => updateValue("is_demo_data", event.target.checked)} type="checkbox" />
             <span><strong>Demo data</strong><small>Mark this as seeded sample content.</small></span>
           </label>
+        </div>
+      </section>
+
+      <section>
+        <div className="admin-form-heading">
+          <div><h2>Authors</h2><p>Researchers credited on this publication, in author order.</p></div>
+        </div>
+        <div className="admin-form-grid">
+          <PeoplePicker
+            emptyLabel="No authors added yet."
+            fieldName="author_ids"
+            initialSelected={authors}
+            label="Add author"
+            people={researchers}
+          />
         </div>
       </section>
 

@@ -7,6 +7,7 @@ import {
   createProjectAction,
   updateProjectAction,
 } from "@/app/projects-actions";
+import { PeoplePicker, type PersonOption, type SelectedPerson } from "@/components/admin/people-picker";
 
 export type ProjectFormValues = {
   id: string;
@@ -27,9 +28,13 @@ type ResearchAreaOption = { id: string; name: string };
 export function ProjectForm({
   project,
   researchAreas,
+  researchers,
+  teamMembers = [],
 }: {
   project?: ProjectFormValues;
   researchAreas: ResearchAreaOption[];
+  researchers: PersonOption[];
+  teamMembers?: SelectedPerson[];
 }) {
   const saveAction = project
     ? updateProjectAction.bind(null, project.id)
@@ -107,6 +112,23 @@ export function ProjectForm({
             <input checked={values.is_demo_data} name="is_demo_data" onChange={(event) => updateValue("is_demo_data", event.target.checked)} type="checkbox" />
             <span><strong>Demo data</strong><small>Mark this project as seeded sample content.</small></span>
           </label>
+        </div>
+      </section>
+
+      <section>
+        <div className="admin-form-heading">
+          <div><h2>Team</h2><p>Researchers linked to this project, and their role.</p></div>
+        </div>
+        <div className="admin-form-grid">
+          <PeoplePicker
+            emptyLabel="No team members added yet."
+            fieldName="member_ids"
+            initialSelected={teamMembers}
+            label="Add team member"
+            people={researchers}
+            roleFieldName="member_roles"
+            roleOptions={[{ value: "team_member", label: "Team member" }, { value: "lead", label: "Lead" }]}
+          />
         </div>
       </section>
 
