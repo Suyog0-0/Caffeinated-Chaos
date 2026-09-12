@@ -12,6 +12,7 @@ const navLinks = [
   { href: "/projects", label: "Projects" },
   { href: "/publications", label: "Publications" },
   { href: "/aboutsection", label: "About R&D" },
+  { href: "/partners", label: "Partners" },
 ];
 
 export function SiteHeader() {
