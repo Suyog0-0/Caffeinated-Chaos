@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowRight, Calendar, Coins, UserCircle } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 export type Opportunity = {
   id: string;
@@ -8,6 +7,7 @@ export type Opportunity = {
   description: string;
   deadline: string | null;
   status: string;
+  applicationUrl: string;
   areaSlug: string;
   areaName: string;
 };
@@ -28,39 +28,9 @@ function getTypeColors(type: string) {
   return "bg-gray-50 text-gray-700 border-gray-100";
 }
 
-function getStatusMock(type: string) {
-  const normalized = type.toLowerCase();
-  if (normalized.includes("assistantship")) return "Fully Funded (3 Years)";
-  if (normalized.includes("internship")) return "Paid • 6 Months (Hybrid)";
-  if (normalized.includes("call for papers")) return "Journal Special Edition";
-  if (normalized.includes("collaboration")) return "Industry & Municipal Partners";
-  if (normalized.includes("fellowship")) return "Postdoctoral • 2 Years";
-  if (normalized.includes("student job")) return "Part-time (20hr/week)";
-  return "Open Opportunity";
-}
-
-function getStipendMock(type: string) {
-  const normalized = type.toLowerCase();
-  if (normalized.includes("assistantship")) return "Stipend: £21,500/year tax-free + Full Tuition waiver";
-  if (normalized.includes("internship")) return "Salary: £18,000 pro rata";
-  if (normalized.includes("call for papers")) return "Indexing: Impact Factor 5.8 • Q1 Scientific Journal";
-  if (normalized.includes("collaboration")) return "Framework: 18-Month Co-Funded Grant & IP Sharing";
-  if (normalized.includes("fellowship")) return "Salary: Grade 7 Research Scale (£38,000 - £44,000 p.a.)";
-  return "Funding: Varies by project scope";
-}
-
-function getLeadMock(type: string) {
-  const normalized = type.toLowerCase();
-  if (normalized.includes("call for papers")) return "Editorial Desk: journal.aim@islington.edu";
-  if (normalized.includes("collaboration")) return "Principal Investigator: Dr. James Whitfield";
-  return "Lead: Dr. Amara Okafor (amara.okafor@islington.edu)";
-}
-
 export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
   const typeColors = getTypeColors(opportunity.type);
-  const statusMock = getStatusMock(opportunity.type);
-  const stipendMock = getStipendMock(opportunity.type);
-  const leadMock = getLeadMock(opportunity.type);
+  const statusDisplay = opportunity.status.charAt(0).toUpperCase() + opportunity.status.slice(1);
 
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group h-full">
@@ -69,7 +39,7 @@ export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
           {opportunity.type}
         </span>
         <span className="text-[10px] font-bold text-gray-500 uppercase px-3 py-1 rounded-full bg-[#F4F1EA]">
-          {statusMock}
+          {statusDisplay}
         </span>
       </div>
       
@@ -91,24 +61,18 @@ export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
           <Calendar size={14} className="mt-0.5 text-gray-400" />
           <span><strong className="text-gray-700">Deadline:</strong> {opportunity.deadline || 'Rolling basis'}</span>
         </div>
-        <div className="flex items-start gap-3 text-xs text-gray-600">
-          <Coins size={14} className="mt-0.5 text-gray-400" />
-          <span>{stipendMock}</span>
-        </div>
-        <div className="flex items-start gap-3 text-xs text-gray-600">
-          <UserCircle size={14} className="mt-0.5 text-gray-400" />
-          <span>{leadMock}</span>
-        </div>
       </div>
 
       <div className="mt-auto flex justify-end items-center pt-5 border-t border-gray-100">
-        <Link 
-          href={`/opportunities/${opportunity.id}`}
+        <a 
+          href={opportunity.applicationUrl}
+          target="_blank"
+          rel="noopener noreferrer"
           className="bg-[#0B3B24] hover:bg-[#072517] text-white px-5 py-2 rounded-lg text-xs font-medium transition-colors"
         >
           {opportunity.type.toLowerCase().includes('call for papers') ? 'Author Portal' : 
            opportunity.type.toLowerCase().includes('collaboration') ? 'Partner Inquiry' : 'Apply Now'}
-        </Link>
+        </a>
       </div>
     </div>
   );
