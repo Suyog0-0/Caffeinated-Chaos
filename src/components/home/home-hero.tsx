@@ -41,17 +41,17 @@ export function Hero() {
             </Button>
           </form>
           <nav
-            className="mt-5 flex flex-wrap gap-x-4 gap-y-2 font-sans text-[11px] text-[#405149]"
+            className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 font-sans text-[15px] text-[#405149]"
             aria-label="Suggested searches"
           >
-            <span className="font-bold">Explore:</span>
+            <span className="font-bold text-[#153c2e]">Explore:</span>
             {[
               ["Responsible AI", "Responsible+AI"],
               ["Climate resilience", "Climate+resilience"],
               ["Digital education", "Digital+education"],
             ].map(([label, query]) => (
               <Link
-                className="underline underline-offset-4"
+                className="font-semibold underline decoration-[#b9b7ae] underline-offset-4 transition-colors hover:text-[#153c2e] hover:decoration-[#153c2e]"
                 href={`/search?q=${query}`}
                 key={query}
               >
@@ -61,33 +61,33 @@ export function Hero() {
           </nav>
         </div>
 
-        <div className="relative min-h-[500px] max-sm:min-h-[430px]">
-          <div className="absolute inset-[58px_5px_44px_84px] rotate-[7deg] bg-[#e1c451] max-sm:inset-[46px_2px_33px_58px]" />
-          <div className="absolute inset-[28px_41px_68px_45px] -rotate-[5deg] border border-[#c9c7bd] bg-[#eeeae0] shadow-xl max-sm:inset-[20px_22px_49px_25px]" />
-          <Card className="absolute inset-[24px_35px_54px_34px] z-2 rotate-[.8deg] p-3 shadow-2xl max-sm:inset-[15px_20px_45px_14px]">
-            <CardHeader className="flex-row justify-between border-b border-[#17251f] p-3 font-sans text-[9px] font-bold">
+        <div className="relative min-h-[530px] max-sm:min-h-[470px]">
+          <div className="absolute inset-[66px_5px_36px_84px] rotate-[7deg] bg-[#e1c451] max-sm:inset-[56px_2px_28px_58px]" />
+          <div className="absolute inset-[24px_41px_60px_45px] -rotate-[5deg] border border-[#c9c7bd] bg-[#eeeae0] shadow-xl max-sm:inset-[18px_22px_42px_25px]" />
+          <Card className="absolute inset-[18px_35px_54px_34px] z-2 rotate-[.8deg] p-3 shadow-2xl max-sm:inset-[12px_20px_36px_14px]">
+            <CardHeader className="flex-row justify-between border-b border-[#17251f] p-3 font-sans text-[9px] font-bold leading-5">
               <span>Islington research paper</span>
               <span>No. 08</span>
             </CardHeader>
-            <CardContent className="p-2 max-sm:p-4">
-              <p className="mb-2 font-sans text-[10px] font-bold text-[#153c2e]">
+            <CardContent className="p-3 max-sm:p-4">
+              <p className="mb-3 font-sans text-[11px] font-bold text-[#153c2e]">
                 Urban intelligence
               </p>
-              <h2 className="max-w-md text-[clamp(33px,3.6vw,46px)] leading-none font-medium tracking-tight max-sm:text-[34px]">
+              <h2 className="max-w-md text-[clamp(31px,3.25vw,43px)] font-medium leading-[1.04] tracking-tight max-sm:text-[31px]">
                 Can a city learn from the people who move through it?
               </h2>
-              <p className="my-4 max-w-sm text-[15px] text-[#405149]">
+              <p className="my-4 max-w-sm text-left font-sans text-[15px] leading-7 text-[#405149] max-sm:text-[13px] max-sm:leading-6">
                 A community-led study of mobility data, public space and more inclusive decisions
                 for Kathmandu.
               </p>
-              <Separator className="mb-0" />
-              <div className="flex items-center gap-3">
-                <span className="grid size-9 place-items-center rounded-full bg-[#153c2e] font-sans text-[10px] text-white">
+              <Separator className="mb-4" />
+              <div className="flex items-center gap-4">
+                <span className="grid size-10 place-items-center rounded-full bg-[#153c2e] font-sans text-[11px] font-semibold text-white">
                   NM
                 </span>
                 <span>
-                  <strong className="block text-[13px]">Nisha Maharjan</strong>
-                  <small className="block font-sans text-[9px] text-[#405149]">
+                  <strong className="block font-sans text-[15px] font-semibold leading-5">Nisha Maharjan</strong>
+                  <small className="block font-sans text-[11px] leading-5 text-[#405149]">
                     Lead researcher
                   </small>
                 </span>
