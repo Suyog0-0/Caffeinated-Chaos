@@ -52,4 +52,14 @@ All public pages and the admin/login views exist with dummy content from `lib/du
 
 - `/projects` now sets `revalidate = 300` — the list query (project + research area + project team) doesn't depend on `searchParams`, so it's cached instead of re-fetched on every request.
 - Uses `src/supabase/server.ts` (`createServerClient`) instead of the browser client.
-- `ProjectFilters` updates the URL query string, but the list is not currently filtered by it server- or client-side; this was already the case before this change and was left alone.
+
+## Projects page filters, sort and pagination
+
+- `ProjectFilters` writes `query`, `status`, `area`, `sort` and `page` into the URL query string.
+- `ProjectList` reads those params (`useSearchParams`) and filters/sorts/paginates the full project list client-side, 6 projects per page, with numbered pagination buttons.
+- Research area options in the filter dropdown are built from the real `research_area` rows returned by Supabase (not hardcoded), so the filter always matches actual data.
+- Sort has two options: "Recently Added" (default, server order) and "Alphabetical (A–Z)".
+
+## Navbar
+
+- Nav links, the search link, and the header tagline use the site's default font (no hard-coded font override).
