@@ -1,7 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 
 type Project = {
   slug: string;
@@ -12,44 +10,66 @@ type Project = {
   lead: string;
 };
 
-const statusColor = {
-  Ongoing: "bg-[#267457]",
-  Completed: "bg-[#2a5776]",
-} as const;
+const getStatusStyles = (status: string) => {
+  const normalized = (status || "").toLowerCase();
+  switch (normalized) {
+    case 'ongoing':
+      return { cls: 'bg-[#ecf7f2] text-[#0e6144] border border-[#c3ebd7]', label: 'Active' };
+    case 'completed':
+      return { cls: 'bg-[#f3f4f6] text-[#4b5563] border border-[#d1d5db]', label: 'Completed' };
+    case 'proposed':
+      return { cls: 'bg-[#fffbeb] text-[#92400e] border border-[#fde68a]', label: 'Proposed' };
+    default:
+      return { cls: 'bg-[#f5f2ea] text-[#68726c] border border-[#e2ded5]', label: status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown' };
+  }
+};
 
 export function ProjectList({ projects }: { projects: Project[] }) {
   return (
-    <div className="border-t border-[#17251f]">
+    <div className="space-y-4">
       {projects.map((project) => (
-        <Card
-          className="rounded-none border-0 border-b border-[#d7d5cd] bg-transparent py-0 shadow-none"
+        <article
+          className="bg-white border border-[#e5dfd3] hover:border-[#0e2820] rounded-sm p-6 sm:p-7 shadow-xs hover:shadow-md transition-all duration-200 group"
           key={project.slug}
         >
-          <CardContent className="p-0">
-            <Link
-              className="group grid min-h-40 grid-cols-[16px_1fr_220px_55px] items-center gap-6 transition-colors hover:bg-[#f6f3eb] max-sm:grid-cols-[14px_1fr] max-sm:py-6"
-              href={`/projects/${project.slug}`}
-            >
-              <span
-                className={`size-2 rounded-full ${statusColor[project.status as keyof typeof statusColor] ?? "bg-[#87918c]"}`}
-                aria-hidden="true"
-              />
-              <div>
-                <Badge className="border-0 p-0 font-sans text-[9px] font-normal text-[#153c2e]">
-                  {project.status} · {project.area}
-                </Badge>
-                <h2 className="my-1 text-[25px] font-medium">{project.title}</h2>
-                <small className="block max-w-2xl text-sm text-[#405149]">{project.summary}</small>
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div className="flex-1">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                {(() => {
+                  const style = getStatusStyles(project.status);
+                  return (
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${style.cls}`}>
+                      {style.label}
+                    </span>
+                  );
+                })()}
+                <span className="text-xs font-mono text-[#68726c] bg-[#f5f2ea] px-2 py-0.5 rounded">
+                  {project.area}
+                </span>
               </div>
-              <b className="font-sans text-[10px] max-sm:col-start-2">{project.lead}</b>
-              <ArrowUpRight
-                className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 max-sm:col-start-2"
-                size={17}
-                aria-hidden="true"
-              />
-            </Link>
-          </CardContent>
-        </Card>
+              <h2 className="font-serif text-2xl md:text-[1.7rem] font-semibold text-[#141d18] group-hover:text-[#0e2820] transition-colors mb-2.5 tracking-tight">
+                {project.title}
+              </h2>
+              <p className="text-sm md:text-[15px] text-[#425048] leading-relaxed max-w-4xl font-light">
+                {project.summary}
+              </p>
+            </div>
+            
+            <div className="flex lg:flex-col items-center justify-end gap-3 self-end lg:self-start shrink-0 pt-4 lg:pt-0">
+              <Link
+                aria-label="View project detail"
+                className="w-10 h-10 rounded-full border border-[#ded8cc] group-hover:border-[#0e2820] group-hover:bg-[#0e2820] flex items-center justify-center text-[#55645d] group-hover:text-white transition-all"
+                href={`/projects/${project.slug}`}
+              >
+                <ArrowUpRight
+                  className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                  aria-hidden="true"
+                />
+              </Link>
+            </div>
+          </div>
+        </article>
+
       ))}
     </div>
   );

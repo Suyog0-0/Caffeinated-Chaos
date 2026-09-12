@@ -47,7 +47,8 @@ export function PublicationFilters({
   const quickSuggestions = areas.slice(0, 5);
 
   return (
-    <form className="mt-10 mb-8 space-y-3" onSubmit={(e) => e.preventDefault()}>
+    <div className="py-4 md:py-8 sticky top-16 md:top-20 z-40 bg-[#F8F7F3]/90 md:bg-[#FAF7F2]/90 backdrop-blur-md border-b border-[#E8E4DA]/70 md:border-[#E2DBD0] mb-8">
+      <form className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)] space-y-3" onSubmit={(e) => e.preventDefault()}>
       <div className="relative flex items-center rounded-full border border-[#d0cfc7] bg-white px-4 shadow-sm transition-all focus-within:border-[#267457] focus-within:shadow-[0_0_0_3px_rgba(38,116,87,0.08)]">
         <Search size={15} className="shrink-0 text-[#8a9690]" aria-hidden="true" />
         <input
@@ -174,6 +175,7 @@ export function PublicationFilters({
           </div>
         )}
       </div>
-    </form>
+      </form>
+    </div>
   );
 }

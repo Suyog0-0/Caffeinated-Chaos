@@ -66,7 +66,9 @@ export function PublicationLibrary({
                 authors={authors}
                 areas={areas}
             />
-            <PublicationList publications={filtered} />
+            <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)] pb-24">
+              <PublicationList publications={filtered} />
+            </div>
         </>
     );
 }
