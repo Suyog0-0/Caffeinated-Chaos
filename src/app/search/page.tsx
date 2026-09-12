@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
-import { Search, ArrowRight, ChevronRight } from "lucide-react";
+import { Search, ArrowRight, ChevronRight, Layers, Users, Briefcase, FileText } from "lucide-react";
+import { getResearchMetrics } from "@/components/home/data/metrics";
 
 export default async function SearchPage({
   searchParams,
@@ -17,6 +18,7 @@ export default async function SearchPage({
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let results: any[] = [];
+  let metrics = { researchers: 0, projects: 0, publications: 0, researchAreas: 0 };
   
   if (query) {
     const { data, error } = await supabase.rpc("search_ecosystem", {
@@ -27,6 +29,12 @@ export default async function SearchPage({
       results = data;
     } else if (error) {
       console.error("Search error:", error);
+    }
+  } else {
+    try {
+      metrics = await getResearchMetrics();
+    } catch (err) {
+      console.error("Failed to load metrics for empty search state:", err);
     }
   }
 
@@ -64,7 +72,7 @@ export default async function SearchPage({
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         
         {/* Header Section */}
-        <div className="max-w-3xl mb-12">
+        <div className="max-w-3xl mb-10">
           <div className="flex items-center gap-3 text-xs font-bold tracking-widest text-gray-500 uppercase mb-4">
             <span className="w-2 h-2 bg-[#0B3B24] rounded-full"></span>
             Digital Repository & Academic Index
@@ -78,7 +86,7 @@ export default async function SearchPage({
         </div>
 
         {/* Search Bar */}
-        <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-200 flex items-center mb-8">
+        <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-200 flex items-center mb-12">
           <div className="pl-4 text-gray-400">
             <Search size={20} />
           </div>
@@ -92,12 +100,142 @@ export default async function SearchPage({
             />
             <button 
               type="submit"
-              className="bg-[#0B3B24] hover:bg-[#072517] text-white px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors"
+              className="bg-[#0B3B24] hover:bg-[#072517] text-white px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors cursor-pointer"
             >
               Search <ArrowRight size={18} />
             </button>
           </form>
         </div>
+
+        {/* Zero-State: Pillar Cards + Tips (Rendered when no query) */}
+        {!query && (
+          <div className="flex flex-col gap-10 mb-16">
+            
+            {/* Browse by Records Section */}
+            <section>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <span className="text-[11px] font-bold tracking-widest text-gray-400 uppercase">
+                    Browse Categories
+                  </span>
+                  <h2 className="text-2xl font-serif text-[#0B3B24] font-semibold mt-1">
+                    Explore by Records
+                  </h2>
+                </div>
+                <span className="text-xs text-gray-500 hidden sm:inline-block">
+                  Select a category to view all indexed records
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Research Areas */}
+                <Link
+                  href="/research-areas"
+                  className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#0B3B24]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-[#0B3B24]/10 text-[#0B3B24] flex items-center justify-center mb-5 group-hover:bg-[#0B3B24] group-hover:text-white transition-colors">
+                      <Layers size={22} />
+                    </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-serif font-semibold text-[#0B3B24] group-hover:underline">
+                        Research Areas
+                      </h3>
+                      <span className="text-[11px] font-medium bg-[#F4F1EA] text-[#405149] px-2.5 py-0.5 rounded-full">
+                        {metrics.researchAreas} clusters
+                      </span>
+                    </div>
+                    <p className="text-gray-500 text-xs leading-relaxed mb-6">
+                      Specialized academic disciplines, methodology clusters, and thematic research focus areas.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-xs font-semibold text-[#0B3B24] pt-4 border-t border-gray-100 gap-1 group-hover:gap-2 transition-all">
+                    Browse areas <ArrowRight size={13} />
+                  </div>
+                </Link>
+
+                {/* Researchers & Faculty */}
+                <Link
+                  href="/people"
+                  className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#0B3B24]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-[#0B3B24]/10 text-[#0B3B24] flex items-center justify-center mb-5 group-hover:bg-[#0B3B24] group-hover:text-white transition-colors">
+                      <Users size={22} />
+                    </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-serif font-semibold text-[#0B3B24] group-hover:underline">
+                        Faculty & Fellows
+                      </h3>
+                      <span className="text-[11px] font-medium bg-[#F4F1EA] text-[#405149] px-2.5 py-0.5 rounded-full">
+                        {metrics.researchers} profiles
+                      </span>
+                    </div>
+                    <p className="text-gray-500 text-xs leading-relaxed mb-6">
+                      Directory of faculty investigators, academic supervisors, postdoctoral researchers, and scholars.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-xs font-semibold text-[#0B3B24] pt-4 border-t border-gray-100 gap-1 group-hover:gap-2 transition-all">
+                    View directory <ArrowRight size={13} />
+                  </div>
+                </Link>
+
+                {/* Active Projects */}
+                <Link
+                  href="/projects"
+                  className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#0B3B24]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-[#0B3B24]/10 text-[#0B3B24] flex items-center justify-center mb-5 group-hover:bg-[#0B3B24] group-hover:text-white transition-colors">
+                      <Briefcase size={22} />
+                    </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-serif font-semibold text-[#0B3B24] group-hover:underline">
+                        Active Projects
+                      </h3>
+                      <span className="text-[11px] font-medium bg-[#F4F1EA] text-[#405149] px-2.5 py-0.5 rounded-full">
+                        {metrics.projects} active
+                      </span>
+                    </div>
+                    <p className="text-gray-500 text-xs leading-relaxed mb-6">
+                      Funded empirical projects, software engineering testbeds, and collaborative industrial initiatives.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-xs font-semibold text-[#0B3B24] pt-4 border-t border-gray-100 gap-1 group-hover:gap-2 transition-all">
+                    Explore projects <ArrowRight size={13} />
+                  </div>
+                </Link>
+
+                {/* Publications */}
+                <Link
+                  href="/publications"
+                  className="group bg-white rounded-2xl p-6 border border-gray-200 hover:border-[#0B3B24]/40 hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-[#0B3B24]/10 text-[#0B3B24] flex items-center justify-center mb-5 group-hover:bg-[#0B3B24] group-hover:text-white transition-colors">
+                      <FileText size={22} />
+                    </div>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-lg font-serif font-semibold text-[#0B3B24] group-hover:underline">
+                        Publications
+                      </h3>
+                      <span className="text-[11px] font-medium bg-[#F4F1EA] text-[#405149] px-2.5 py-0.5 rounded-full">
+                        {metrics.publications} papers
+                      </span>
+                    </div>
+                    <p className="text-gray-500 text-xs leading-relaxed mb-6">
+                      Peer-reviewed journal articles, conference papers, technical reports, and working whitepapers.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-xs font-semibold text-[#0B3B24] pt-4 border-t border-gray-100 gap-1 group-hover:gap-2 transition-all">
+                    Read publications <ArrowRight size={13} />
+                  </div>
+                </Link>
+              </div>
+            </section>
+
+          </div>
+        )}
 
         {/* Filters / Stats Row */}
         {query && (
@@ -144,7 +282,7 @@ export default async function SearchPage({
                 <a href="#" className="text-sm text-gray-500 hover:text-[#0B3B24] flex items-center gap-1">Explore all clusters <ArrowRight size={14}/></a>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {areas.map((item) => (
+                {areas.map((item: any) => (
                   <Link key={item.id} href={getUrl("research_area", item.id, item.metadata)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="text-xl font-serif text-[#0B3B24] font-semibold">{item.title}</h3>
@@ -172,7 +310,7 @@ export default async function SearchPage({
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                {researchers.map((item) => (
+                {researchers.map((item: any) => (
                   <Link key={item.id} href={getUrl("researcher", item.id, item.metadata)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
                     <div className="w-12 h-12 bg-[#0B3B24] rounded-full flex items-center justify-center text-white font-serif text-lg mb-4">
                       {getInitials(item.title)}
@@ -204,7 +342,7 @@ export default async function SearchPage({
                 </h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {projects.map((item) => (
+                {projects.map((item: any) => (
                   <Link key={item.id} href={getUrl("project", item.id, item.metadata)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
                     <div className="flex justify-between items-start mb-2">
                       <span className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">
@@ -235,7 +373,7 @@ export default async function SearchPage({
                 </h2>
               </div>
               <div className="flex flex-col gap-4">
-                {publications.map((item) => {
+                {publications.map((item: any) => {
                   const authors = item.metadata?.authors ? (Array.isArray(item.metadata.authors) ? item.metadata.authors.join(", ") : item.metadata.authors) : "Unknown Authors";
                   return (
                     <div key={item.id} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-sm transition-all flex flex-col md:flex-row justify-between items-center gap-6 group">
