@@ -24,4 +24,32 @@ Same pattern applies to other features (research-areas, people, publications).
 
 ## Page status
 
-All public pages and the admin/login views exist with dummy content from `lib/dummy-data.ts`. Directory filters and admin buttons are visual placeholders. Supabase data, authentication and write actions are intentionally deferred to the next milestone.
+Public pages remain as previously documented. The admin area now has:
+
+- Supabase email/password login at `/admin/login`.
+- Server-side admin role checks against `admin.auth_user_id` for all dashboard routes.
+- A responsive navy sidebar with the yellow active-page accent.
+- The admin interface uses the same sans-serif font system as the public home
+  page and includes a new-tab link back to the public site.
+- IJMR branding on the login screen and admin navigation.
+- A live `/admin` overview using Supabase counts and data-quality checks.
+- A live `/admin/researchers` directory with name search, status filtering,
+  and create/edit/permanent-delete operations.
+- Purposeful empty states for Projects, Publications, Events, Grants,
+  Announcements, and Research Areas.
+
+Researcher writes use validated Server Actions. Each action verifies the
+Supabase user and their `admin`/`super_admin` role before insert, update, or
+delete; database RLS remains the final authorization boundary. Other admin
+sections do not have write operations yet.
+
+Researcher create and edit forms preserve all typed values when a save fails,
+show specific safe error messages, accept any valid HTTP(S) profile link in the
+Google Scholar field for now, and lazily preview valid photo URLs.
+
+Admin data is fetched in Server Components and rendered per request. Overview
+queries run in parallel; researcher results use 25-row server pagination. Both
+data-heavy sections stream through Suspense with layout-matched skeletons.
+Client Components are limited to interactions that require browser state.
+Authenticated routes are not statically generated because their output depends
+on the current session and role.
