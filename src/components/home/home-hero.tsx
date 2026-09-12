@@ -1,10 +1,9 @@
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { kicker, pageShell } from "./shared";
+import { HeroPaperStack } from "./hero-paper-stack";
 
 export function Hero() {
   return (
@@ -61,43 +60,7 @@ export function Hero() {
           </nav>
         </div>
 
-        <div className="relative min-h-[530px] max-sm:min-h-[470px]">
-          <div className="absolute inset-[66px_5px_36px_84px] rotate-[7deg] bg-[#e1c451] max-sm:inset-[56px_2px_28px_58px]" />
-          <div className="absolute inset-[24px_41px_60px_45px] -rotate-[5deg] border border-[#c9c7bd] bg-[#eeeae0] shadow-xl max-sm:inset-[18px_22px_42px_25px]" />
-          <Card className="absolute inset-[18px_35px_54px_34px] z-2 rotate-[.8deg] p-3 shadow-2xl max-sm:inset-[12px_20px_36px_14px]">
-            <CardHeader className="flex-row justify-between border-b border-[#17251f] p-3 font-sans text-[9px] font-bold leading-5">
-              <span>Islington research paper</span>
-              <span>No. 08</span>
-            </CardHeader>
-            <CardContent className="p-3 max-sm:p-4">
-              <p className="mb-3 font-sans text-[11px] font-bold text-[#153c2e]">
-                Urban intelligence
-              </p>
-              <h2 className="max-w-md text-[clamp(31px,3.25vw,43px)] font-medium leading-[1.04] tracking-tight max-sm:text-[31px]">
-                Can a city learn from the people who move through it?
-              </h2>
-              <p className="my-4 max-w-sm text-left font-sans text-[15px] leading-7 text-[#405149] max-sm:text-[13px] max-sm:leading-6">
-                A community-led study of mobility data, public space and more inclusive decisions
-                for Kathmandu.
-              </p>
-              <Separator className="mb-4" />
-              <div className="flex items-center gap-4">
-                <span className="grid size-10 place-items-center rounded-full bg-[#153c2e] font-sans text-[11px] font-semibold text-white">
-                  NM
-                </span>
-                <span>
-                  <strong className="block font-sans text-[15px] font-semibold leading-5">Nisha Maharjan</strong>
-                  <small className="block font-sans text-[11px] leading-5 text-[#405149]">
-                    Lead researcher
-                  </small>
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-          <p className="absolute right-5 bottom-0 z-4 font-sans text-[10px] text-[#405149]">
-            <span className="mr-3 font-bold text-[#17251f]">Featured work</span> Five-minute read
-          </p>
-        </div>
+        <HeroPaperStack />
       </div>
     </section>
   );
