@@ -4,13 +4,10 @@ This is the Islington College Research & Development Digital Hub.
 
 ## Current milestone
 
-- **Projects pages** (`/projects`, `/projects/[slug]`) now read from Supabase (`publish_status = 'published'`).
-- Other public pages still use dummy data from `lib/dummy-data.ts`.
-- The admin milestone now includes a Supabase Auth login, an admin-only route
-  boundary, a live overview, and researcher CRUD.
-- Admin surfaces use the IJMR logo from `public/ijmr-logo-white.svg`.
+- **Projects and People pages** (`/projects`, `/projects/[slug]`, `/people`, `/people/[id]`) now read from Supabase (`publish_status = 'published'`).
+- Other public pages (research-areas, publications) still use dummy data from `lib/dummy-data.ts`.
 - Supabase core schema and RLS migration are already deployed.
-- Server Components use `src/supabase/server.ts` (`createServerClient`) for anon reads.
+- Server Components use `src/supabase/client.ts` (`createClient`) for anon reads (simplification).
 - The visual direction is editorial, minimal and Garamond-led.
 - Do not use gradients or generic rounded-card layouts.
 - Header is sticky and has no utility bar.
@@ -29,6 +26,14 @@ This is the Islington College Research & Development Digital Hub.
 - `components/projects/project-overview.tsx` — objectives + linked publications
 - `components/projects/project-sidebar.tsx` — team members + status
 
+### People
+- `components/people/people-hero.tsx` — hero for the list page
+- `components/people/person-filters.tsx` — search + filter bar
+- `components/people/person-list.tsx` — renders a list of researchers
+- `components/people/person-detail-hero.tsx` — (deprecated) inlined into people/[id]/page.tsx
+- `components/people/person-overview.tsx` — (deprecated) inlined into people/[id]/page.tsx
+- `components/people/person-sidebar.tsx` — (deprecated) inlined into people/[id]/page.tsx
+
 ## Routes
 
 - `/` discovery homepage
@@ -38,29 +43,7 @@ This is the Islington College Research & Development Digital Hub.
 - `/people` and `/people/[id]`
 - `/projects` and `/projects/[slug]`
 - `/publications` and `/publications/[id]`
-- `/admin` overview
-- `/admin/login` Supabase Auth login
-- `/admin/researchers` live, searchable researcher directory with create,
-  edit, confirmed permanent-delete flows, and server-side pagination
-- `/admin/projects`, `/admin/publications`, `/admin/events`, `/admin/grants`,
-  `/admin/announcements`, and `/admin/research-areas` empty states
+- `/admin` and `/admin/login`
 
-Researcher CRUD is connected. The remaining admin sections stay read-only until
-their CRUD flows are explicitly requested. All mutations must re-check admin
-authorization server-side and continue to rely on Supabase RLS.
-
-## Admin rendering
-
-- Authenticated admin routes use request-time SSR because access depends on the
-  Supabase session cookie and current role.
-- Overview and researcher data load in async Server Components behind granular
-  Suspense skeletons.
-- Interactive navigation, forms, login state, delete confirmation, and error
-  retry are the only Client Components.
-- Researcher forms keep local field state after validation or database errors,
-  accept any valid HTTP(S) profile URL in the Scholar field, and lazily preview
-  photo URLs.
-- Admin authentication uses verified JWT claims before the admin-table role
-  lookup to avoid an unnecessary Auth user-request on supported Supabase JWTs.
-- Static empty-state page content stays server-rendered and route-level code
-  splitting provides lazy loading; do not force SSG for authenticated routes.
+Next milestone: replace dummy arrays with Supabase reads and wire admin authentication/CRUD.
+Next milestone: replace remaining dummy arrays (research-areas, people, publications) with Supabase reads and wire admin authentication/CRUD.
