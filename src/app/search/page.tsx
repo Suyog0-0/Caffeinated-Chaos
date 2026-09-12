@@ -73,7 +73,7 @@ export default async function SearchPage({
             Search the <span className="italic font-light">Digital Hub</span>
           </h1>
           <p className="text-gray-600 text-lg leading-relaxed">
-            Query across specialized research clusters, lab investigators, empirical publications, and active industry projects conducted across Islington R&D.
+            Query across specialized research clusters, researchers, empirical publications, active industry projects and events conducted across Islington R&D.
           </p>
         </div>
 
@@ -87,7 +87,7 @@ export default async function SearchPage({
               type="text"
               name="q"
               defaultValue={query}
-              placeholder=""
+              placeholder="Search for research areas, researchers, projects, publications, or events..."
               className="w-full px-4 py-3 bg-transparent focus:outline-none text-lg"
             />
             <button 
