@@ -11,6 +11,7 @@ type Researcher = {
   position: string | null;
   department: string | null;
   email: string | null;
+  photo_url: string | null;
   publish_status: string;
   is_demo_data: boolean;
 };
@@ -37,7 +38,7 @@ export async function ResearcherDirectory({
   let request = supabase
     .from("researcher")
     .select(
-      "id, name, position, department, email, publish_status, is_demo_data",
+      "id, name, position, department, email, photo_url, publish_status, is_demo_data",
       { count: "exact" },
     )
     .order("name")

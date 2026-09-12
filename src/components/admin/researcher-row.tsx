@@ -11,6 +11,7 @@ type ResearcherRowData = {
   position: string | null;
   department: string | null;
   email: string | null;
+  photo_url: string | null;
   publish_status: string;
   is_demo_data: boolean;
 };
@@ -39,7 +40,12 @@ export function ResearcherRow({ researcher }: { researcher: ResearcherRowData })
       tabIndex={0}
     >
       <div className="admin-researcher-name">
-        <span>{initials}</span>
+        {researcher.photo_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img alt="" src={researcher.photo_url} />
+        ) : (
+          <span>{initials}</span>
+        )}
         <div><strong>{researcher.name}</strong><small>{researcher.position ?? researcher.email ?? "Position not added"}</small></div>
       </div>
       <p data-label="Department">{researcher.department ?? "Not assigned"}</p>
