@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Megaphone,
   Menu,
+  Telescope,
   Users,
 } from "lucide-react";
 import { adminTw } from "@/components/admin/admin-tailwind";
@@ -24,6 +25,7 @@ const links = [
   { href: "/admin/events", label: "Events", icon: CalendarDays },
   { href: "/admin/grants", label: "Grants", icon: Bell },
   { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
+  { href: "/admin/opportunities", label: "Opportunities", icon: Telescope },
   { href: "/admin/research-areas", label: "Research Areas", icon: FlaskConical },
 ];
 
