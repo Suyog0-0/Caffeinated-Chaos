@@ -3,8 +3,10 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { people } from "./data";
 import { kicker, pageShell, sectionTitle } from "./shared";
+import { createClient } from "@/supabase/client";
 
 export function People() {
+
   return (
     <section className="border-y border-[#d7d5cd] bg-[#fffefb] py-24 max-sm:py-16">
       <div

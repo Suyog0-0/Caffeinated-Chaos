@@ -1,16 +1,16 @@
-import { createServerClient } from "@/src/supabase/server";
+import { createClient } from "@/supabase/client";
 import { ProjectFilters } from "@/components/projects/project-filters";
 import { ProjectList } from "@/components/projects/project-list";
 import { ProjectsHero } from "@/components/projects/projects-hero";
 
 export default async function ProjectsPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const { data } = await supabase
     .from("project")
     .select("slug, status, title, description, research_area(name), project_researcher(role, researcher(name))")
     .eq("publish_status", "published")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }); 
 
   const projects = (data ?? []).map((p) => ({
     slug: p.slug,
