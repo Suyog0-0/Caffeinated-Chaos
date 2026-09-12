@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-import { createServerClient } from "@/src/supabase/server";
+import { createClient } from "@/supabase/client";
 import Link from "next/link";
 
 export default async function ResearcherProfile({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const { data: p } = await supabase
     .from("researcher")
@@ -183,7 +183,7 @@ export default async function ResearcherProfile({ params }: { params: Promise<{ 
                   </p>
                 </div>
               </div>
-              
+
               <div className="space-y-3">
                 <h3 className="text-xs uppercase font-mono tracking-wider text-[#637068]">Subject Taxonomy & Keywords</h3>
                 <div className="flex flex-wrap gap-1.5">

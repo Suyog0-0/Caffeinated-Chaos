@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import { createServerClient } from "@/src/supabase/server";
-import { ProjectDetailHero } from "@/src/components/projects/project-detail-hero";
-import { ProjectOverview } from "@/src/components/projects/project-overview";
-import { ProjectSidebar } from "@/src/components/projects/project-sidebar";
+import { createClient } from "@/supabase/client";
+import { ProjectDetailHero } from "@/components/projects/project-detail-hero";
+import { ProjectOverview } from "@/components/projects/project-overview";
+import { ProjectSidebar } from "@/components/projects/project-sidebar";
 
 export default async function ProjectSlugPage({
   params,
@@ -10,7 +10,7 @@ export default async function ProjectSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   // Fetch the project with its research area, team and linked publications
   const { data: p } = await supabase

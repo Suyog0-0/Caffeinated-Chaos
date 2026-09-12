@@ -1,7 +1,7 @@
-import { createServerClient } from "@/src/supabase/server";
-import { PeopleHeader } from "@/src/components/people/people-hero";
-import { PersonList } from "@/src/components/people/person-list";
-import { PersonFilters } from "@/src/components/people/person-filters";
+import { createClient } from "@/supabase/client";
+import { PeopleHeader } from "@/components/people/people-hero";
+import { PersonList } from "@/components/people/person-list";
+import { PersonFilters } from "@/components/people/person-filters";
 
 export default async function PeoplePage({
   searchParams,
@@ -9,7 +9,7 @@ export default async function PeoplePage({
   searchParams: Promise<{ query?: string; department?: string; area?: string }>;
 }) {
   const { query, department, area } = await searchParams;
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   let req = supabase
     .from("researcher")

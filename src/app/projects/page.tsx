@@ -1,10 +1,10 @@
-import { createServerClient } from "@/src/supabase/server";
-import { ProjectFilters } from "@/src/components/projects/project-filters";
-import { ProjectList } from "@/src/components/projects/project-list";
-import { ProjectsHero } from "@/src/components/projects/projects-hero";
+import { createClient } from "@/supabase/client";
+import { ProjectFilters } from "@/components/projects/project-filters";
+import { ProjectList } from "@/components/projects/project-list";
+import { ProjectsHero } from "@/components/projects/projects-hero";
 
 export default async function ProjectsPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const { data } = await supabase
     .from("project")
