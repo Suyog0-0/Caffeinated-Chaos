@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Trash2, X } from "lucide-react";
-import { deleteResearchAreaAction } from "@/app/admin/research-area-actions";
+import { deleteResearchAreaAction } from "@/app/research-area-actions";
 
 export function ResearchAreaDeleteButton({ id, name }: { id: string; name: string }) {
   const [confirming, setConfirming] = useState(false);

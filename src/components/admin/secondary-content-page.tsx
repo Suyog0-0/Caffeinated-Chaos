@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { ResearcherListLoading } from "@/components/admin/admin-loading";
 import { SecondaryContentDirectory } from "@/components/admin/secondary-content-directory";
-import type { SecondaryContentKind } from "@/app/admin/secondary-content-actions";
+import type { SecondaryContentKind } from "@/app/secondary-content-actions";
 
 const content = {
   event: { title: "Events", section: "Engagement", route: "/admin/events", singular: "event" },

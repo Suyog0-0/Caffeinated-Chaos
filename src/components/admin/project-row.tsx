@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ExternalLink, Pencil, Trash2, X } from "lucide-react";
 import { useState } from "react";
-import { deleteProjectAction } from "@/app/admin/projects-actions";
+import { deleteProjectAction } from "@/app/projects-actions";
 
 type ProjectRowData = {
   id: string;

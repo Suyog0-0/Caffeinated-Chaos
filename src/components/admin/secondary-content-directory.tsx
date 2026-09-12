@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CalendarDays, Landmark, Megaphone, Pencil, Search } from "lucide-react";
 import { requireAdmin } from "@/app/admin/admin-auth";
 import { DeleteSecondaryContentButton } from "@/components/admin/delete-secondary-content-button";
-import type { SecondaryContentKind } from "@/app/admin/secondary-content-actions";
+import type { SecondaryContentKind } from "@/app/secondary-content-actions";
 
 const PAGE_SIZE = 25;
 const config = {

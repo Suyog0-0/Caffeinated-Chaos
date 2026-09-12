@@ -5,7 +5,7 @@ import { Trash2, X } from "lucide-react";
 import {
   deleteSecondaryContentAction,
   type SecondaryContentKind,
-} from "@/app/admin/secondary-content-actions";
+} from "@/app/secondary-content-actions";
 
 export function DeleteSecondaryContentButton({
   id,

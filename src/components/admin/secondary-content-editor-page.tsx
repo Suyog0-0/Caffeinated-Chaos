@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import { SecondaryContentForm } from "@/components/admin/secondary-content-form";
 import { requireAdmin } from "@/app/admin/admin-auth";
-import type { SecondaryContentKind } from "@/app/admin/secondary-content-actions";
+import type { SecondaryContentKind } from "@/app/secondary-content-actions";
 
 const content = {
   event: { title: "Event", route: "/admin/events" },
