@@ -5,15 +5,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "picsum.photos" },
       { protocol: "https", hostname: "logo.clearbit.com" },
-      { protocol: "https", hostname: "i.pinimg.com" },
-    {
-        protocol: "https",
-        hostname: "i.pravatar.cc",
-      },
-      {
-        protocol: "https",
-        hostname: "*.supabase.co",
-      },
     ],
   },
   turbopack: {
