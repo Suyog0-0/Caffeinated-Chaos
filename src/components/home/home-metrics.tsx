@@ -1,13 +1,16 @@
+import { getResearchMetrics } from "./data/metrics";
 import { pageShell } from "./shared";
 
-const metrics = [
-  [15, "Researchers"],
-  [10, "Active projects"],
-  [42, "Publications"],
-  [6, "Research areas"],
-] as const;
+export async function Metrics() {
+  const metricsData = await getResearchMetrics();
 
-export function Metrics() {
+  const metrics = [
+    [metricsData.researchers, "Researchers"],
+    [metricsData.projects, "Active projects"],
+    [metricsData.publications, "Publications"],
+    [metricsData.researchAreas, "Research areas"],
+  ] as const;
+
   return (
     <section className="border-b border-[#d7d5cd] bg-[#eeeae0]">
       <div
@@ -16,13 +19,19 @@ export function Metrics() {
         <p className="max-w-64 text-xl leading-tight max-lg:col-span-4 max-lg:max-w-none max-sm:col-span-2">
           One connected record of research at Islington.
         </p>
+
         {metrics.map(([value, label]) => (
           <dl
             className="min-h-14 border-l border-[#c7c4ba] pl-7 max-sm:border-t max-sm:p-4"
             key={label}
           >
-            <dd className="text-[34px] leading-none font-medium">{value}</dd>
-            <dt className="mt-2 font-sans text-[10px] text-[#405149]">{label}</dt>
+            <dd className="text-[34px] leading-none font-medium">
+              {value}
+            </dd>
+
+            <dt className="mt-2 font-sans text-[10px] text-[#405149]">
+              {label}
+            </dt>
           </dl>
         ))}
       </div>
