@@ -10,7 +10,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
     const { data: event } = await supabase
         .from("event")
-        .select("id, title, event_type, description, location, start_at, end_at, registration_url, research_area(name), event_speaker(researcher(id, name, position, photo_url))")
+        .select("id, title, event_type, description, location, start_at, end_at, registration_url, image_url, research_area(name), event_speaker(researcher(id, name, position, photo_url))")
         .eq("id", id)
         .eq("publish_status", "published")
         .single();
@@ -41,6 +41,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                 dateLabel={dateLabel}
                 timeLabel={timeLabel}
                 location={event.location}
+                imageUrl={event.image_url}
             />
 
             <div className="mx-auto grid w-[min(calc(100%_-_48px),1240px)] grid-cols-[1fr_340px] gap-[6vw] pt-14 max-lg:grid-cols-1 max-lg:gap-10 max-sm:w-[calc(100%_-_32px)]">

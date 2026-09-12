@@ -9,6 +9,7 @@ export function EventDetailHero({
     dateLabel,
     timeLabel,
     location,
+    imageUrl,
 }: {
     title: string;
     eventType: string | null;
@@ -16,9 +17,26 @@ export function EventDetailHero({
     dateLabel: string;
     timeLabel: string | null;
     location: string | null;
+    imageUrl: string | null;
 }) {
     return (
-        <header className="bg-[#0d2a20] text-white pt-8 pb-14 border-b border-[#1e3a2d]">
+        <header className="relative isolate overflow-hidden border-b border-[#1e3a2d] bg-[#0d2a20] pt-8 pb-14 text-white">
+            {imageUrl && (
+                <>
+                    {/* Full-bleed hero image from the event record. A plain <img> is used
+                        (not next/image) because image_url is an arbitrary admin-provided
+                        URL that can't be pre-registered in next.config.ts's remote host
+                        allowlist — same approach as researcher-form.tsx's photo preview. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        src={imageUrl}
+                        alt=""
+                        className="absolute inset-0 -z-20 h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 -z-10 bg-[#0d2a20]/80" aria-hidden="true" />
+                </>
+            )}
+
             <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
                 <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-[#9db1a6] mb-8">
                     <Link className="hover:text-white transition-colors" href="/events">
