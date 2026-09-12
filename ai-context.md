@@ -24,7 +24,9 @@ This is the Islington College Research & Development Digital Hub.
 - `components/about/impact-stats.tsx` — 4-number "Our impact" strip, static data (no Supabase)
 - `components/about/mission-statements.tsx` — vision + mission cards
 - `components/about/leadership.tsx` — leadership grid
+- `components/about/methodology.tsx` — methodology stages
 - `components/about/partners.tsx` — partner categories
+- `components/about/engage-cta.tsx` — call to action section
 
 ### Research Areas
 
