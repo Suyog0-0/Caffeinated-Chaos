@@ -53,6 +53,9 @@ export function IJMRSection() {
               </a>
               About IJMR
             </Link>
+              <a href={IJMR_LINKS.about} target="_blank" rel="noreferrer">
+                About IJMR
+              </a>
           </div>
         </div>
 
