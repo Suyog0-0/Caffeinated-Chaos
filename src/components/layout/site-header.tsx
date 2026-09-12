@@ -1,9 +1,13 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function SiteHeader() {
+  const path = usePathname();
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
 :root {
   --ink: #17251f;
   --ink-soft: #405149;
@@ -140,8 +144,12 @@ input {
   background: var(--forest);
   transition: right 0.2s ease;
 }
-.primary-nav a:hover:after {
+.primary-nav a:hover:after,
+.primary-nav a.active:after {
   right: 0;
+}
+.primary-nav a.active {
+  font-weight: 700;
 }
 .header-search-link {
   display: flex;
@@ -156,14 +164,26 @@ input {
 .mobile-menu {
   display: none;
   margin-left: auto;
-  font-family: Arial, Helvetica, sans-serif;
 }
 .mobile-menu summary {
   cursor: pointer;
   list-style: none;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 10px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  transition: background 0.15s, color 0.15s;
+}
+.mobile-menu summary:hover {
+  background: var(--paper-warm);
+}
+.mobile-menu[open] summary {
+  background: var(--forest);
+  color: var(--white);
+  border-color: var(--forest);
 }
 .mobile-menu summary::-webkit-details-marker {
   display: none;
@@ -959,11 +979,11 @@ input {
             </span>
           </Link>
           <nav className="primary-nav" aria-label="Primary navigation">
-            <Link href="/research-areas">Research areas</Link>
-            <Link href="/people">People</Link>
-            <Link href="/projects">Projects</Link>
-            <Link href="/publications">Publications</Link>
-            <Link href="/aboutsection">About R&amp;D</Link>
+            <Link href="/research-areas" className={path.startsWith("/research-areas") ? "active" : ""}>Research areas</Link>
+            <Link href="/people" className={path.startsWith("/people") ? "active" : ""}>People</Link>
+            <Link href="/projects" className={path.startsWith("/projects") ? "active" : ""}>Projects</Link>
+            <Link href="/publications" className={path.startsWith("/publications") ? "active" : ""}>Publications</Link>
+            <Link href="/aboutsection" className={path.startsWith("/aboutsection") ? "active" : ""}>About R&amp;D</Link>
           </nav>
           <Link className="header-search-link" href="/search" aria-label="Search research">
             <svg
@@ -981,7 +1001,13 @@ input {
             <span>Search</span>
           </Link>
           <details className="mobile-menu">
-            <summary>Menu</summary>
+            <summary aria-label="Toggle navigation">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </summary>
             <nav aria-label="Mobile navigation">
               <Link href="/research-areas">Research areas</Link>
               <Link href="/people">People</Link>

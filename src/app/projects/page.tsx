@@ -1,10 +1,10 @@
-import { createServerClient } from "@/src/supabase/server";
+import { createClient } from "@/supabase/client";
 import { ProjectFilters } from "@/components/projects/project-filters";
 import { ProjectList } from "@/components/projects/project-list";
 import { ProjectsHero } from "@/components/projects/projects-hero";
 
 export default async function ProjectsPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const { data } = await supabase
     .from("project")
@@ -26,8 +26,8 @@ export default async function ProjectsPage() {
   return (
     <main className="pb-24">
       <ProjectsHero />
-      <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
-        <ProjectFilters />
+      <ProjectFilters />
+      <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)] pt-6">
         <ProjectList projects={projects} />
       </section>
     </main>
