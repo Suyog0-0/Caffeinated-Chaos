@@ -32,4 +32,4 @@ Same pattern applies to other features (research-areas, publications).
 
 ## Page status
 
-Projects, People and Research Areas pages read from Supabase. Publications and the admin/login views still use dummy content from `lib/dummy-data.ts`. Directory filters and admin buttons are visual placeholders. Supabase authentication and write actions are intentionally deferred to the next milestone.
+Projects, People and Research Areas pages read from Supabase. Publications and the admin/login views still use dummy content from `lib/dummy-data.ts`. About page now includes a static "Our impact" stats section alongside the existing mission/leadership/partners content. Directory filters and admin buttons are visual placeholders. Supabase authentication and write actions are intentionally deferred to the next milestone.

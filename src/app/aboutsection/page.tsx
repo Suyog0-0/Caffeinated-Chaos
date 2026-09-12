@@ -1,8 +1,17 @@
-export default function AboutSectionPage() {
+import { AboutHero } from "@/components/about/about-hero";
+import { ImpactStats } from "@/components/about/impact-stats";
+import { Leadership } from "@/components/about/leadership";
+import { MissionStatements } from "@/components/about/mission-statements";
+import { Partners } from "@/components/about/partners";
+
+export default function AboutPage() {
   return (
-    <main className="shell" style={{ paddingTop: '100px', minHeight: '50vh' }}>
-      <h1>About R&D</h1>
-      <p>This is the About section placeholder page.</p>
+    <main>
+      <AboutHero />
+      <ImpactStats />
+      <MissionStatements />
+      <Leadership />
+      <Partners />
     </main>
   );
 }
