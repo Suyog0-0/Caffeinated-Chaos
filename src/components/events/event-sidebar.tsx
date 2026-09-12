@@ -2,10 +2,20 @@
 import Link from "next/link";
 import { Calendar, Clock, MapPin, ArrowUpRight } from "lucide-react";
 
-type Speaker = { id: string; name: string; position: string | null; photo_url: string | null };
+type Speaker = {
+    id: string;
+    name: string;
+    position: string | null;
+    photo_url: string | null;
+};
 
 function initials(name: string) {
-    return name.split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase();
+    return name
+        .split(" ")
+        .map((p) => p[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
 }
 
 export function EventSidebar({
@@ -25,7 +35,10 @@ export function EventSidebar({
         <aside className="space-y-5 lg:sticky lg:top-24 h-fit">
             {/* Registration card */}
             <div className="bg-white border border-[#e5dfd3] rounded-sm p-6 shadow-xs">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8a938c] mb-3">Attendance</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8a938c] mb-3">
+                    Attendance
+                </p>
+
                 {registrationUrl ? (
                     <>
                         <a
@@ -37,38 +50,66 @@ export function EventSidebar({
                             Register for this event
                             <ArrowUpRight size={15} aria-hidden="true" />
                         </a>
-                        <p className="mt-3 text-xs text-[#8a938c] text-center">Opens the official registration page</p>
+
+                        <p className="mt-3 text-xs text-[#8a938c] text-center">
+                            Opens the official registration page
+                        </p>
                     </>
                 ) : (
-                    <p className="text-sm text-[#68726c]">Registration is not open yet — check back soon.</p>
+                    <p className="text-sm text-[#68726c]">
+                        Registration is not open yet — check back soon.
+                    </p>
                 )}
             </div>
 
             {/* Schedule + location card */}
             <div className="bg-white border border-[#e5dfd3] rounded-sm p-6 shadow-xs space-y-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8a938c]">Event details</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8a938c]">
+                    Event details
+                </p>
+
                 <div className="flex items-start gap-3">
-                    <Calendar size={16} className="text-[#0e6144] mt-0.5 shrink-0" aria-hidden="true" />
+                    <Calendar
+                        size={16}
+                        className="text-[#0e6144] mt-0.5 shrink-0"
+                        aria-hidden="true"
+                    />
                     <div>
                         <p className="text-xs text-[#8a938c]">Date</p>
-                        <p className="text-sm font-medium text-[#141d18]">{dateLabel}</p>
+                        <p className="text-sm font-medium text-[#141d18]">
+                            {dateLabel}
+                        </p>
                     </div>
                 </div>
+
                 {timeLabel && (
                     <div className="flex items-start gap-3">
-                        <Clock size={16} className="text-[#0e6144] mt-0.5 shrink-0" aria-hidden="true" />
+                        <Clock
+                            size={16}
+                            className="text-[#0e6144] mt-0.5 shrink-0"
+                            aria-hidden="true"
+                        />
                         <div>
                             <p className="text-xs text-[#8a938c]">Time</p>
-                            <p className="text-sm font-medium text-[#141d18]">{timeLabel}</p>
+                            <p className="text-sm font-medium text-[#141d18]">
+                                {timeLabel}
+                            </p>
                         </div>
                     </div>
                 )}
+
                 {location && (
                     <div className="flex items-start gap-3">
-                        <MapPin size={16} className="text-[#0e6144] mt-0.5 shrink-0" aria-hidden="true" />
+                        <MapPin
+                            size={16}
+                            className="text-[#0e6144] mt-0.5 shrink-0"
+                            aria-hidden="true"
+                        />
                         <div>
                             <p className="text-xs text-[#8a938c]">Location</p>
-                            <p className="text-sm font-medium text-[#141d18]">{location}</p>
+                            <p className="text-sm font-medium text-[#141d18]">
+                                {location}
+                            </p>
                         </div>
                     </div>
                 )}
@@ -80,6 +121,7 @@ export function EventSidebar({
                     <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8a938c] mb-4">
                         {speakers.length > 1 ? "Speakers" : "Speaker"}
                     </p>
+
                     <div className="space-y-3">
                         {speakers.map((speaker) => (
                             <Link
@@ -91,7 +133,6 @@ export function EventSidebar({
                                 <span className="w-9 h-9 shrink-0 overflow-hidden rounded-full bg-[#0e2820] text-white flex items-center justify-center font-serif text-xs">
                                     {speaker.photo_url ? (
                                         // Arbitrary admin-provided URL — plain <img>, not next/image
-                                        // (same convention as researcher-form.tsx and the event hero image).
                                         // eslint-disable-next-line @next/next/no-img-element
                                         <img
                                             src={speaker.photo_url}
@@ -111,12 +152,16 @@ export function EventSidebar({
                                         initials(speaker.name)
                                     )}
                                 </span>
+
                                 <div className="min-w-0">
                                     <p className="text-sm font-medium text-[#141d18] group-hover:text-[#0e6144] transition-colors truncate">
                                         {speaker.name}
                                     </p>
+
                                     {speaker.position && (
-                                        <p className="text-xs text-[#8a938c] truncate">{speaker.position}</p>
+                                        <p className="text-xs text-[#8a938c] truncate">
+                                            {speaker.position}
+                                        </p>
                                     )}
                                 </div>
                             </Link>
