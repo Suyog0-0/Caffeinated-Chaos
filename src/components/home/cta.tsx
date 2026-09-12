@@ -12,10 +12,15 @@ export function CTA() {
         <p className="my-4 text-[#405149]">
           Search the whole Islington research ecosystem from one place.
         </p>
-        <Link className={buttonVariants()} href="/search">
-          Start exploring <Search size={17} />
-        </Link>
-      </div>
+      <Link
+  className={buttonVariants({
+    className:
+      "bg-[#315A72] text-white hover:bg-[#26485B]",
+  })}
+  href="/search"
+>
+  Start exploring <Search size={17} />
+</Link>      </div>
     </section>
   );
 }
