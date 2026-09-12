@@ -2,13 +2,14 @@
 
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PartnerFilters, PartnerFilterState } from "./partner-filters";
+import { PartnerLogo } from "./partner-logo";
 import type { PartnerRecord } from "./partners-actions";
 
 interface PartnerListProps {
@@ -60,20 +61,8 @@ export function PartnerList({ partners }: PartnerListProps) {
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
-  useEffect(() => {
-    setPage(1);
-  }, [filters.query, filters.category, filters.researchType]);
-
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [page, totalPages]);
-
-  const paginated = filtered.slice(
-    (page - 1) * PAGE_SIZE,
-    page * PAGE_SIZE
-  );
+  const currentPage = Math.min(page, totalPages);
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   return (
     <div>
@@ -81,7 +70,10 @@ export function PartnerList({ partners }: PartnerListProps) {
         categories={categories}
         researchTypes={researchTypes}
         value={filters}
-        onChange={setFilters}
+        onChange={(next) => {
+          setFilters(next);
+          setPage(1);
+        }}
       />
 
       <div className="bg-[#faf9f5] px-6 py-14 md:px-10 lg:px-16">
@@ -109,7 +101,7 @@ export function PartnerList({ partners }: PartnerListProps) {
 
               {totalPages > 1 && (
                 <PartnerPagination
-                  page={page}
+                  page={currentPage}
                   totalPages={totalPages}
                   onPageChange={setPage}
                 />
@@ -196,10 +188,7 @@ function PartnerCard({
     <Link href={`/partners/${partner.id}`}>
       <Card className="h-full rounded-md border border-neutral-200 bg-white p-6 transition-colors hover:border-[#0d2818]">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#eef0ea] text-sm font-semibold text-[#0d2818]">
-            {initials}
-          </div>
-
+          <PartnerLogo className="h-11 w-11 text-sm font-medium" logoUrl={partner.logo_url} name={partner.name} />
           <div>
             <h3 className="font-serif text-lg text-[#0d2818]">
               {partner.name}
