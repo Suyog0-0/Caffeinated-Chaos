@@ -11,7 +11,7 @@ export default async function OpportunitiesPage() {
 
   const { data, error } = await supabase
     .from("opportunity")
-    .select("id, title, opportunity_type, description, deadline, status, research_area!opportunity_research_area_id_fkey(name, slug)")
+    .select("id, title, opportunity_type, description, deadline, status, application_url, research_area!opportunity_research_area_id_fkey(name, slug)")
     .or("publish_status.eq.published,status.eq.open")
     .order("created_at", { ascending: false });
 
@@ -26,6 +26,7 @@ export default async function OpportunitiesPage() {
     description: op.description || '',
     deadline: op.deadline || null,
     status: op.status || 'open',
+    applicationUrl: op.application_url || '#',
     areaSlug: (op.research_area as unknown as { slug: string } | null)?.slug ?? "general",
     areaName: (op.research_area as unknown as { name: string } | null)?.name ?? "General Research",
   }));
