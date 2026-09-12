@@ -19,12 +19,16 @@ export function ProjectDetailHero({ project }: { project: Project }) {
   return (
     <header className="mx-auto grid w-[min(calc(100%_-_48px),1240px)] grid-cols-[1.1fr_.9fr] items-center gap-[7vw] border-b border-[#17251f] py-16 max-lg:grid-cols-1 max-sm:w-[calc(100%_-_32px)]">
       <div>
-        <p className="font-sans text-[10px]">
-          <Link className="hover:underline" href="/projects">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 font-sans text-sm text-[#405149]">
+          <Link
+            className="text-[#153c2e] font-semibold hover:underline underline-offset-4"
+            href="/projects"
+          >
             Projects
-          </Link>{" "}
-          / {project.status}
-        </p>
+          </Link>
+          <span aria-hidden="true" className="text-[#87918c]">›</span>
+          <span className="truncate max-w-[40ch]">{project.title}</span>
+        </nav>
         <h1 className="mt-3 text-[clamp(48px,5.5vw,75px)] leading-[.94] font-normal tracking-[-.045em]">
           {project.title}
         </h1>
