@@ -1,17 +1,26 @@
 import { createClient } from "@/supabase/client";
 
-export async function getResearchers() {
-  const supabase  = await createClient();
-  const { data: researcher, error} = await supabase
-  .from('researcher')
-  .select("id, name, position, department")
-  .eq("publish_status", "published")
-  .order("name", {ascending:true})
-  .limit(5);
+export type Researcher = {
+  id: string;
+  name: string;
+  position: string | null;
+  department: string | null;
+};
 
-  if(error){
-    console.log("Failed to fetch researcher", error);
+export async function getResearchers(): Promise<Researcher[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("researcher")
+    .select("id, name, position, department")
+    .eq("publish_status", "published")
+    .order("name", { ascending: true })
+    .limit(3);
+
+  if (error) {
+    console.error("Failed to fetch researchers:", error);
     return [];
   }
-   return researcher;
+
+  return data as Researcher[];
 }
