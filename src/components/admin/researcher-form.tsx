@@ -51,12 +51,50 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
     previewUrl = "";
   }
 
+  const initials = values.name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("") || "?";
+
+  const showPreviewImage = previewUrl && failedPhotoUrl !== previewUrl;
+
   return (
     <form action={action} className="admin-editor-form">
       <section>
         <div className="admin-form-heading">
           <h2>Profile details</h2>
           <p>Information shown in the researcher directory and public profile.</p>
+        </div>
+
+        <div className="admin-avatar-row">
+          <div className="admin-avatar" aria-hidden="true">
+            {showPreviewImage ? (
+              // An arbitrary admin-provided URL cannot use next/image's fixed remote host allowlist.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt=""
+                decoding="async"
+                key={previewUrl}
+                loading="lazy"
+                onError={() => setFailedPhotoUrl(previewUrl)}
+                src={previewUrl}
+              />
+            ) : (
+              <span>{initials}</span>
+            )}
+          </div>
+          <div className="admin-avatar-meta">
+            <strong>{values.name || "Unnamed researcher"}</strong>
+            {(values.position || values.department) && (
+              <small>
+                {[values.position, values.department].filter(Boolean).join(", ")}
+              </small>
+            )}
+            {values.email && <small>{values.email}</small>}
+          </div>
         </div>
 
         <div className="admin-form-grid">
@@ -91,26 +129,10 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
           <label>
             Photo URL
             <input name="photo_url" onChange={(event) => updateValue("photo_url", event.target.value)} placeholder="https://…" type="url" value={values.photo_url} />
-            {previewUrl && (
-              <div className="admin-photo-preview">
-                {failedPhotoUrl === previewUrl ? (
-                  <div className="admin-photo-preview-error" role="status">
-                    <ImageIcon size={20} />
-                    <span>This image could not be loaded. Check the photo URL.</span>
-                  </div>
-                ) : (
-                  // An arbitrary admin-provided URL cannot use next/image's fixed remote host allowlist.
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    alt={values.name ? `${values.name} preview` : "Researcher photo preview"}
-                    decoding="async"
-                    key={previewUrl}
-                    loading="lazy"
-                    onError={() => setFailedPhotoUrl(previewUrl)}
-                    src={previewUrl}
-                  />
-                )}
-              </div>
+            {previewUrl && failedPhotoUrl === previewUrl && (
+              <small className="admin-field-help admin-field-help-error">
+                <ImageIcon size={13} /> This image could not be loaded. Check the photo URL.
+              </small>
             )}
           </label>
           <label>
