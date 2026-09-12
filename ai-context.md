@@ -36,13 +36,14 @@ This is the Islington College Research & Development Digital Hub.
 - `components/people/person-sidebar.tsx` — (deprecated) inlined into people/[id]/page.tsx
 
 ### Research Areas
-- `components/research_area/research-areas-header.tsx` — hero with eyebrow dot+label and italic subtitle (matches reference design)
-- `components/research_area/research-area-library.tsx` — client component; owns search/status/sort state, filters the list
+- `components/research_area/research-area-detail-header.tsx` — hero for a single area, now matches `publication-detail-hero.tsx` exactly; fact list shows only real `research_area` fields (`Status` from `is_active`), not computed project/publication counts
+- `components/research_area/research-area-projects.tsx` — projects linked to the area, rendered as rounded editorial cards matching `publication-overview.tsx`'s "Related project" card (props: `projects`)
 - `components/research_area/research-area-filters.tsx` — search bar + status/sort controls
 - `components/research_area/research-area-directory.tsx` — renders each area as a rounded editorial card (12-col grid: index, title+desc, stats, arrow CTA)
 - `components/research_area/research-area-detail-header.tsx` — hero for a single area, breadcrumb styled like `publication-detail-hero.tsx` (no "lead" field — not in schema)
 - `components/research_area/research-area-projects.tsx` — projects linked to the area (props: `projects`)
-- `components/research_area/research-area-sidebar.tsx` — linked researchers + publications (props: `researchers`, `publications`)
+- `components/research_area/research-area-sidebar.tsx` — linked researchers ("People") styled like `publication-sidebar.tsx`'s "Authors" list (icon heading, `size-9` avatars) + linked publications ("Recent outputs") (props: `researchers`, `publications`)
+
 
 ## Routes
 

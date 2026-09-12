@@ -15,7 +15,7 @@ export default async function ResearchAreaSlugPage({
   const { data: a } = await supabase
     .from("research_area")
     .select(`
-      name, description,
+      name, description, is_active,
       project(slug, title, description, status, publish_status),
       publication(id, title, publication_type, year, publish_status),
       researcher_research_area(researcher(id, name, publish_status))
@@ -25,6 +25,8 @@ export default async function ResearchAreaSlugPage({
     .single();
 
   if (!a) notFound();
+
+  console.log("DEBUG research_area row:", a);
 
   type ProjectRow = {
     slug: string;
@@ -65,10 +67,10 @@ export default async function ResearchAreaSlugPage({
   const area = {
     name: a.name,
     description: a.description ?? "",
+    status: a.is_active ? "Active" : "Inactive",
     projects: projects.length,
     publications: publications.length,
   };
-
   return (
     <main className="pb-24">
       <ResearchAreaDetailHeader area={area} />
