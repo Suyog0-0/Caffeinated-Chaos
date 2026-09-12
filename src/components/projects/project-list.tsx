@@ -1,5 +1,8 @@
+"use client";
+
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 type Project = {
   slug: string;
@@ -25,9 +28,32 @@ const getStatusStyles = (status: string) => {
 };
 
 export function ProjectList({ projects }: { projects: Project[] }) {
+  const searchParams = useSearchParams();
+  const status = searchParams.get("status") || "all";
+  const area = searchParams.get("area") || "all";
+  const query = (searchParams.get("query") || "").trim().toLowerCase();
+
+  const filtered = projects.filter((project) => {
+    if (status !== "all" && project.status !== status) return false;
+    if (area !== "all" && project.area !== area) return false;
+    if (query) {
+      const haystack = `${project.title} ${project.summary}`.toLowerCase();
+      if (!haystack.includes(query)) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    return (
+      <p className="text-sm text-[#627068] py-12 text-center">
+        No projects match your filters.
+      </p>
+    );
+  }
+
   return (
     <div className="space-y-4">
-      {projects.map((project) => (
+      {filtered.map((project) => (
         <article
           className="bg-white border border-[#e5dfd3] hover:border-[#0e2820] rounded-sm p-6 sm:p-7 shadow-xs hover:shadow-md transition-all duration-200 group"
           key={project.slug}
@@ -54,7 +80,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 {project.summary}
               </p>
             </div>
-            
+
             <div className="flex lg:flex-col items-center justify-end gap-3 self-end lg:self-start shrink-0 pt-4 lg:pt-0">
               <Link
                 aria-label="View project detail"
@@ -69,7 +95,6 @@ export function ProjectList({ projects }: { projects: Project[] }) {
             </div>
           </div>
         </article>
-
       ))}
     </div>
   );
