@@ -1,8 +1,9 @@
+// src/components/partners/partner-list.tsx
+
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -38,32 +39,41 @@ export function PartnerList({ partners }: PartnerListProps) {
     category: "all",
     researchType: "all",
   });
+
   const [page, setPage] = useState(1);
 
   const filtered = partners.filter((partner) => {
     const matchesQuery = partner.name
       .toLowerCase()
       .includes(filters.query.trim().toLowerCase());
+
     const matchesCategory =
-      filters.category === "all" || partner.partner_type === filters.category;
+      filters.category === "all" ||
+      partner.partner_type === filters.category;
+
     const matchesResearch =
       filters.researchType === "all" ||
       partner.research_area_name === filters.researchType;
+
     return matchesQuery && matchesCategory && matchesResearch;
   });
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
-  // reset to page 1 whenever the filters change the result set
   useEffect(() => {
     setPage(1);
   }, [filters.query, filters.category, filters.researchType]);
 
   useEffect(() => {
-    if (page > totalPages) setPage(totalPages);
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
   }, [page, totalPages]);
 
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paginated = filtered.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE
+  );
 
   return (
     <div>
@@ -81,6 +91,7 @@ export function PartnerList({ partners }: PartnerListProps) {
               <p className="font-serif text-2xl text-[#0d2818]">
                 No partners match those filters.
               </p>
+
               <p className="mt-2 text-sm text-neutral-600">
                 Try clearing the search or choosing a different category.
               </p>
@@ -89,7 +100,10 @@ export function PartnerList({ partners }: PartnerListProps) {
             <>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {paginated.map((partner) => (
-                  <PartnerCard key={partner.id} partner={partner} />
+                  <PartnerCard
+                    key={partner.id}
+                    partner={partner}
+                  />
                 ))}
               </div>
 
@@ -117,7 +131,10 @@ function PartnerPagination({
   totalPages: number;
   onPageChange: (page: number) => void;
 }) {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const pages = Array.from(
+    { length: totalPages },
+    (_, i) => i + 1
+  );
 
   return (
     <div className="mt-10 flex items-center justify-center gap-2">
@@ -162,34 +179,32 @@ function PartnerPagination({
   );
 }
 
-function PartnerCard({ partner }: { partner: PartnerRecord }) {
+function PartnerCard({
+  partner,
+}: {
+  partner: PartnerRecord;
+}) {
+  const initials = partner.name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+
   return (
     <Link href={`/partners/${partner.id}`}>
       <Card className="h-full rounded-md border border-neutral-200 bg-white p-6 transition-colors hover:border-[#0d2818]">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#eef0ea] text-sm font-medium text-[#0d2818]">
-            {partner.logo_url ? (
-              <Image
-                src={partner.logo_url}
-                alt={partner.name}
-                width={44}
-                height={44}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <span>
-                {partner.name
-                  .split(" ")
-                  .slice(0, 2)
-                  .map((word) => word[0])
-                  .join("")}
-              </span>
-            )}
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#eef0ea] text-sm font-semibold text-[#0d2818]">
+            {initials}
           </div>
+
           <div>
             <h3 className="font-serif text-lg text-[#0d2818]">
               {partner.name}
             </h3>
+
             {partner.partner_type && (
               <Badge
                 variant="outline"
