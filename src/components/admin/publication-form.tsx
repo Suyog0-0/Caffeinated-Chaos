@@ -6,7 +6,7 @@ import { LoaderCircle, Save } from "lucide-react";
 import {
   createPublicationAction,
   updatePublicationAction,
-} from "@/app/admin/publications-actions";
+} from "@/app/publications-actions";
 
 export type PublicationFormValues = {
   id: string;

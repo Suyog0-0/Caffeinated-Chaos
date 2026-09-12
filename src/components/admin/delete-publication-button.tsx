@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Trash2, X } from "lucide-react";
-import { deletePublicationAction } from "@/app/admin/publications-actions";
+import { deletePublicationAction } from "@/app/publications-actions";
 
 export function DeletePublicationButton({ id, title }: { id: string; title: string }) {
   const [confirming, setConfirming] = useState(false);

@@ -6,7 +6,7 @@ import { LoaderCircle, Save } from "lucide-react";
 import {
   createProjectAction,
   updateProjectAction,
-} from "@/app/admin/projects-actions";
+} from "@/app/projects-actions";
 
 export type ProjectFormValues = {
   id: string;

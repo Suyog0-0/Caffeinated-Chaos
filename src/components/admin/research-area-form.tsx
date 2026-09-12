@@ -6,7 +6,7 @@ import { LoaderCircle, Save } from "lucide-react";
 import {
   createResearchAreaAction,
   updateResearchAreaAction,
-} from "@/app/admin/research-area-actions";
+} from "@/app/research-area-actions";
 
 export type ResearchAreaFormValues = {
   id: string;

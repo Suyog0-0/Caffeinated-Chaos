@@ -6,7 +6,7 @@ import { ImageIcon, LoaderCircle, Save } from "lucide-react";
 import {
   saveSecondaryContentAction,
   type SecondaryContentKind,
-} from "@/app/admin/secondary-content-actions";
+} from "@/app/secondary-content-actions";
 
 type ContentValues = {
   id?: string;
