@@ -10,8 +10,10 @@ import {
   FlaskConical,
   FolderKanban,
   LayoutDashboard,
+  LibraryBig,
   Megaphone,
   Menu,
+  Network,
   ShieldCheck,
   Telescope,
   Users,
@@ -27,7 +29,9 @@ const links = [
   { href: "/admin/grants", label: "Grants", icon: Bell },
   { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
   { href: "/admin/opportunities", label: "Opportunities", icon: Telescope },
+  { href: "/admin/research-support", label: "Research Support", icon: LibraryBig },
   { href: "/admin/ethics-policies", label: "Ethics Policies", icon: ShieldCheck },
+  { href: "/admin/partners", label: "Partners", icon: Network },
   { href: "/admin/research-areas", label: "Research Areas", icon: FlaskConical },
 ];
 
