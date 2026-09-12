@@ -3,6 +3,17 @@ import Link from "next/link";
 import { Search, ArrowRight, ChevronRight, Layers, Users, Briefcase, FileText } from "lucide-react";
 import { getResearchMetrics } from "@/components/home/data/metrics";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SearchResult = {
+  result_type: string;
+  id: string;
+  title: string;
+  description: string;
+  rank: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  metadata: Record<string, any>;
+};
+
 export default async function SearchPage({
   searchParams,
 }: {
@@ -39,13 +50,11 @@ export default async function SearchPage({
   }
 
   // Group results
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const grouped = results.reduce((acc, result) => {
     if (!acc[result.result_type]) acc[result.result_type] = [];
     acc[result.result_type].push(result);
     return acc;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }, {} as Record<string, any[]>);
+  }, {} as Record<string, SearchResult[]>);
 
   const areas = grouped["research_area"] || [];
   const researchers = grouped["researcher"] || [];

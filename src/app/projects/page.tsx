@@ -1,17 +1,22 @@
+// src/app/projects/page.tsx
 import { Suspense } from "react";
-import { createClient } from "@/supabase/client";
+import { createServerClient } from "@/supabase/server";
 import { ProjectFilters } from "@/components/projects/project-filters";
 import { ProjectList } from "@/components/projects/project-list";
 import { ProjectsHero } from "@/components/projects/projects-hero";
 
+// Nothing on this page is request-specific (page.tsx never reads searchParams),
+// so cache it and revalidate periodically instead of fetching on every request.
+export const revalidate = 300;
+
 export default async function ProjectsPage() {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { data } = await supabase
     .from("project")
     .select("slug, status, title, description, research_area(name), project_researcher(role, researcher(name))")
     .eq("publish_status", "published")
-    .order("created_at", { ascending: false }); 
+    .order("created_at", { ascending: false });
 
   const projects = (data ?? []).map((p) => ({
     slug: p.slug,

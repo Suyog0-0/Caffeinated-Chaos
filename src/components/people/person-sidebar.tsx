@@ -1,5 +1,7 @@
 import { BookOpen, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 type ResearcherDetail = {
   orcid: string;
