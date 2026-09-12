@@ -6,7 +6,8 @@ export function SiteHeader() {
   const path = usePathname();
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
 :root {
   --ink: #17251f;
   --ink-soft: #405149;
@@ -966,7 +967,7 @@ input {
             </span>
           </Link>
           <nav className="primary-nav" aria-label="Primary navigation">
-            <Link href="/research-areas" className={path.startsWith("/research-areas") ? "active" : ""}>Research areas</Link>
+            <Link href="/research-areas" className={path.startsWith("/research-area") ? "active" : ""}>Research areas</Link>
             <Link href="/people" className={path.startsWith("/people") ? "active" : ""}>People</Link>
             <Link href="/projects" className={path.startsWith("/projects") ? "active" : ""}>Projects</Link>
             <Link href="/publications" className={path.startsWith("/publications") ? "active" : ""}>Publications</Link>

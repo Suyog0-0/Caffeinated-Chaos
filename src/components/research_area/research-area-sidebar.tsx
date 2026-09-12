@@ -1,14 +1,19 @@
 import Link from "next/link";
-import { publications, researchers } from "@/lib/dummy-data";
 
-export function ResearchAreaSidebar({ areaName }: { areaName: string }) {
-  const areaResearchers = researchers.filter((researcher) => researcher.area === areaName);
-  const areaPublications = publications.filter((publication) => publication.area === areaName);
+type Researcher = { id: string; initials: string; name: string };
+type Publication = { id: string; type: string; year: number; title: string };
 
+export function ResearchAreaSidebar({
+  researchers,
+  publications,
+}: {
+  researchers: Researcher[];
+  publications: Publication[];
+}) {
   return (
     <aside>
       <h2 className="mb-6 text-4xl font-medium">People</h2>
-      {areaResearchers.map((researcher) => (
+      {researchers.map((researcher) => (
         <Link
           className="flex items-center gap-3 border-t border-[#d7d5cd] py-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#153c2e]"
           href={`/people/${researcher.id}`}
@@ -22,7 +27,7 @@ export function ResearchAreaSidebar({ areaName }: { areaName: string }) {
       ))}
 
       <h2 className="mt-12 mb-6 text-4xl font-medium">Recent outputs</h2>
-      {areaPublications.map((publication) => (
+      {publications.map((publication) => (
         <Link
           className="block border-t border-[#d7d5cd] py-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#153c2e]"
           href={`/publications/${publication.id}`}

@@ -16,9 +16,7 @@ Provide a responsive research-discovery website where visitors can move between 
 
 ## Page status
 
-All public pages and the admin/login views exist with dummy content. Directory filters and admin buttons are visual placeholders. Supabase data, authentication and write actions are intentionally deferred to the next milestone.
-- Documentary images are used only where they add context (picsum.photos placeholders for now).
-- Use TailwindCSS and shadcn components while preserving the minimal editorial design.
+Projects, People and Research Areas pages read from Supabase, and Research Areas also has working search/status/sort filters and restyled editorial cards (rounded, 12-col grid matching the reference design). Publications and the admin/login views still use dummy content. Directory filters and admin buttons are visual placeholders except on Research Areas and Publications, which are wired up. Supabase authentication and write actions are intentionally deferred to the next milestone.
 
 ## Component naming convention
 
@@ -34,4 +32,4 @@ Same pattern applies to other features (research-areas, publications).
 
 ## Page status
 
-All public pages and the admin/login views exist with dummy content from `lib/dummy-data.ts`. Directory filters and admin buttons are visual placeholders. Supabase data, authentication and write actions are intentionally deferred to the next milestone.
+Projects, People and Research Areas pages read from Supabase. Publications and the admin/login views still use dummy content from `lib/dummy-data.ts`. Directory filters and admin buttons are visual placeholders. Supabase authentication and write actions are intentionally deferred to the next milestone.

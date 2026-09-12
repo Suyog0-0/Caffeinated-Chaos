@@ -4,8 +4,9 @@ This is the Islington College Research & Development Digital Hub.
 
 ## Current milestone
 
-- **Projects and People pages** (`/projects`, `/projects/[slug]`, `/people`, `/people/[id]`) now read from Supabase (`publish_status = 'published'`).
-- Other public pages (research-areas, publications) still use dummy data from `lib/dummy-data.ts`.
+- **Projects, People and Research Areas pages** (`/projects`, `/projects/[slug]`, `/people`, `/people/[id]`, `/research-areas`, `/research-areas/[slug]`) now read from Supabase (`publish_status = 'published'`).
+- Other public pages (publications) still use dummy data from `lib/dummy-data.ts`.
+- Research areas listing has working search/status/sort filters (like Publications); Projects/People filter bars are still visual placeholders.
 - Supabase core schema and RLS migration are already deployed.
 - Server Components use `src/supabase/client.ts` (`createClient`) for anon reads (simplification).
 - The visual direction is editorial, minimal and Garamond-led.
@@ -34,6 +35,15 @@ This is the Islington College Research & Development Digital Hub.
 - `components/people/person-overview.tsx` — (deprecated) inlined into people/[id]/page.tsx
 - `components/people/person-sidebar.tsx` — (deprecated) inlined into people/[id]/page.tsx
 
+### Research Areas
+- `components/research_area/research-areas-header.tsx` — hero with eyebrow dot+label and italic subtitle (matches reference design)
+- `components/research_area/research-area-library.tsx` — client component; owns search/status/sort state, filters the list
+- `components/research_area/research-area-filters.tsx` — search bar + status/sort controls
+- `components/research_area/research-area-directory.tsx` — renders each area as a rounded editorial card (12-col grid: index, title+desc, stats, arrow CTA)
+- `components/research_area/research-area-detail-header.tsx` — hero for a single area, breadcrumb styled like `publication-detail-hero.tsx` (no "lead" field — not in schema)
+- `components/research_area/research-area-projects.tsx` — projects linked to the area (props: `projects`)
+- `components/research_area/research-area-sidebar.tsx` — linked researchers + publications (props: `researchers`, `publications`)
+
 ## Routes
 
 - `/` discovery homepage
@@ -45,5 +55,4 @@ This is the Islington College Research & Development Digital Hub.
 - `/publications` and `/publications/[id]`
 - `/admin` and `/admin/login`
 
-Next milestone: replace dummy arrays with Supabase reads and wire admin authentication/CRUD.
-Next milestone: replace remaining dummy arrays (research-areas, people, publications) with Supabase reads and wire admin authentication/CRUD.
+Next milestone: replace remaining dummy arrays (publications) with Supabase reads and wire admin authentication/CRUD.

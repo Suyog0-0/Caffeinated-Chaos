@@ -2,15 +2,14 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { projects } from "@/lib/dummy-data";
 
-export function ResearchAreaProjects({ areaName }: { areaName: string }) {
-  const areaProjects = projects.filter((project) => project.area === areaName);
+type Project = { slug: string; title: string; summary: string; status: string };
 
+export function ResearchAreaProjects({ projects }: { projects: Project[] }) {
   return (
     <section>
       <h2 className="mb-6 text-4xl font-medium">Work in this area</h2>
-      {areaProjects.map((project) => (
+      {projects.map((project) => (
         <Link
           className="group block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#153c2e]"
           href={`/projects/${project.slug}`}
