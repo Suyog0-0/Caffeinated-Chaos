@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
-export function OpportunitiesHero() {
+export function OpportunitiesHero({ totalOpenings, nextCycleCutoff }: { totalOpenings: number; nextCycleCutoff: string }) {
   return (
     <section className="bg-[#F8F7F4] pt-32 pb-12 px-6 md:px-12 border-b border-[#E5E2D9]">
       <div className="max-w-[1400px] mx-auto">
@@ -29,7 +29,7 @@ export function OpportunitiesHero() {
                 AVAILABLE OPENINGS
               </div>
               <div className="text-2xl font-serif font-semibold text-[#0B3B24]">
-                18 Positions
+                {totalOpenings} Positions
               </div>
             </div>
             <div className="w-px bg-[#D9D6CE] hidden sm:block"></div>
@@ -39,7 +39,7 @@ export function OpportunitiesHero() {
                 NEXT CYCLE CUTOFF
               </div>
               <div className="text-2xl font-serif font-semibold text-[#0B3B24]">
-                Sept 15, 2026
+                {nextCycleCutoff}
               </div>
             </div>
           </div>
