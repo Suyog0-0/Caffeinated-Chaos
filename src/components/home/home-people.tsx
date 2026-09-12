@@ -1,7 +1,7 @@
 import { ArrowUpRight, ChevronRight, Users } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { getResearchers } from "./hooks/researcher";
+import { getResearchers } from "./data/researcher";
 import { kicker, pageShell, sectionTitle } from "./shared";
 
 export async function People() {
