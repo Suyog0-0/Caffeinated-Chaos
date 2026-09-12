@@ -1,4 +1,3 @@
-// src/app/projects/page.tsx
 import { Suspense } from "react";
 import { createServerClient } from "@/supabase/server";
 import { ProjectFilters } from "@/components/projects/project-filters";
@@ -21,8 +20,7 @@ export default async function ProjectsPage() {
   const projects = (data ?? []).map((p) => ({
     slug: p.slug,
     status: p.status,
-    area: (p.research_area as unknown as { name: string; slug: string } | null)?.name ?? "—",
-    areaSlug: (p.research_area as unknown as { name: string; slug: string } | null)?.slug ?? "",
+    area: (p.research_area as unknown as { slug: string } | null)?.slug ?? "—",
     title: p.title,
     summary: p.description ?? "",
     lead:
