@@ -72,15 +72,13 @@ export default async function PublicationsPage() {
   return (
     <main>
       <PublicationsHero />
-      <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
-        <PublicationLibrary
-          publications={publications}
-          types={types}
-          years={years}
-          authors={authors}
-          areas={areas}
-        />
-      </div>
+      <PublicationLibrary
+        publications={publications}
+        types={types}
+        years={years}
+        authors={authors}
+        areas={areas}
+      />
     </main>
   );
 }
