@@ -2,6 +2,17 @@ import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { Search, ArrowRight, ChevronRight } from "lucide-react";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SearchResult = {
+  result_type: string;
+  id: string;
+  title: string;
+  description: string;
+  rank: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  metadata: Record<string, any>;
+};
+
 export default async function SearchPage({
   searchParams,
 }: {
@@ -15,8 +26,7 @@ export default async function SearchPage({
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let results: any[] = [];
+  let results: SearchResult[] = [];
   
   if (query) {
     const { data, error } = await supabase.rpc("search_ecosystem", {
@@ -31,13 +41,11 @@ export default async function SearchPage({
   }
 
   // Group results
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const grouped = results.reduce((acc, result) => {
     if (!acc[result.result_type]) acc[result.result_type] = [];
     acc[result.result_type].push(result);
     return acc;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }, {} as Record<string, any[]>);
+  }, {} as Record<string, SearchResult[]>);
 
   const areas = grouped["research_area"] || [];
   const researchers = grouped["researcher"] || [];
