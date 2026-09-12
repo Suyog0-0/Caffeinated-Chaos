@@ -105,7 +105,7 @@ export default async function SearchPage({
 
                 {/* Right Column: Flat Cards */}
                 <div className="md:col-span-9 flex flex-col gap-4">
-                  {group.map((result) => (
+                  {group.map((result: any) => (
                     <Link 
                       key={`${result.result_type}-${result.id}`} 
                       href={getUrl(result.result_type, result.id)}
