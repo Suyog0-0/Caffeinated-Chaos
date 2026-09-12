@@ -129,24 +129,15 @@ export function EventSidebar({
                                 href={`/people/${speaker.id}`}
                                 className="flex items-center gap-3 group -mx-2 px-2 py-1.5 rounded-sm hover:bg-[#f9f7f2] transition-colors"
                             >
-<<<<<<< HEAD
                                 <span className="w-9 h-9 shrink-0 overflow-hidden rounded-full bg-[#0e2820] text-white flex items-center justify-center font-serif text-xs">
                                     {speaker.photo_url ? (
                                         // Arbitrary admin-provided URL — plain <img>, not next/image
+                                        // (same convention as researcher-form.tsx and the event hero image).
                                         // eslint-disable-next-line @next/next/no-img-element
                                         <img
                                             src={speaker.photo_url}
                                             alt=""
                                             className="h-full w-full object-cover"
-=======
-                                <span className="w-9 h-9 shrink-0 rounded-full overflow-hidden bg-[#0e2820] text-white flex items-center justify-center font-serif text-xs">
-                                    {speaker.photo_url ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
-                                        <img
-                                            src={speaker.photo_url}
-                                            alt={speaker.name}
-                                            className="w-full h-full object-cover"
->>>>>>> 6fbf5c9 (Improve grants filtering and event speakers)
                                         />
                                     ) : (
                                         initials(speaker.name)
@@ -172,3 +163,4 @@ export function EventSidebar({
         </aside>
     );
 }
+

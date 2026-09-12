@@ -10,8 +10,10 @@ import {
   FlaskConical,
   FolderKanban,
   LayoutDashboard,
+  LibraryBig,
   Megaphone,
   Menu,
+  Network,
   ShieldCheck,
   Telescope,
   Users,
@@ -27,7 +29,17 @@ const links = [
   { href: "/admin/grants", label: "Grants", icon: Bell },
   { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
   { href: "/admin/opportunities", label: "Opportunities", icon: Telescope },
-  { href: "/admin/ethics-policies", label: "Ethics Policies", icon: ShieldCheck },
+  {
+    href: "/admin/research-support",
+    label: "Research Support",
+    icon: LibraryBig,
+  },
+  {
+    href: "/admin/ethics-policies",
+    label: "Ethics Policies",
+    icon: ShieldCheck,
+  },
+  { href: "/admin/partners", label: "Partners", icon: Network },
   { href: "/admin/research-areas", label: "Research Areas", icon: FlaskConical },
 ];
 
@@ -35,9 +47,17 @@ function Navigation({ pathname }: { pathname: string }) {
   return (
     <nav aria-label="Admin navigation" className={adminTw.nav}>
       {links.map(({ href, label, icon: Icon }) => {
-        const active = href === "/admin" ? pathname === href : pathname.startsWith(href);
+        const active =
+          href === "/admin"
+            ? pathname === href
+            : pathname.startsWith(href);
+
         return (
-          <Link aria-current={active ? "page" : undefined} href={href} key={href}>
+          <Link
+            aria-current={active ? "page" : undefined}
+            href={href}
+            key={href}
+          >
             <Icon aria-hidden="true" size={19} strokeWidth={1.7} />
             <span>{label}</span>
             {active && <i aria-hidden="true" />}
@@ -50,6 +70,7 @@ function Navigation({ pathname }: { pathname: string }) {
 
 export function AdminNavigation() {
   const pathname = usePathname();
+
   const current = links.find(({ href }) =>
     href === "/admin" ? pathname === href : pathname.startsWith(href),
   );
@@ -62,9 +83,14 @@ export function AdminNavigation() {
           <span>{current?.label ?? "Admin menu"}</span>
           <ChevronDown size={17} />
         </summary>
+
         <Navigation pathname={pathname} />
       </details>
-      <div className={adminTw.desktopNav}><Navigation pathname={pathname} /></div>
+
+      <div className={adminTw.desktopNav}>
+        <Navigation pathname={pathname} />
+      </div>
     </>
   );
 }
+

@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PartnerFilters, PartnerFilterState } from "./partner-filters";
+import { PartnerLogo } from "./partner-logo";
 import type { PartnerRecord } from "./partners-actions";
 
 interface PartnerListProps {
@@ -70,9 +71,11 @@ export function PartnerList({ partners }: PartnerListProps) {
     }
   }, [page, totalPages]);
 
+  const currentPage = Math.min(page, totalPages);
+
   const paginated = filtered.slice(
-    (page - 1) * PAGE_SIZE,
-    page * PAGE_SIZE
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
   );
 
   return (
@@ -81,7 +84,10 @@ export function PartnerList({ partners }: PartnerListProps) {
         categories={categories}
         researchTypes={researchTypes}
         value={filters}
-        onChange={setFilters}
+        onChange={(next) => {
+          setFilters(next);
+          setPage(1);
+        }}
       />
 
       <div className="bg-[#faf9f5] px-6 py-14 md:px-10 lg:px-16">
@@ -109,7 +115,7 @@ export function PartnerList({ partners }: PartnerListProps) {
 
               {totalPages > 1 && (
                 <PartnerPagination
-                  page={page}
+                  page={currentPage}
                   totalPages={totalPages}
                   onPageChange={setPage}
                 />
@@ -184,21 +190,15 @@ function PartnerCard({
 }: {
   partner: PartnerRecord;
 }) {
-  const initials = partner.name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
-
   return (
     <Link href={`/partners/${partner.id}`}>
       <Card className="h-full rounded-md border border-neutral-200 bg-white p-6 transition-colors hover:border-[#0d2818]">
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#eef0ea] text-sm font-semibold text-[#0d2818]">
-            {initials}
-          </div>
+          <PartnerLogo
+            className="h-11 w-11 text-sm font-medium"
+            logoUrl={partner.logo_url}
+            name={partner.name}
+          />
 
           <div>
             <h3 className="font-serif text-lg text-[#0d2818]">

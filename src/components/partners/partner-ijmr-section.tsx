@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, FileUp, Megaphone, Newspaper } from "lucide-react";
+import {
+  ArrowUpRight,
+  BookOpen,
+  FileUp,
+  Megaphone,
+  Newspaper,
+} from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -9,10 +15,14 @@ import { cn } from "@/lib/utils";
 const IJMR_LINKS = {
   about: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/about",
   visit: "https://ijmr.islingtoncollege.edu.np",
-  latestArticles: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/index",
-  currentIssue: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/issue/view/2",
-  submitPaper: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/about/submissions",
-  callForPapers: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/login?source=https%3A%2F%2Fijmr.islingtoncollege.edu.np%2Findex.php%2FIJMR%2Fsubmission",
+  latestArticles:
+    "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/index",
+  currentIssue:
+    "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/issue/view/2",
+  submitPaper:
+    "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/about/submissions",
+  callForPapers:
+    "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/login?source=https%3A%2F%2Fijmr.islingtoncollege.edu.np%2Findex.php%2FIJMR%2Fsubmission",
 };
 
 export function IJMRSection() {
@@ -48,14 +58,8 @@ export function IJMRSection() {
                 "border-[#f4f2ec]/40 bg-transparent text-[#f4f2ec] hover:bg-white/10"
               )}
             >
-              <a href={IJMR_LINKS.about} target="_blank" rel="noreferrer">
-                About IJMR
-              </a>
               About IJMR
             </Link>
-              <a href={IJMR_LINKS.about} target="_blank" rel="noreferrer">
-                About IJMR
-              </a>
           </div>
         </div>
 
