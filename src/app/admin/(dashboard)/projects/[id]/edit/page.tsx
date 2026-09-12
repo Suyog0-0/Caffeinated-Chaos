@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { ProjectForm, type ProjectFormValues } from "@/components/admin/project-form";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -40,8 +41,8 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
     });
 
   return (
-    <div className="admin-page-content admin-editor-page">
-      <header className="admin-page-header"><div><Link className="admin-header-back-link" href="/admin/projects"><ArrowLeft size={16} /> Projects</Link><h1>Edit project</h1></div></header>
+    <div className={`${adminTw.pageContent} ${adminTw.editorPage}`}>
+      <header className={adminTw.pageHeader}><div><Link className={adminTw.headerBackLink} href="/admin/projects"><ArrowLeft size={16} /> Projects</Link><h1>Edit project</h1></div></header>
       <ProjectForm project={project as ProjectFormValues} researchAreas={researchAreas ?? []} researchers={researchers ?? []} teamMembers={teamMembers} />
     </div>
   );

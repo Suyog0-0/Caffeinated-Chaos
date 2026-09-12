@@ -152,6 +152,61 @@ function saveError(kind: SecondaryContentKind, code?: string) {
   return `${label} could not be saved. Check your connection and try again.`;
 }
 
+async function syncEventSpeakers(
+  supabase: NonNullable<Awaited<ReturnType<typeof getAdminContext>>>["supabase"],
+  eventId: string,
+  formData: FormData,
+) {
+  const speakerIds = Array.from(
+    new Set(formData.getAll("speaker_ids").map(String).filter(Boolean)),
+  );
+
+  if (speakerIds.some((speakerId) => !uuidSchema.safeParse(speakerId).success)) {
+    return "One of the selected speakers is invalid. Refresh the page and select the speakers again.";
+  }
+
+  const { data: existingRows, error: loadError } = await supabase
+    .from("event_speaker")
+    .select("researcher_id")
+    .eq("event_id", eventId);
+  if (loadError) {
+    console.error("Event speaker load failed:", loadError.message);
+    return "The event was saved, but its speakers could not be updated. Try editing the event again.";
+  }
+
+  const selected = new Set(speakerIds);
+  const existing = new Set((existingRows ?? []).map((row) => row.researcher_id));
+  const addedIds = speakerIds.filter((speakerId) => !existing.has(speakerId));
+  const removedIds = [...existing].filter((speakerId) => !selected.has(speakerId));
+
+  if (addedIds.length > 0) {
+    const { error: insertError } = await supabase.from("event_speaker").insert(
+      addedIds.map((researcherId) => ({
+        event_id: eventId,
+        researcher_id: researcherId,
+      })),
+    );
+    if (insertError) {
+      console.error("Event speaker save failed:", insertError.message);
+      return "The event was saved, but its speakers could not be updated. Check that each researcher still exists.";
+    }
+  }
+
+  if (removedIds.length > 0) {
+    const { error: deleteError } = await supabase
+      .from("event_speaker")
+      .delete()
+      .eq("event_id", eventId)
+      .in("researcher_id", removedIds);
+    if (deleteError) {
+      console.error("Event speaker removal failed:", deleteError.message);
+      return "The event was saved, but a removed speaker is still linked. Try editing the event again.";
+    }
+  }
+
+  return null;
+}
+
 export async function saveSecondaryContentAction(
   kind: SecondaryContentKind,
   id: string | null,
@@ -174,6 +229,11 @@ export async function saveSecondaryContentAction(
     return { error: error ? saveError(kind, error.code) : `No ${details[kind].label.toLowerCase()} was saved. It may have been removed or blocked by RLS.` };
   }
 
+  if (kind === "event") {
+    const speakerError = await syncEventSpeakers(context.supabase, saved.id, formData);
+    if (speakerError) return { error: speakerError };
+  }
+
   revalidatePath(details[kind].route);
   redirect(`${details[kind].route}?notice=${id ? "updated" : "created"}`);
 }
@@ -182,6 +242,18 @@ export async function deleteSecondaryContentAction(kind: SecondaryContentKind, i
   if (!uuidSchema.safeParse(id).success) redirect(`${details[kind].route}?error=invalid-id`);
   const context = await getAdminContext();
   if (!context) redirect("/admin/login");
+
+  if (kind === "event") {
+    const { error: speakerError } = await context.supabase
+      .from("event_speaker")
+      .delete()
+      .eq("event_id", id);
+    if (speakerError) {
+      console.error("Event speaker delete failed:", speakerError.message);
+      redirect(`${details[kind].route}?error=delete-failed`);
+    }
+  }
+
   const { data, error } = await context.supabase
     .from(details[kind].table)
     .delete()

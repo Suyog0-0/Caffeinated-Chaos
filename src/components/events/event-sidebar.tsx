@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Calendar, Clock, MapPin, ArrowUpRight } from "lucide-react";
 
-type Speaker = { id: string; name: string; position: string | null };
+type Speaker = { id: string; name: string; position: string | null; photo_url: string | null };
 
 function initials(name: string) {
     return name.split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase();
@@ -87,8 +87,19 @@ export function EventSidebar({
                                 href={`/people/${speaker.id}`}
                                 className="flex items-center gap-3 group -mx-2 px-2 py-1.5 rounded-sm hover:bg-[#f9f7f2] transition-colors"
                             >
-                                <span className="w-9 h-9 shrink-0 rounded-full bg-[#0e2820] text-white flex items-center justify-center font-serif text-xs">
-                                    {initials(speaker.name)}
+                                <span className="w-9 h-9 shrink-0 overflow-hidden rounded-full bg-[#0e2820] text-white flex items-center justify-center font-serif text-xs">
+                                    {speaker.photo_url ? (
+                                        // Arbitrary admin-provided URL — plain <img>, not next/image
+                                        // (same convention as researcher-form.tsx and the event hero image).
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img
+                                            src={speaker.photo_url}
+                                            alt=""
+                                            className="h-full w-full object-cover"
+                                        />
+                                    ) : (
+                                        initials(speaker.name)
+                                    )}
                                 </span>
                                 <div className="min-w-0">
                                     <p className="text-sm font-medium text-[#141d18] group-hover:text-[#0e6144] transition-colors truncate">

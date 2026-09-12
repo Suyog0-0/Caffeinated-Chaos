@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookOpen, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { PublicationRow, type PublicationRowData } from "@/components/admin/publication-row";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 const PAGE_SIZE = 10;
 
@@ -45,7 +46,7 @@ export async function PublicationDirectory({
 
   return (
     <>
-      <form className="admin-filters">
+      <form className={adminTw.filters}>
         <label>
           <Search size={17} />
           <span className="sr-only">Search publications</span>
@@ -61,29 +62,29 @@ export async function PublicationDirectory({
         {(query || status !== "all") && <Link href="/admin/publications">Clear</Link>}
       </form>
 
-      {!error && <p className="admin-results-count">{total} publication{total === 1 ? "" : "s"}</p>}
+      {!error && <p className={adminTw.resultsCount}>{total} publication{total === 1 ? "" : "s"}</p>}
 
       {error ? (
-        <section className="admin-inline-state">
+        <section className={adminTw.inlineState}>
           <BookOpen size={23} />
           <div><h2>Publications could not be loaded</h2><p>Check the Supabase connection and publication RLS policies, then refresh this page.</p></div>
         </section>
       ) : publications.length === 0 ? (
-        <section className="admin-inline-state">
+        <section className={adminTw.inlineState}>
           <BookOpen size={23} />
           <div><h2>No publications found</h2><p>Try a different search or publication status.</p></div>
         </section>
       ) : (
         <>
-          <div className="admin-researcher-table">
-            <div className="admin-researcher-head" aria-hidden="true">
+          <div className={adminTw.table}>
+            <div className={`${adminTw.tableHead} ${adminTw.publicationGrid}`} aria-hidden="true">
               <span>Publication</span><span>Type</span><span>Status</span><span>Year</span><span>Actions</span>
             </div>
             {publications.map((publication) => <PublicationRow key={publication.id} publication={publication} />)}
           </div>
 
           {pageCount > 1 && (
-            <nav aria-label="Publication pages" className="admin-pagination">
+            <nav aria-label="Publication pages" className={adminTw.pagination}>
               {page > 1 ? (
                 <Link href={pageHref(page - 1, query, status)}><ChevronLeft size={15} /> Previous</Link>
               ) : (

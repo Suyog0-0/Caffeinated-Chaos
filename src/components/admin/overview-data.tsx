@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   Bell,
   BookOpen,
+  BriefcaseBusiness,
   CalendarClock,
   CalendarDays,
   Clock,
@@ -13,10 +14,11 @@ import {
   Users,
 } from "lucide-react";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw, statusTw } from "@/components/admin/admin-tailwind";
 
 type RecentItem = {
   id: string;
-  kind: "researcher" | "project" | "publication" | "event" | "grant" | "announcement";
+  kind: "researcher" | "project" | "publication" | "event" | "grant" | "announcement" | "opportunity";
   title: string;
   status: string;
   created_at: string;
@@ -29,6 +31,7 @@ const KIND_META: Record<RecentItem["kind"], { label: string; icon: typeof Users;
   event: { label: "Event", icon: CalendarDays, href: (id) => `/admin/events/${id}/edit` },
   grant: { label: "Grant", icon: Bell, href: (id) => `/admin/grants/${id}/edit` },
   announcement: { label: "Announcement", icon: Megaphone, href: (id) => `/admin/announcements/${id}/edit` },
+  opportunity: { label: "Opportunity", icon: BriefcaseBusiness, href: (id) => `/admin/opportunities/${id}/edit` },
 };
 
 function timeAgo(iso: string) {
@@ -64,13 +67,14 @@ export async function OverviewData() {
     supabase.from("event").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("grant").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("announcement").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
+    supabase.from("opportunity").select("id,title,publish_status,created_at").order("created_at", { ascending: false }).limit(5),
     supabase.from("event").select("id,title,start_at").eq("publish_status", "published").gte("start_at", new Date().toISOString()).order("start_at", { ascending: true }).limit(4),
     supabase.from("grant").select("id,title,deadline").eq("status", "open").gte("deadline", new Date().toISOString().slice(0, 10)).order("deadline", { ascending: true }).limit(4),
   ]);
 
   if (results.some((result) => result.error)) {
     return (
-      <section className="admin-inline-state admin-overview-error">
+      <section className={`${adminTw.inlineState} mt-[34px]`}>
         <AlertCircle size={24} />
         <div><h2>Overview data could not be loaded</h2><p>Check the Supabase connection and admin RLS policies, then refresh this page.</p></div>
       </section>
@@ -91,6 +95,7 @@ export async function OverviewData() {
     recentEvents,
     recentGrants,
     recentAnnouncements,
+    recentOpportunities,
     upcomingEvents,
     upcomingDeadlines,
   ] = results;
@@ -114,6 +119,7 @@ export async function OverviewData() {
     ...(recentEvents.data ?? []).map((r) => ({ id: r.id, kind: "event" as const, title: r.title, status: r.publish_status, created_at: r.created_at })),
     ...(recentGrants.data ?? []).map((r) => ({ id: r.id, kind: "grant" as const, title: r.title, status: r.publish_status, created_at: r.created_at })),
     ...(recentAnnouncements.data ?? []).map((r) => ({ id: r.id, kind: "announcement" as const, title: r.title, status: r.publish_status, created_at: r.created_at })),
+    ...(recentOpportunities.data ?? []).map((r) => ({ id: r.id, kind: "opportunity" as const, title: r.title, status: r.publish_status ?? "draft", created_at: r.created_at ?? new Date(0).toISOString() })),
   ]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, 8);
@@ -123,26 +129,26 @@ export async function OverviewData() {
 
   return (
     <>
-      <section className="admin-stat-grid" aria-label="Research hub statistics">
+      <section className="mt-[34px] grid grid-cols-4 border border-[#d4d5ce] bg-[#fffefb] max-[980px]:grid-cols-2 [&>a]:relative [&>a]:min-h-[174px] [&>a]:border-r [&>a]:border-[#d4d5ce] [&>a]:p-6 [&>a:nth-child(4)]:border-r-0 [&>a>span]:text-[#36594b] [&_strong]:mt-[26px] [&_strong]:block [&_strong]:font-sans [&_strong]:text-[44px] [&_strong]:font-normal [&_strong]:leading-none [&_small]:mt-[7px] [&_small]:block [&_small]:text-[13px] [&_small]:text-[#66736d] max-[980px]:[&>a:nth-child(2)]:border-r-0 max-[980px]:[&>a:nth-child(-n+2)]:border-b max-[720px]:mt-6 max-[720px]:[&>a]:min-h-[142px] max-[720px]:[&>a]:p-[18px] max-[720px]:[&_strong]:mt-5 max-[720px]:[&_strong]:text-[38px]" aria-label="Research hub statistics">
         {stats.map(({ label, value, icon: Icon, href }) => (
-          <Link href={href} key={label}>
+          <Link className="group" href={href} key={label}>
             <span><Icon size={19} strokeWidth={1.7} /></span>
             <strong>{value ?? "—"}</strong>
             <small>{label}</small>
-            <ArrowUpRight className="admin-stat-arrow" size={17} />
+            <ArrowUpRight className="absolute right-6 top-6 text-[#8c9691] group-hover:text-[#153c2e] max-[720px]:right-[18px] max-[720px]:top-[18px]" size={17} />
           </Link>
         ))}
       </section>
 
-      <section className="admin-attention">
+      <section className="mt-[30px] border border-[#d4d5ce] bg-[#fffefb] [&>header]:flex [&>header]:justify-between [&>header]:gap-6 [&>header]:border-b [&>header]:border-[#d4d5ce] [&>header]:px-[26px] [&>header]:py-6 [&>div]:grid [&>div]:grid-cols-3 max-[980px]:[&>div]:grid-cols-1 max-[720px]:[&>header]:block max-[720px]:[&>header]:p-5">
         <header>
-          <div><AlertCircle size={20} /><h2>Needs attention</h2></div>
-          <p>Records that may need a quick review.</p>
+          <div className="flex items-center gap-2.5 text-[#9a7d11]"><AlertCircle size={20} /><h2 className="m-0 font-sans text-[27px] font-medium text-[#17251f]">Needs attention</h2></div>
+          <p className="mt-1.5 text-[13px] text-[#68756f] max-[720px]:mt-[9px]">Records that may need a quick review.</p>
         </header>
         <div>
           {attention.map((item) => (
-            <Link href={item.href} key={item.label}>
-              <span>{item.count ?? "—"}</span>
+            <Link className="grid min-h-[108px] grid-cols-[42px_1fr_auto] items-center gap-3 border-r border-[#d4d5ce] px-[26px] py-[22px] last:border-r-0 max-[980px]:border-b max-[980px]:border-r-0 max-[980px]:last:border-b-0 max-[720px]:min-h-[88px] max-[720px]:px-5 max-[720px]:py-4" href={item.href} key={item.label}>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#f4ecd0] font-bold text-[#715d15]">{item.count ?? "—"}</span>
               <p>{item.label}</p>
               <ArrowUpRight size={17} />
             </Link>
@@ -150,14 +156,14 @@ export async function OverviewData() {
         </div>
       </section>
 
-      <div className="admin-overview-split">
-        <section className="admin-recent">
+      <div className="mt-6 grid grid-cols-[1.4fr_1fr] items-start gap-6 max-[980px]:grid-cols-1">
+        <section className="border border-[#d4d5ce] bg-[#fffefb] [&>header]:border-b [&>header]:border-[#d4d5ce] [&>header]:px-6 [&>header]:py-[22px] [&>ul]:m-0 [&>ul]:list-none [&>ul]:p-0 [&>ul>li]:border-t [&>ul>li]:border-[#e4e5df] [&>ul>li:first-child]:border-t-0">
           <header>
-            <div><Clock size={20} /><h2>Recent activity</h2></div>
-            <p>The latest records added across the hub.</p>
+            <div className="flex items-center gap-2.5 text-[#36594b]"><Clock size={20} /><h2 className="m-0 font-sans text-[23px] font-medium text-[#17251f]">Recent activity</h2></div>
+            <p className="mt-1.5 text-[13px] text-[#68756f]">The latest records added across the hub.</p>
           </header>
           {recentItems.length === 0 ? (
-            <p className="admin-recent-empty">Nothing has been added yet.</p>
+            <p className="p-6 text-[13px] text-[#68756f]">Nothing has been added yet.</p>
           ) : (
             <ul>
               {recentItems.map((item) => {
@@ -165,13 +171,13 @@ export async function OverviewData() {
                 const Icon = meta.icon;
                 return (
                   <li key={`${item.kind}-${item.id}`}>
-                    <Link href={meta.href(item.id)}>
-                      <span className="admin-recent-icon"><Icon size={16} strokeWidth={1.8} /></span>
-                      <span className="admin-recent-body">
+                    <Link className="flex items-center gap-3 px-6 py-3.5 hover:bg-[#f5f4ef]" href={meta.href(item.id)}>
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#e7e8e2] text-[#36594b]"><Icon size={16} strokeWidth={1.8} /></span>
+                      <span className="block min-w-0 flex-1 [&_strong]:block [&_strong]:truncate [&_strong]:font-sans [&_strong]:text-[15px] [&_strong]:font-semibold [&_small]:mt-0.5 [&_small]:block [&_small]:text-xs [&_small]:text-[#68756f]">
                         <strong>{item.title}</strong>
-                        <small>{meta.label} · <i className={`admin-status admin-status-${item.status}`}>{item.status}</i></small>
+                        <small>{meta.label} · <i className={`${statusTw(item.status)} !px-[7px] !py-px !text-[10px]`}>{item.status}</i></small>
                       </span>
-                      <span className="admin-recent-time">{timeAgo(item.created_at)}</span>
+                      <span className="shrink-0 whitespace-nowrap text-[11px] text-[#9ba39f]">{timeAgo(item.created_at)}</span>
                     </Link>
                   </li>
                 );
@@ -180,16 +186,16 @@ export async function OverviewData() {
           )}
         </section>
 
-        <section className="admin-upcoming">
+        <section className="border border-[#d4d5ce] bg-[#fffefb] [&>header]:border-b [&>header]:border-[#d4d5ce] [&>header]:px-6 [&>header]:py-[22px]">
           <header>
-            <div><CalendarClock size={20} /><h2>Upcoming</h2></div>
-            <p>Events and grant deadlines on the horizon.</p>
+            <div className="flex items-center gap-2.5 text-[#36594b]"><CalendarClock size={20} /><h2 className="m-0 font-sans text-[23px] font-medium text-[#17251f]">Upcoming</h2></div>
+            <p className="mt-1.5 text-[13px] text-[#68756f]">Events and grant deadlines on the horizon.</p>
           </header>
 
-          <div className="admin-upcoming-group">
+          <div className="px-6 py-5 [&_h3]:mb-1 [&_h3]:text-[11px] [&_h3]:font-bold [&_h3]:uppercase [&_h3]:tracking-[.03em] [&_h3]:text-[#68756f] [&>ul]:m-0 [&>ul]:list-none [&>ul]:p-0 [&>ul>li>a]:flex [&>ul>li>a]:items-center [&>ul>li>a]:justify-between [&>ul>li>a]:gap-2.5 [&>ul>li>a]:border-t [&>ul>li>a]:border-[#eceee7] [&>ul>li>a]:py-2.5 [&>ul>li:first-child>a]:border-t-0 [&>ul>li>a>span]:min-w-0 [&>ul>li>a>span]:truncate [&>ul>li>a>span]:text-sm [&>ul>li>a>span]:text-[#17251f] [&>ul>li>a>small]:shrink-0 [&>ul>li>a>small]:text-xs [&>ul>li>a>small]:text-[#68756f]">
             <h3>Events</h3>
             {events.length === 0 ? (
-              <p className="admin-recent-empty">No upcoming published events.</p>
+              <p className="p-6 text-[13px] text-[#68756f]">No upcoming published events.</p>
             ) : (
               <ul>
                 {events.map((event) => (
@@ -202,13 +208,13 @@ export async function OverviewData() {
                 ))}
               </ul>
             )}
-            <Link className="admin-upcoming-link" href="/admin/events">View all events<ArrowUpRight size={14} /></Link>
+            <Link className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-bold text-[#36594b] underline underline-offset-[3px]" href="/admin/events">View all events<ArrowUpRight size={14} /></Link>
           </div>
 
-          <div className="admin-upcoming-group">
+          <div className="border-t border-[#d4d5ce] px-6 py-5 [&_h3]:mb-1 [&_h3]:text-[11px] [&_h3]:font-bold [&_h3]:uppercase [&_h3]:tracking-[.03em] [&_h3]:text-[#68756f] [&>ul]:m-0 [&>ul]:list-none [&>ul]:p-0 [&>ul>li>a]:flex [&>ul>li>a]:items-center [&>ul>li>a]:justify-between [&>ul>li>a]:gap-2.5 [&>ul>li>a]:border-t [&>ul>li>a]:border-[#eceee7] [&>ul>li>a]:py-2.5 [&>ul>li:first-child>a]:border-t-0 [&>ul>li>a>span]:min-w-0 [&>ul>li>a>span]:truncate [&>ul>li>a>span]:text-sm [&>ul>li>a>span]:text-[#17251f] [&>ul>li>a>small]:shrink-0 [&>ul>li>a>small]:text-xs [&>ul>li>a>small]:text-[#68756f]">
             <h3>Grant deadlines</h3>
             {deadlines.length === 0 ? (
-              <p className="admin-recent-empty">No open grant deadlines.</p>
+              <p className="p-6 text-[13px] text-[#68756f]">No open grant deadlines.</p>
             ) : (
               <ul>
                 {deadlines.map((grant) => (
@@ -221,7 +227,7 @@ export async function OverviewData() {
                 ))}
               </ul>
             )}
-            <Link className="admin-upcoming-link" href="/admin/grants">View all grants<ArrowUpRight size={14} /></Link>
+            <Link className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-bold text-[#36594b] underline underline-offset-[3px]" href="/admin/grants">View all grants<ArrowUpRight size={14} /></Link>
           </div>
         </section>
       </div>

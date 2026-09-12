@@ -12,8 +12,10 @@ import {
   LayoutDashboard,
   Megaphone,
   Menu,
+  Telescope,
   Users,
 } from "lucide-react";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 const links = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -23,12 +25,13 @@ const links = [
   { href: "/admin/events", label: "Events", icon: CalendarDays },
   { href: "/admin/grants", label: "Grants", icon: Bell },
   { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
+  { href: "/admin/opportunities", label: "Opportunities", icon: Telescope },
   { href: "/admin/research-areas", label: "Research Areas", icon: FlaskConical },
 ];
 
 function Navigation({ pathname }: { pathname: string }) {
   return (
-    <nav aria-label="Admin navigation" className="admin-nav">
+    <nav aria-label="Admin navigation" className={adminTw.nav}>
       {links.map(({ href, label, icon: Icon }) => {
         const active = href === "/admin" ? pathname === href : pathname.startsWith(href);
         return (
@@ -51,7 +54,7 @@ export function AdminNavigation() {
 
   return (
     <>
-      <details className="admin-mobile-nav">
+      <details className={adminTw.mobileNav}>
         <summary>
           <Menu size={20} />
           <span>{current?.label ?? "Admin menu"}</span>
@@ -59,7 +62,7 @@ export function AdminNavigation() {
         </summary>
         <Navigation pathname={pathname} />
       </details>
-      <div className="admin-desktop-nav"><Navigation pathname={pathname} /></div>
+      <div className={adminTw.desktopNav}><Navigation pathname={pathname} /></div>
     </>
   );
 }

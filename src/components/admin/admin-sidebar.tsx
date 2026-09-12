@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ExternalLink, LogOut } from "lucide-react";
 import { AdminNavigation } from "@/components/admin/admin-navigation";
 import { logoutAction } from "@/app/admin/actions";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export function AdminSidebar({
   admin,
@@ -9,8 +10,8 @@ export function AdminSidebar({
   admin: { name: string; email: string; role: string };
 }) {
   return (
-    <aside className="admin-sidebar">
-      <div className="admin-brand">
+    <aside className={adminTw.sidebar}>
+      <div className={adminTw.brand}>
         <Image
           alt="IJMR — Journal of Multidisciplinary Research"
           height={67}
@@ -24,7 +25,7 @@ export function AdminSidebar({
       <AdminNavigation />
 
       <a
-        className="admin-public-link"
+        className={adminTw.publicLink}
         href="/"
         rel="noopener noreferrer"
         target="_blank"
@@ -33,14 +34,14 @@ export function AdminSidebar({
         Go to public site
       </a>
 
-      <div className="admin-account">
-        <span>{admin.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}</span>
-        <div>
-          <strong>{admin.name}</strong>
-          <small>{admin.role === "super_admin" ? "Super admin" : "Admin"}</small>
+      <div className={adminTw.account}>
+        <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-[#213451] text-[11px] font-bold text-white">{admin.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}</span>
+        <div className="min-w-0">
+          <strong className="block truncate text-[13px] text-white">{admin.name}</strong>
+          <small className="mt-0.5 block text-[11px] text-[#8996aa]">{admin.role === "super_admin" ? "Super admin" : "Admin"}</small>
         </div>
         <form action={logoutAction}>
-          <button aria-label="Sign out" title="Sign out" type="submit">
+          <button className="grid cursor-pointer place-items-center border-0 bg-transparent p-[7px] text-[#8996aa] hover:text-white" aria-label="Sign out" title="Sign out" type="submit">
             <LogOut size={18} />
           </button>
         </form>

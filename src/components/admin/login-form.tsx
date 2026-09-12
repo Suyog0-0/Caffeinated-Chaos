@@ -4,6 +4,7 @@ import { type FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, LockKeyhole, LoaderCircle } from "lucide-react";
 import { createClient } from "@/supabase/client";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export function LoginForm({ configured }: { configured: boolean }) {
   const router = useRouter();
@@ -49,7 +50,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
   }
 
   return (
-    <form className="admin-login-form" onSubmit={handleSubmit}>
+    <form className="mt-9 grid [&_label]:mb-[7px] [&_label]:text-[13px] [&_label]:font-bold [&_label]:text-[#33473e] [&_input]:mb-[18px] [&_input]:min-h-[50px] [&_input]:border [&_input]:border-[#c7cac3] [&_input]:bg-white [&_input]:px-[13px] [&_input]:text-sm [&_input]:text-[#17251f] [&_input]:outline-none [&_input:focus]:border-[#153c2e] [&_input:focus]:shadow-[0_0_0_2px_rgba(21,60,46,.12)] [&_button]:mt-1 [&_button]:grid [&_button]:min-h-[52px] [&_button]:cursor-pointer [&_button]:grid-cols-[18px_1fr_18px] [&_button]:items-center [&_button]:gap-2.5 [&_button]:border-0 [&_button]:bg-[#153c2e] [&_button]:px-4 [&_button]:text-[13px] [&_button]:font-bold [&_button]:text-white [&_button:disabled]:cursor-not-allowed [&_button:disabled]:opacity-55" onSubmit={handleSubmit}>
       <label htmlFor="email">Email address</label>
       <input
         autoComplete="email"
@@ -75,13 +76,13 @@ export function LoginForm({ configured }: { configured: boolean }) {
       />
 
       {(error || !configured) && (
-        <p className="admin-form-error" role="alert">
+        <p className="-mt-1 mb-3.5 text-[13px] text-[#9d3028]" role="alert">
           {error ?? "Supabase environment variables are not configured."}
         </p>
       )}
 
       <button disabled={pending || !configured} type="submit">
-        {pending ? <LoaderCircle className="admin-spin" size={17} /> : <LockKeyhole size={17} />}
+        {pending ? <LoaderCircle className={adminTw.spin} size={17} /> : <LockKeyhole size={17} />}
         {pending ? "Signing in…" : "Sign in to workspace"}
         {!pending && <ArrowRight size={17} />}
       </button>
