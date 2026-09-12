@@ -2,7 +2,7 @@ import { Users } from "lucide-react";
 import Link from "next/link";
 
 type Publication = { type: string; venue: string; doi?: string | null };
-type Researcher = { id: string; initials: string; name: string };
+type Researcher = { id: string; initials: string; name: string; photoUrl?: string | null };
 
 export function PublicationSidebar({
   publication,
@@ -29,9 +29,18 @@ export function PublicationSidebar({
               className="flex items-center gap-3 py-3 transition-colors hover:text-[#153c2e]"
               href={`/people/${person.id}`}
             >
-              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#eeeae0] font-sans text-[9px]">
-                {person.initials}
-              </span>
+              {person.photoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  alt=""
+                  className="size-12 shrink-0 rounded-full object-cover"
+                  src={person.photoUrl}
+                />
+              ) : (
+                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[#eeeae0] font-sans text-[10px]">
+                  {person.initials}
+                </span>
+              )}
               <span className="text-lg font-medium">{person.name}</span>
             </Link>
           </li>
