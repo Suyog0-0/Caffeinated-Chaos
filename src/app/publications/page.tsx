@@ -1,4 +1,5 @@
-import { createClient } from "@/supabase/client";
+// src/app/publications/page.tsx
+import { createServerClient } from "@/supabase/server";
 import { PublicationsHero } from "@/components/publications/publications-hero";
 import { PublicationLibrary } from "@/components/publications/publication-library";
 
@@ -14,10 +15,14 @@ type PublicationRow = {
   publication_author: PublicationAuthorRow[];
 };
 
-export const revalidate = 0;
+// All filtering/search/sorting happens client-side in PublicationLibrary — this
+// page takes no searchParams and has nothing request-specific about it, so it
+// can be cached and revalidated periodically instead of re-querying Supabase
+// on every single request.
+export const revalidate = 300;
 
 export default async function PublicationsPage() {
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { data, error } = await supabase
     .from("publication")
