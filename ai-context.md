@@ -4,8 +4,8 @@ This is the Islington College Research & Development Digital Hub.
 
 ## Current milestone
 
-- **Projects pages** (`/projects`, `/projects/[slug]`) now read from Supabase (`publish_status = 'published'`).
-- Other public pages still use dummy data from `lib/dummy-data.ts`.
+- **Projects and People pages** (`/projects`, `/projects/[slug]`, `/people`, `/people/[id]`) now read from Supabase (`publish_status = 'published'`).
+- Other public pages (research-areas, publications) still use dummy data from `lib/dummy-data.ts`.
 - Supabase core schema and RLS migration are already deployed.
 - Server Components use `src/supabase/server.ts` (`createServerClient`) for anon reads.
 - The visual direction is editorial, minimal and Garamond-led.
@@ -26,6 +26,14 @@ This is the Islington College Research & Development Digital Hub.
 - `components/projects/project-overview.tsx` — objectives + linked publications
 - `components/projects/project-sidebar.tsx` — team members + status
 
+### People
+- `components/people/people-hero.tsx` — hero for the list page
+- `components/people/person-filters.tsx` — search + filter bar
+- `components/people/person-list.tsx` — renders a list of researchers
+- `components/people/person-detail-hero.tsx` — (deprecated) inlined into people/[id]/page.tsx
+- `components/people/person-overview.tsx` — (deprecated) inlined into people/[id]/page.tsx
+- `components/people/person-sidebar.tsx` — (deprecated) inlined into people/[id]/page.tsx
+
 ## Routes
 
 - `/` discovery homepage
@@ -37,4 +45,4 @@ This is the Islington College Research & Development Digital Hub.
 - `/publications` and `/publications/[id]`
 - `/admin` and `/admin/login`
 
-Next milestone: replace remaining dummy arrays (research-areas, people, publications) with Supabase reads and wire admin authentication/CRUD.
+Next milestone: replace remaining dummy arrays (research-areas, publications) with Supabase reads and wire admin authentication/CRUD.

@@ -20,7 +20,11 @@ Components for a feature live flat under `components/<feature>/`:
 - List-page components: `components/projects/projects-hero.tsx`, `project-filters.tsx`, `project-list.tsx`
 - Detail-page components: `components/projects/project-detail-hero.tsx`, `project-overview.tsx`, `project-sidebar.tsx`
 
-Same pattern applies to other features (research-areas, people, publications).
+The `components/people` feature follows the same pattern:
+- List-page components: `components/people/people-hero.tsx`, `person-filters.tsx`, `person-list.tsx`
+- Detail-page components: (inlined into page.tsx for surgical updates)
+
+Same pattern applies to other features (research-areas, publications).
 
 ## Page status
 
