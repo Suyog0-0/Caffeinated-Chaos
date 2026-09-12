@@ -1,14 +1,32 @@
-const stats = [
-    ["6", "Research areas"],
-    ["40+", "Active projects"],
-    ["120+", "Published papers"],
-    ["85", "Contributing researchers"],
-] as const;
+import { createServerClient } from "@/supabase/server";
 
-export function ImpactStats() {
+async function getPublishedCount(table: "research_area" | "project" | "publication" | "researcher") {
+    const supabase = createServerClient();
+    const { count } = await supabase
+        .from(table)
+        .select("*", { count: "exact", head: true })
+        .eq("publish_status", "published");
+    return count ?? 0;
+}
+
+export async function ImpactStats() {
+    const [areas, projects, publications, researchers] = await Promise.all([
+        getPublishedCount("research_area"),
+        getPublishedCount("project"),
+        getPublishedCount("publication"),
+        getPublishedCount("researcher"),
+    ]);
+
+    const stats = [
+        [String(areas), "Research areas"],
+        [String(projects), "Active projects"],
+        [String(publications), "Published papers"],
+        [String(researchers), "Contributing researchers"],
+    ] as const;
+
     return (
-        <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] border-b border-[#17251f] py-16 max-sm:w-[calc(100%_-_32px)]">
-            <p className="mb-8 font-sans text-xs font-bold text-[#153c2e]">Our impact</p>
+        <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] border-b border-[#17251f] py-14 max-sm:w-[calc(100%_-_32px)]">
+            <p className="mb-8 font-sans text-2xl font-medium uppercase tracking-wide">Our impact</p>
             <div className="grid grid-cols-4 max-sm:grid-cols-2">
                 {stats.map(([value, label], index) => (
                     <div
@@ -16,7 +34,7 @@ export function ImpactStats() {
                         key={label}
                     >
                         <p className="text-[56px] leading-none font-medium text-[#153c2e]">{value}</p>
-                        <p className="mt-3 text-[#405149]">{label}</p>
+                        <p className="mt-3 text-[#17251f] text-sm font-medium uppercase">{label}</p>
                     </div>
                 ))}
             </div>
