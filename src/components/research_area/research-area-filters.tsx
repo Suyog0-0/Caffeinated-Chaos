@@ -13,10 +13,10 @@ type ResearchAreaFiltersProps = {
 };
 
 const pillSelectCls =
-    "cursor-pointer appearance-none rounded-full border border-[#d7d5cd] bg-white pl-3.5 pr-7 py-1.5 font-sans text-[11px] text-[#405149] outline-none transition-colors hover:border-[#267457] hover:text-[#267457]";
+    "cursor-pointer appearance-none rounded-full border border-[#d7d5cd] bg-white py-1.5 pl-3.5 pr-7 font-sans text-[11px] text-[#405149] outline-none transition-colors hover:border-[#267457] hover:text-[#267457] max-sm:py-2 max-sm:pl-4 max-sm:pr-8 max-sm:text-xs";
 
 const activeChipCls =
-    "flex items-center gap-1.5 rounded-full border border-[#267457]/25 bg-[#eef5f1] px-3 py-1.5 font-sans text-[11px] text-[#17251f]";
+    "flex shrink-0 items-center gap-1.5 rounded-full border border-[#267457]/25 bg-[#eef5f1] px-3 py-1.5 font-sans text-[11px] text-[#17251f] max-sm:px-4 max-sm:py-2 max-sm:text-xs";
 
 const chipXCls = "text-[#8a9690] transition-colors hover:text-[#153c2e]";
 
@@ -36,7 +36,7 @@ export function ResearchAreaFilters({
             <div className="relative flex items-center rounded-full border border-[#d0cfc7] bg-white px-4 shadow-sm transition-all focus-within:border-[#267457] focus-within:shadow-[0_0_0_3px_rgba(38,116,87,0.08)]">
                 <Search size={15} className="shrink-0 text-[#8a9690]" aria-hidden="true" />
                 <input
-                    className="min-h-[48px] flex-1 bg-transparent px-3 font-sans text-sm text-[#17251f] outline-none placeholder:font-light placeholder:tracking-wide placeholder:text-[#a0a89e]"
+                    className="min-h-[48px] flex-1 bg-transparent px-3 font-sans text-[16px] font-normal tracking-normal text-[#17251f] outline-none placeholder:font-sans placeholder:font-normal placeholder:tracking-normal placeholder:text-[#7d8982]"
                     aria-label="Search research areas"
                     placeholder="Search research areas…"
                     value={search}
@@ -54,9 +54,9 @@ export function ResearchAreaFilters({
                 )}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="flex items-center gap-1.5 rounded-full bg-[#17251f] px-3.5 py-1.5 font-sans text-[11px] font-medium text-white">
+            <div className="flex items-center justify-between gap-3 max-sm:block">
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 max-sm:pb-2">
+                    <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-[#17251f] px-3.5 py-1.5 font-sans text-[11px] font-medium text-white max-sm:px-4 max-sm:py-2 max-sm:text-xs">
                         <SlidersHorizontal size={12} strokeWidth={2} aria-hidden="true" />
                         Filters
                         {activeCount > 0 && (
@@ -74,7 +74,7 @@ export function ResearchAreaFilters({
                             </button>
                         </span>
                     ) : (
-                        <div className="relative">
+                        <div className="relative shrink-0">
                             <select value={status} onChange={(e) => onStatusChange(e.target.value)} className={pillSelectCls} aria-label="Filter by status">
                                 <option value="all">Status</option>
                                 <option value="active">Active</option>
@@ -84,7 +84,7 @@ export function ResearchAreaFilters({
                         </div>
                     )}
 
-                    <div className="relative">
+                    <div className="relative shrink-0">
                         <select value={sort} onChange={(e) => onSortChange(e.target.value)} className={pillSelectCls} aria-label="Sort research areas">
                             <option value="name">Sort: Name (A–Z)</option>
                             <option value="projects">Sort: Most projects</option>
@@ -94,7 +94,7 @@ export function ResearchAreaFilters({
                     </div>
                 </div>
 
-                <span className="font-sans text-[11px] text-[#8a9690]">
+                <span className="font-sans text-[11px] text-[#8a9690] max-sm:mt-1 max-sm:block max-sm:text-xs">
                     Showing {resultCount} {resultCount === 1 ? "area" : "areas"}
                 </span>
             </div>

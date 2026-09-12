@@ -1,5 +1,14 @@
 import { Users } from "lucide-react";
 import Link from "next/link";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
+
+const sectionHeading =
+  "font-serif text-4xl font-medium tracking-tight text-[#0F2D24]";
 
 type Publication = { type: string; venue: string; doi?: string | null };
 type Researcher = { id: string; initials: string; name: string; photoUrl?: string | null };
@@ -18,8 +27,8 @@ export function PublicationSidebar({
   ];
 
   return (
-    <aside>
-      <h2 className="mb-6 flex items-center gap-3 text-4xl font-medium">
+    <aside className={inter.className}>
+      <h2 className={`${sectionHeading} mb-6 flex items-center gap-3`}>
         <Users size={24} aria-hidden="true" /> Authors
       </h2>
       <ul className="flex flex-col">
@@ -46,11 +55,11 @@ export function PublicationSidebar({
           </li>
         ))}
       </ul>
-      <h2 className="mt-12 mb-6 text-4xl font-medium">Publication details</h2>
+      <h2 className={`${sectionHeading} mt-12 mb-6`}>Publication details</h2>
       <dl>
         {details.map(([term, value]) => (
           <div className="border-t border-[#d7d5cd] py-3" key={term}>
-            <dt className="font-sans text-[11px] text-[#405149]">{term}</dt>
+            <dt className="text-[11px] font-semibold text-[#405149]">{term}</dt>
             <dd className="mt-1 text-base">{value}</dd>
           </div>
         ))}

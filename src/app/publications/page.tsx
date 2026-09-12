@@ -1,7 +1,13 @@
 // src/app/publications/page.tsx
 import { createServerClient } from "@/supabase/server";
+import { Inter } from "next/font/google";
 import { PublicationsHero } from "@/components/publications/publications-hero";
 import { PublicationLibrary } from "@/components/publications/publication-library";
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 type ResearcherRow = { name: string };
 type PublicationAuthorRow = { author_order: number; researcher: ResearcherRow | null };
@@ -72,7 +78,7 @@ export default async function PublicationsPage() {
   const areas = Array.from(new Set(publications.map((p) => p.area))).sort();
 
   return (
-    <main>
+    <main className={inter.className}>
       <PublicationsHero />
       <PublicationLibrary
         publications={publications}

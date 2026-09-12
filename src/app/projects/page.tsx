@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Inter } from "next/font/google";
 import { createServerClient } from "@/supabase/server";
 import { ProjectFilters } from "@/components/projects/project-filters";
 import { ProjectList } from "@/components/projects/project-list";
@@ -7,6 +8,11 @@ import { ProjectsHero } from "@/components/projects/projects-hero";
 // Nothing on this page is request-specific (page.tsx never reads searchParams),
 // so cache it and revalidate periodically instead of fetching on every request.
 export const revalidate = 300;
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 export default async function ProjectsPage() {
   const supabase = createServerClient();
@@ -48,7 +54,7 @@ export default async function ProjectsPage() {
   ).map(([slug, name]) => ({ slug, name }));
 
   return (
-    <main className="pb-24">
+    <main className={`${inter.className} pb-24`}>
       <ProjectsHero />
 
       <Suspense fallback={null}>

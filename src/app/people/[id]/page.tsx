@@ -313,7 +313,7 @@ export default async function ResearcherProfilePage({ params }: PageParams) {
           <section className="space-y-12 lg:col-span-8">
             <article className="space-y-4">
               <div className="flex items-baseline justify-between border-b border-[#E6DFD5] pb-2">
-                <h2 className="font-serif text-3xl tracking-tight text-[#0F2D24]">Biography</h2>
+                <h2 className="font-serif text-4xl tracking-tight text-[#0F2D24]">Biography</h2>
                 <span className="text-xs font-medium uppercase tracking-widest text-[#637068]">
                   Curriculum Excerpt
                 </span>
@@ -355,7 +355,7 @@ export default async function ResearcherProfilePage({ params }: PageParams) {
 
             {publications.length > 0 && (
               <article className="space-y-6">
-                <h2 className="border-b border-[#E6DFD5] pb-2 font-serif text-3xl tracking-tight text-[#0F2D24]">
+                <h2 className="border-b border-[#E6DFD5] pb-2 font-serif text-4xl tracking-tight text-[#0F2D24]">
                   Selected publications
                 </h2>
                 <ul className="divide-y divide-[#E6DFD5]">

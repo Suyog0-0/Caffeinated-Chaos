@@ -1,5 +1,6 @@
 // src/app/events/page.tsx
 import { Suspense } from "react";
+import { Inter } from "next/font/google";
 import { createServerClient } from "@/supabase/server";
 import { EventFilters } from "@/components/events/event-filters";
 import { EventList } from "@/components/events/event-list";
@@ -8,6 +9,11 @@ import { EventList } from "@/components/events/event-list";
 // searchParams itself — EventList/EventFilters do), so cache it and
 // revalidate periodically, same pattern as /projects and /publications.
 export const revalidate = 300;
+
+const inter = Inter({
+    display: "swap",
+    subsets: ["latin"],
+});
 
 export default async function EventsPage() {
     const supabase = createServerClient();
@@ -39,11 +45,11 @@ export default async function EventsPage() {
     ).map(([slug, name]) => ({ slug, name }));
 
     return (
-        <main className="pb-24">
+        <main className={`${inter.className} pb-24`}>
             <header className="bg-[#0d2a20] py-16 text-white">
                 <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
-                    <p className="mb-4 font-sans text-xs font-bold text-[#b6c7bd]">Events</p>
-                    <h1 className="text-[clamp(44px,6vw,76px)] leading-[.98] font-normal tracking-[-.03em]">
+                    <p className="mb-4 text-xs font-bold text-[#b6c7bd]">Events</p>
+                    <h1 className="font-serif text-[clamp(44px,6vw,76px)] leading-[.98] font-normal tracking-[-.03em]">
                         Conferences, talks and workshops.
                     </h1>
                     <p className="mt-6 max-w-2xl text-lg text-[#c5d2cb]">

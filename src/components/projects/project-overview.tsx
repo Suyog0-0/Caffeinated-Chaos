@@ -1,8 +1,17 @@
 // src/components/projects/project-overview.tsx
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { Inter } from "next/font/google";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
+
+const sectionHeading =
+  "font-serif text-4xl font-medium tracking-tight text-[#0F2D24]";
 
 type Publication = {
   id: string;
@@ -21,14 +30,14 @@ const objectives = [
 export function ProjectOverview({ publications }: { publications: Publication[] }) {
   return (
     <section>
-      <h2 className="mb-6 text-4xl font-medium">About the project</h2>
-      <p className="max-w-3xl text-[22px]">
+      <h2 className={`${sectionHeading} mb-6`}>About the project</h2>
+      <p className={`${inter.className} max-w-3xl text-justify text-[22px] leading-relaxed`}>
         This dummy project page shows how objectives, progress and linked research records will
         appear once Supabase content is connected.
       </p>
 
-      <h2 className="mt-12 mb-6 text-4xl font-medium">Objectives</h2>
-      <ol>
+      <h2 className={`${sectionHeading} mt-12 mb-6`}>Objectives</h2>
+      <ol className={inter.className}>
         {objectives.map((item) => (
           <li className="flex items-center gap-3 border-b border-[#d7d5cd] py-3" key={item}>
             <CheckCircle2 className="text-[#267457]" size={18} aria-hidden="true" />
@@ -37,7 +46,7 @@ export function ProjectOverview({ publications }: { publications: Publication[] 
         ))}
       </ol>
 
-      <h2 className="mt-12 mb-6 text-4xl font-medium">Related publications</h2>
+      <h2 className={`${sectionHeading} mt-12 mb-6`}>Related publications</h2>
       <Separator className="bg-[#d7d5cd]" />
       {publications.map((item) => (
         <Card
@@ -57,7 +66,9 @@ export function ProjectOverview({ publications }: { publications: Publication[] 
                   aria-hidden="true"
                 />
               </h3>
-              <p className="text-sm text-[#405149]">{item.authors}</p>
+              <p className={`${inter.className} text-justify text-sm leading-relaxed text-[#405149]`}>
+                {item.authors}
+              </p>
             </Link>
           </CardContent>
         </Card>

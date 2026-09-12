@@ -64,9 +64,9 @@ export function EventSidebar({
 
             {/* Schedule + location card */}
             <div className="bg-white border border-[#e5dfd3] rounded-sm p-6 shadow-xs space-y-4">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8a938c]">
+                <h2 className="font-serif text-2xl font-medium tracking-tight text-[#0F2D24]">
                     Event details
-                </p>
+                </h2>
 
                 <div className="flex items-start gap-3">
                     <Calendar
@@ -75,8 +75,8 @@ export function EventSidebar({
                         aria-hidden="true"
                     />
                     <div>
-                        <p className="text-xs text-[#8a938c]">Date</p>
-                        <p className="text-sm font-medium text-[#141d18]">
+                        <p className="text-[13px] font-semibold text-[#708078]">Date</p>
+                        <p className="text-[15px] font-medium leading-6 text-[#141d18]">
                             {dateLabel}
                         </p>
                     </div>
@@ -90,8 +90,8 @@ export function EventSidebar({
                             aria-hidden="true"
                         />
                         <div>
-                            <p className="text-xs text-[#8a938c]">Time</p>
-                            <p className="text-sm font-medium text-[#141d18]">
+                            <p className="text-[13px] font-semibold text-[#708078]">Time</p>
+                            <p className="text-[15px] font-medium leading-6 text-[#141d18]">
                                 {timeLabel}
                             </p>
                         </div>
@@ -106,8 +106,8 @@ export function EventSidebar({
                             aria-hidden="true"
                         />
                         <div>
-                            <p className="text-xs text-[#8a938c]">Location</p>
-                            <p className="text-sm font-medium text-[#141d18]">
+                            <p className="text-[13px] font-semibold text-[#708078]">Location</p>
+                            <p className="text-[15px] font-medium leading-6 text-[#141d18]">
                                 {location}
                             </p>
                         </div>
@@ -118,9 +118,9 @@ export function EventSidebar({
             {/* Speakers card */}
             {speakers.length > 0 && (
                 <div className="bg-white border border-[#e5dfd3] rounded-sm p-6 shadow-xs">
-                    <p className="text-[11px] font-semibold uppercase tracking-wider text-[#8a938c] mb-4">
+                    <h2 className="mb-4 font-serif text-2xl font-medium tracking-tight text-[#0F2D24]">
                         {speakers.length > 1 ? "Speakers" : "Speaker"}
-                    </p>
+                    </h2>
 
                     <div className="space-y-3">
                         {speakers.map((speaker) => (
@@ -145,12 +145,12 @@ export function EventSidebar({
                                 </span>
 
                                 <div className="min-w-0">
-                                    <p className="text-sm font-medium text-[#141d18] group-hover:text-[#0e6144] transition-colors truncate">
+                                    <p className="truncate text-[15px] font-semibold text-[#141d18] transition-colors group-hover:text-[#0e6144]">
                                         {speaker.name}
                                     </p>
 
                                     {speaker.position && (
-                                        <p className="text-xs text-[#8a938c] truncate">
+                                        <p className="truncate text-[13px] leading-5 text-[#708078]">
                                             {speaker.position}
                                         </p>
                                     )}

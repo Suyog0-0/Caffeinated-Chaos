@@ -1,4 +1,36 @@
-export function PeopleHeader() {
+import { createServerClient } from "@/supabase/server";
+
+export async function PeopleHeader() {
+  const supabase = createServerClient();
+  const [researchers, researchAreas, projects, grants] = await Promise.all([
+    supabase
+      .from("researcher")
+      .select("*", { count: "exact", head: true })
+      .eq("publish_status", "published"),
+    supabase
+      .from("research_area")
+      .select("*", { count: "exact", head: true })
+      .eq("publish_status", "published")
+      .eq("is_active", true),
+    supabase
+      .from("project")
+      .select("*", { count: "exact", head: true })
+      .eq("publish_status", "published")
+      .eq("status", "ongoing"),
+    supabase
+      .from("grant")
+      .select("*", { count: "exact", head: true })
+      .eq("publish_status", "published")
+      .eq("status", "open"),
+  ]);
+
+  const capacity = [
+    { label: "Published researchers", result: researchers },
+    { label: "Active research areas", result: researchAreas },
+    { label: "Ongoing projects", result: projects },
+    { label: "Open grants", result: grants },
+  ];
+
   return (
     <section className="pt-6 md:pt-14 pb-12 px-4 md:px-6 lg:px-10 border-b border-[#E2DBD0]/70 md:border-[#E2DBD0] max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-end">
@@ -18,22 +50,14 @@ export function PeopleHeader() {
             Islington R&D Capacity
           </h2>
           <div className="grid grid-cols-2 gap-y-4 gap-x-6">
-            <div>
-              <div className="font-serif text-3xl font-semibold text-[#0B251E]">148</div>
-              <div className="text-xs text-[#4D5B53] font-medium mt-0.5">Appointed Researchers</div>
-            </div>
-            <div>
-              <div className="font-serif text-3xl font-semibold text-[#0B251E]">24</div>
-              <div className="text-xs text-[#4D5B53] font-medium mt-0.5">Specialized Labs</div>
-            </div>
-            <div>
-              <div className="font-serif text-3xl font-semibold text-[#0B251E]">380+</div>
-              <div className="text-xs text-[#4D5B53] font-medium mt-0.5">Active External Grants</div>
-            </div>
-            <div>
-              <div className="font-serif text-3xl font-semibold text-[#0B251E]">42</div>
-              <div className="text-xs text-[#4D5B53] font-medium mt-0.5">Patents & Licensures</div>
-            </div>
+            {capacity.map(({ label, result }) => (
+              <div key={label}>
+                <div className="text-3xl font-semibold tabular-nums text-[#0B251E]">
+                  {result.error ? "—" : (result.count ?? 0).toLocaleString("en-US")}
+                </div>
+                <div className="mt-0.5 text-xs font-medium text-[#4D5B53]">{label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
