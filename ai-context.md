@@ -5,7 +5,28 @@
 
 Provide a responsive research-discovery website where visitors can move between research areas, researchers, projects and publications.
 
-## Design
+- **Projects, People, and Publications pages** (`/projects`, `/projects/[slug]`, `/people`, `/people/[id]`, `/publications`) now read from Supabase (`publish_status = 'published'`).
+- Other public pages (research-areas) still use dummy data from `lib/dummy-data.ts`.
+- Supabase core schema and RLS migration are already deployed.
+- Server Components use `src/supabase/client.ts` (`createClient`) for anon reads (simplification), **except the People, Publications, and Projects list pages, which now use `src/supabase/server.ts` (`createServerClient`)** — this is the correct client for Server Components and other pages should migrate to it too.
+- **People page performance:** `/people`'s Supabase query was moved out of `page.tsx` into `components/people/person-results.tsx`, a Server Component wrapped in `<Suspense>`. This lets the hero and filter bar render instantly while the researcher grid streams in, instead of blocking the whole page behind the DB round trip. `/people/[id]` now sets `export const revalidate = 300` so individual profiles are cached for 5 minutes instead of re-fetched on every request.
+- **Publications page performance:** `/publications` had `export const revalidate = 0`, forcing a fresh Supabase round trip (with a full join across authors/researchers/research area) on every single request even though the page takes no `searchParams` and all filtering/search/sorting happens client-side in `PublicationLibrary`. Changed to `revalidate = 300` so the page is cached and only re-queried at most every 5 minutes. No Suspense was added here — unlike `/people`, this page has no per-request dynamism, so ISR alone removes the bottleneck without adding a streaming boundary.
+- **Projects page performance:** `/projects` had no `revalidate` set, so with Next 16's fetch-caching defaults it re-ran the join query (research area + project team) on every request even though `page.tsx` never reads `searchParams`. Added `revalidate = 300`, same pattern as Publications.
+- **Projects page filters/sort/pagination (fixed):** `ProjectFilters` pushes `query`/`status`/`area`/`sort`/`page` into the URL. `ProjectList` is now a client component that reads those params with `useSearchParams` and does the filtering, sorting, and pagination itself (data is fetched once in `page.tsx`, small dataset, so client-side is simplest). Because `ProjectList` calls `useSearchParams`, `page.tsx` wraps it in `<Suspense>` (same requirement `ProjectFilters` already had).
+  - Search matches `title`/`description`, case-insensitive.
+  - Status filter matches `project.status` directly (`ongoing`/`completed`/`proposed`/`archived`).
+  - Research area filter used to be 4 hardcoded slugs (`ai`, `data-science`, ...) that never matched real `research_area.slug` values from Supabase — that was the actual "filters not working" bug. `page.tsx` now selects `research_area(name, slug)` and builds `areaOptions` from the real projects returned, passed into `<ProjectFilters areaOptions={...} />`.
+  - Sort dropdown had no `onChange` handler at all (did nothing) and an "Active Impact" option with no backing field. Replaced with two working options: `recent` (default, keeps the server's `created_at desc` order) and `az` (alphabetical by title).
+  - Pagination: 6 projects per page, numbered page buttons + Prev/Next, driven by a `page` URL param. Any filter/search/sort change resets `page` back to 1.
+- **Navbar font (fixed):** `SiteHeader`'s nav links, search link, and tagline hard-coded `font-[Arial,Helvetica,sans-serif]`, which fought the site's actual font stack (Geist via `font-sans` on `<html>`) and looked inconsistent with the rest of the editorial design. Removed the hard-coded override so the header just inherits the site's default font.
+- **Ethics page (fixed):** `/ethics` (`components/ethics/policy-section.tsx`) was already coded to read from a Supabase table called `ethics_policy`, but that table was never created in any migration, so the query silently failed and the section rendered empty. Added `supabase/migrations/202609120002_ethics_policy.sql` (same shape as `admin_secondary_content.sql`: `publish_status` + admin RLS policies). `policy-section.tsx` is now a client component with a "Download PDF" button (via `jspdf`) that generates a PDF from each policy's title/content on the fly, in addition to the existing `file_url` external-link download. The rest of `/ethics` — `sop-list.tsx`, `ai-principles.tsx`, `irb-committee.tsx`, `integrity-disclosures.tsx`, `review-tiers.tsx`, `ethics-hero.tsx` — is still fully static/hardcoded, not wired to Supabase.
+- The visual direction is editorial, minimal and Garamond-led.
+- Do not use gradients or generic rounded-card layouts.
+- Header is sticky and has no utility bar.
+- Placeholder images come from `picsum.photos` (allowed in `next.config.ts`).
+- Layout elements (Header, Footer) are in `components/layout/`.
+- Use TailwindCSS for styling and shadcn (or similar UI libraries) where complex interactive UI is required.
+- `components/ui/` holds minimal stubs for Input, Badge, Card, Separator until shadcn is installed.
 
 - Garamond typography for editorial character.
 - Forest green, paper white, warm grey and a small yellow accent.
