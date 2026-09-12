@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { BookOpen, Search } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { PublicationRow, type PublicationRowData } from "@/components/admin/publication-row";
 import { requireAdmin } from "@/app/admin/admin-auth";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 function pageHref(page: number, query: string, status: string) {
   const params = new URLSearchParams();
@@ -84,9 +84,17 @@ export async function PublicationDirectory({
 
           {pageCount > 1 && (
             <nav aria-label="Publication pages" className="admin-pagination">
-              {page > 1 ? <Link href={pageHref(page - 1, query, status)}>Previous</Link> : <span>Previous</span>}
-              <p>Page {page} of {pageCount}</p>
-              {page < pageCount ? <Link href={pageHref(page + 1, query, status)}>Next</Link> : <span>Next</span>}
+              {page > 1 ? (
+                <Link href={pageHref(page - 1, query, status)}><ChevronLeft size={15} /> Previous</Link>
+              ) : (
+                <span><ChevronLeft size={15} /> Previous</span>
+              )}
+              <p aria-live="polite">Page {page} of {pageCount}</p>
+              {page < pageCount ? (
+                <Link href={pageHref(page + 1, query, status)}>Next <ChevronRight size={15} /></Link>
+              ) : (
+                <span>Next <ChevronRight size={15} /></span>
+              )}
             </nav>
           )}
         </>

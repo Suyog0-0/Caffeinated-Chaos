@@ -1,3 +1,4 @@
+<!-- spec.md -->
 # UI specification
 
 ## Goal
@@ -16,7 +17,9 @@ Provide a responsive research-discovery website where visitors can move between 
 
 ## Page status
 
-Projects, People and Research Areas pages read from Supabase, and Research Areas also has working search/status/sort filters and restyled editorial cards (rounded, 12-col grid matching the reference design). The Research Area detail page now mirrors the Publication detail page's profile layout (hero fact list limited to real `research_area` columns; project cards and the People sidebar styled to match `publication-overview.tsx`/`publication-sidebar.tsx`). Publications and the admin/login views still use dummy content. Directory filters and admin buttons are visual placeholders except on Research Areas and Publications, which are wired up. Supabase authentication and write actions are intentionally deferred to the next milestone.
+All public pages and the admin/login views exist with dummy content. Directory filters and admin buttons are visual placeholders. Supabase data, authentication and write actions are intentionally deferred to the next milestone.
+- Documentary images are used only where they add context (picsum.photos placeholders for now).
+- Use TailwindCSS and shadcn components while preserving the minimal editorial design.
 
 ## Component naming convention
 

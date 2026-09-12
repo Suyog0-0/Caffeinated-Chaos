@@ -11,7 +11,7 @@ export default async function EditPublicationPage({
 }) {
   const { id } = await params;
   const { supabase } = await requireAdmin();
-  const [publicationResult, projectsResult, areasResult] = await Promise.all([
+  const [publicationResult, projectsResult, areasResult, researchersResult, authorsResult] = await Promise.all([
     supabase
       .from("publication")
       .select("id, research_area_id, project_id, title, publication_type, year, date_of_issue, summary, venue, doi, external_url, publish_status, is_ijmr, is_demo_data")
@@ -19,9 +19,15 @@ export default async function EditPublicationPage({
       .maybeSingle(),
     supabase.from("project").select("id, title").order("title"),
     supabase.from("research_area").select("id, name").order("name"),
+    supabase.from("researcher").select("id, name").order("name"),
+    supabase.from("publication_author").select("author_order, researcher:researcher_id(id, name)").eq("publication_id", id).order("author_order"),
   ]);
 
   if (!publicationResult.data) notFound();
+
+  const authors = (authorsResult.data ?? [])
+    .filter((row) => row.researcher)
+    .map((row) => ({ id: (row.researcher as unknown as { id: string }).id, name: (row.researcher as unknown as { name: string }).name }));
 
   return (
     <div className="admin-page-content admin-editor-page">
@@ -35,6 +41,8 @@ export default async function EditPublicationPage({
         publication={publicationResult.data as PublicationFormValues}
         projects={projectsResult.data ?? []}
         researchAreas={areasResult.data ?? []}
+        researchers={researchersResult.data ?? []}
+        authors={authors}
       />
     </div>
   );

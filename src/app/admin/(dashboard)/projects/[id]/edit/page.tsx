@@ -7,17 +7,23 @@ import { requireAdmin } from "@/app/admin/admin-auth";
 export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const { supabase } = await requireAdmin();
-  const [{ data: project }, { data: researchAreas }] = await Promise.all([
+  const [{ data: project }, { data: researchAreas }, { data: researchers }, { data: team }] = await Promise.all([
     supabase.from("project").select("id, slug, research_area_id, title, description, objective, status, start_date, end_date, publish_status, is_demo_data").eq("id", id).maybeSingle(),
     supabase.from("research_area").select("id, name").order("name"),
+    supabase.from("researcher").select("id, name").order("name"),
+    supabase.from("project_researcher").select("role, researcher:researcher_id(id, name)").eq("project_id", id),
   ]);
 
   if (!project) notFound();
 
+  const teamMembers = (team ?? [])
+    .filter((row) => row.researcher)
+    .map((row) => ({ id: (row.researcher as unknown as { id: string }).id, name: (row.researcher as unknown as { name: string }).name, role: row.role }));
+
   return (
     <div className="admin-page-content admin-editor-page">
       <header className="admin-page-header"><div><Link className="admin-header-back-link" href="/admin/projects"><ArrowLeft size={16} /> Projects</Link><h1>Edit project</h1></div></header>
-      <ProjectForm project={project as ProjectFormValues} researchAreas={researchAreas ?? []} />
+      <ProjectForm project={project as ProjectFormValues} researchAreas={researchAreas ?? []} researchers={researchers ?? []} teamMembers={teamMembers} />
     </div>
   );
 }

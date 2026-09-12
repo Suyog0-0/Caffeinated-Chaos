@@ -4,7 +4,7 @@ import { PublicationDetailHero } from "@/components/publications/publication-det
 import { PublicationOverview } from "@/components/publications/publication-overview";
 import { PublicationSidebar } from "@/components/publications/publication-sidebar";
 
-type ResearcherRow = { id: string; name: string };
+type ResearcherRow = { id: string; name: string; photo_url: string | null };
 type PublicationAuthorRow = { author_order: number; researcher: ResearcherRow | null };
 type PublicationRow = {
   id: string;
@@ -52,7 +52,7 @@ export default async function PublicationIdPage({
       project:project_id ( slug, title, status, description ),
       publication_author (
         author_order,
-        researcher:researcher_id ( id, name )
+        researcher:researcher_id ( id, name, photo_url )
       )
     `
     )
@@ -84,6 +84,7 @@ export default async function PublicationIdPage({
   const researchers = orderedAuthors.map((r) => ({
     id: r.id,
     name: r.name,
+    photoUrl: r.photo_url,
     initials: getInitials(r.name),
   }));
 

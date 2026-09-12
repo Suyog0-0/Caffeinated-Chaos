@@ -1,3 +1,4 @@
+// src/components/people/person-list.tsx
 import Link from "next/link";
 
 type ResearcherSummary = {
@@ -6,6 +7,7 @@ type ResearcherSummary = {
   department: string;
   name: string;
   position: string;
+  photoUrl: string | null;
   projects: number;
   papers: number;
 };
@@ -25,9 +27,18 @@ export function PersonList({ researchers }: { researchers: ResearcherSummary[] }
                 <div className="flex items-start justify-between gap-3 mb-5">
                   <div className="flex md:block items-center gap-3.5 md:gap-0">
                     <div className="relative shrink-0">
-                      <div className="w-[52px] h-[52px] md:w-14 md:h-14 rounded-full bg-[#374151] md:bg-[#374151] text-white flex items-center justify-center font-serif text-lg font-medium shadow-inner tracking-wide">
-                        {researcher.initials}
-                      </div>
+                      {researcher.photoUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={researcher.photoUrl}
+                          alt={researcher.name}
+                          className="w-[52px] h-[52px] md:w-14 md:h-14 rounded-full object-cover shadow-inner"
+                        />
+                      ) : (
+                        <div className="w-[52px] h-[52px] md:w-14 md:h-14 rounded-full bg-[#374151] md:bg-[#374151] text-white flex items-center justify-center font-serif text-lg font-medium shadow-inner tracking-wide">
+                          {researcher.initials}
+                        </div>
+                      )}
                     </div>
                     <div className="md:hidden">
                       <p className="text-[11px] text-neutral-500 font-medium">{researcher.department} · {researcher.position}</p>
@@ -37,7 +48,7 @@ export function PersonList({ researchers }: { researchers: ResearcherSummary[] }
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="hidden md:block">
                   <h3 className="font-serif text-2xl font-bold text-[#141A17] leading-snug group-hover:text-[#1A2420] transition-colors truncate">
                     {researcher.name}

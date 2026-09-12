@@ -14,7 +14,7 @@ export default async function ResearcherProfile({ params }: { params: Promise<{ 
   const { data: p } = await supabase
     .from("researcher")
     .select(`
-      id, name, department, position, biography, orcid,
+      id, name, department, position, biography, orcid, photo_url,
       researcher_research_area(research_area(name)),
       project_researcher(project(slug, status, title, description)),
       publication_author(publication(id, title, publication_type, year))
@@ -74,9 +74,18 @@ export default async function ResearcherProfile({ params }: { params: Promise<{ 
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-8">
             <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
               <div className="relative flex-shrink-0">
-                <div aria-label={`${p.name} Monogram`} className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-[#374151] text-white flex items-center justify-center font-serif text-3xl sm:text-4xl font-normal tracking-wider shadow-inner">
-                  {initials}
-                </div>
+                {p.photo_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={p.photo_url}
+                    alt={p.name}
+                    className="w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover shadow-inner"
+                  />
+                ) : (
+                  <div aria-label={`${p.name} Monogram`} className="w-28 h-28 sm:w-36 sm:h-36 rounded-full bg-[#374151] text-white flex items-center justify-center font-serif text-3xl sm:text-4xl font-normal tracking-wider shadow-inner">
+                    {initials}
+                  </div>
+                )}
               </div>
               <div className="space-y-2.5">
                 <p className="text-xs text-[#6B7280] font-medium">{p.department ?? "Department"}</p>
