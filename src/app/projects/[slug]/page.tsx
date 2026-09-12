@@ -1,3 +1,4 @@
+// src/app/projects/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { createClient } from "@/supabase/client";
 import { ProjectDetailHero } from "@/components/projects/project-detail-hero";
@@ -16,7 +17,7 @@ export default async function ProjectSlugPage({
   const { data: p } = await supabase
     .from("project")
     .select(`
-      slug, status, title, description, start_date, end_date,
+      id, slug, status, title, description, start_date, end_date,
       research_area(name),
       project_researcher(role, researcher(id, name, photo_url)),
       publication(id, title, publication_type, year, summary)
@@ -26,6 +27,27 @@ export default async function ProjectSlugPage({
     .single();
 
   if (!p) notFound();
+
+  // Partners collaborating on this project.
+  const { data: partnerRows } = await supabase
+    .from("project_partner")
+    .select("partner(id, name, logo_url, website)")
+    .eq("project_id", p.id);
+
+  type PartnerRow = { partner: { id: string; name: string; logo_url: string | null; website: string | null } | null };
+  const partners = (partnerRows as unknown as PartnerRow[] | null)
+    ?.map((row) => row.partner)
+    .filter((partner): partner is { id: string; name: string; logo_url: string | null; website: string | null } => Boolean(partner)) ?? [];
+
+  // Events linked to this project.
+  const { data: eventRows } = await supabase
+    .from("event")
+    .select("id, title, event_type, start_at")
+    .eq("project_id", p.id)
+    .eq("publish_status", "published")
+    .order("start_at", { ascending: true });
+
+  const relatedEvents = eventRows ?? [];
 
   // Supabase infers FK joins as arrays — cast through unknown to our expected shapes.
   const area =
@@ -41,7 +63,7 @@ export default async function ProjectSlugPage({
   };
 
   type PRRow = { role: string; researcher: { id: string; name: string; photo_url: string | null } };
-  const researchers = (p.project_researcher as unknown as PRRow[]).map((r) => ({
+  const toResearcher = (r: PRRow) => ({
     id: r.researcher.id,
     initials: r.researcher.name
       .split(" ")
@@ -51,7 +73,10 @@ export default async function ProjectSlugPage({
       .toUpperCase(),
     name: r.researcher.name,
     photoUrl: r.researcher.photo_url,
-  }));
+  });
+  const prRows = p.project_researcher as unknown as PRRow[];
+  const leadResearchers = prRows.filter((r) => r.role === "lead").map(toResearcher);
+  const researchers = prRows.filter((r) => r.role !== "lead").map(toResearcher);
 
   type PubRow = {
     id: string;
@@ -73,7 +98,13 @@ export default async function ProjectSlugPage({
       <ProjectDetailHero project={project} />
       <div className="mx-auto grid w-[min(calc(100%_-_48px),1240px)] grid-cols-[1fr_330px] gap-[9vw] pt-16 max-lg:grid-cols-1 max-sm:w-[calc(100%_-_32px)]">
         <ProjectOverview publications={publications} />
-        <ProjectSidebar project={project} researchers={researchers} />
+        <ProjectSidebar
+          project={project}
+          researchers={researchers}
+          leadResearchers={leadResearchers}
+          partners={partners}
+          events={relatedEvents}
+        />
       </div>
     </main>
   );
