@@ -18,6 +18,14 @@ This is the Islington College Research & Development Digital Hub.
   - Research area filter used to be 4 hardcoded slugs (`ai`, `data-science`, ...) that never matched real `research_area.slug` values from Supabase — that was the actual "filters not working" bug. `page.tsx` now selects `research_area(name, slug)` and builds `areaOptions` from the real projects returned, passed into `<ProjectFilters areaOptions={...} />`.
   - Sort dropdown had no `onChange` handler at all (did nothing) and an "Active Impact" option with no backing field. Replaced with two working options: `recent` (default, keeps the server's `created_at desc` order) and `az` (alphabetical by title).
   - Pagination: 6 projects per page, numbered page buttons + Prev/Next, driven by a `page` URL param. Any filter/search/sort change resets `page` back to 1.
+- **Navbar now uses Poppins**, loaded via `next/font/google` directly in `site-header.tsx` (not the global site font).
+- **Events (`/events`, `/events/[id]`) and Grants (`/grants`) added.** Both read from Supabase.
+  - `event` and `grant` columns in this repo's migration files (`supabase/migrations/202609120001_admin_secondary_content.sql`) are **out of date vs. the live schema** — the live DB actually has more columns/tables than the migration files show (confirmed by inspecting the real schema directly), including a `public.event_speaker` join table (`event_id`, `researcher_id`) that isn't in any migration file here. Worth reconciling at some point so the migrations match reality.
+  - Speakers: `/events` and `/events/[id]` join through `event_speaker` → `researcher(id, name, position)` for real speaker data — no fake/invented speaker fields.
+  - **Remaining known gap:** grant "eligibility" (from the brief) has no column on `public.grant` (checked the live schema — only `title`, `funder`, `description`, `amount`, `currency`, `deadline`, `external_url`, `status`). `/grants` shows `description` only; add a real `eligibility` column via migration before displaying it separately.
+  - `/events` lists upcoming events as cards (linking to `/events/[id]`) and past events as a plain list, split by comparing `start_at` to now.
+  - `/events/[id]` shows the full description, formatted schedule (`start_at`–`end_at`), location, speakers (linking to `/people/[id]`), and a "Register" link to `registration_url` when present.
+  - `/grants` is a single list page — no separate detail route. Each grant is a native `<details>/<summary>` that expands to show amount, description, and an "Apply now" link to `external_url` (only shown when `status = 'open'`).
 - **Navbar font (fixed):** `SiteHeader`'s nav links, search link, and tagline hard-coded `font-[Arial,Helvetica,sans-serif]`, which fought the site's actual font stack (Geist via `font-sans` on `<html>`) and looked inconsistent with the rest of the editorial design. Removed the hard-coded override so the header just inherits the site's default font.
 - The visual direction is editorial, minimal and Garamond-led.
 - Do not use gradients or generic rounded-card layouts.
@@ -56,6 +64,8 @@ This is the Islington College Research & Development Digital Hub.
 - `/people` and `/people/[id]`
 - `/projects` and `/projects/[slug]`
 - `/publications` and `/publications/[id]`
+- `/events` and `/events/[id]`
+- `/grants` (list page only — each grant expands inline via `<details>`, no separate detail route)
 - `/admin` and `/admin/login`
 
 Next milestone: replace dummy arrays and wire admin authentication/CRUD.

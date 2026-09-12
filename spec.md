@@ -63,3 +63,16 @@ All public pages and the admin/login views exist with dummy content from `lib/du
 ## Navbar
 
 - Nav links, the search link, and the header tagline use the site's default font (no hard-coded font override).
+- Header font is Poppins (`next/font/google`, loaded in `site-header.tsx`).
+- Nav includes: Research areas, People, Projects, Publications, Events, Grants, About R&D.
+
+## Events
+
+- `/events` — upcoming events (cards, linking to `/events/[id]`) and past events (plain list), split by comparing `start_at` to the current time.
+- `/events/[id]` — description, formatted schedule (`start_at`–`end_at`), location, speakers (via `event_speaker` → `researcher`, each linking to `/people/[id]`), and a "Register" link to `registration_url` when present.
+- Data comes straight from `public.event` / `public.event_speaker` — no schema changes.
+
+## Grants
+
+- `/grants` — single list page, no separate detail route. Each grant is a `<details>/<summary>` that expands to show amount, description, and an "Apply now" link to `external_url` (only when `status = 'open'`). Status badge shown for `open` / `closed` / `awarded`.
+- No `eligibility` column exists on `public.grant` — not shown as a separate field (would need a migration to add it properly).
