@@ -8,6 +8,7 @@ import {
   updatePublicationAction,
 } from "@/app/publications-actions";
 import { PeoplePicker, type PersonOption, type SelectedPerson } from "@/components/admin/people-picker";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export type PublicationFormValues = {
   id: string;
@@ -67,18 +68,18 @@ export function PublicationForm({
   }
 
   return (
-    <form action={action} className="admin-editor-form">
+    <form action={action} className={adminTw.editorForm}>
       <section>
-        <div className="admin-form-heading">
+        <div className={adminTw.formHeading}>
           <div>
             <h2>Publication details</h2>
             <p>Bibliographic details and publishing controls for this record.</p>
           </div>
         </div>
 
-        <div className="admin-form-grid">
-          <label className="admin-field-full">
-            Title <span className="admin-required">Required</span>
+        <div className={adminTw.formGrid}>
+          <label className={adminTw.fieldFull}>
+            Title <span className={adminTw.required}>Required</span>
             <input name="title" onChange={(event) => updateValue("title", event.target.value)} required value={values.title} />
           </label>
           <label>
@@ -128,19 +129,19 @@ export function PublicationForm({
               {projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}
             </select>
           </label>
-          <label className="admin-field-full">
+          <label className={adminTw.fieldFull}>
             External URL
             <input name="external_url" onChange={(event) => updateValue("external_url", event.target.value)} placeholder="https://…" type="url" value={values.external_url} />
           </label>
-          <label className="admin-field-full">
+          <label className={adminTw.fieldFull}>
             Summary
             <textarea name="summary" onChange={(event) => updateValue("summary", event.target.value)} placeholder="A concise summary of the publication." rows={7} value={values.summary} />
           </label>
-          <label className="admin-checkbox">
+          <label className={adminTw.checkbox}>
             <input checked={values.is_ijmr} name="is_ijmr" onChange={(event) => updateValue("is_ijmr", event.target.checked)} type="checkbox" />
             <span><strong>IJMR publication</strong><small>Identify this as an IJMR record.</small></span>
           </label>
-          <label className="admin-checkbox">
+          <label className={adminTw.checkbox}>
             <input checked={values.is_demo_data} name="is_demo_data" onChange={(event) => updateValue("is_demo_data", event.target.checked)} type="checkbox" />
             <span><strong>Demo data</strong><small>Mark this as seeded sample content.</small></span>
           </label>
@@ -148,10 +149,10 @@ export function PublicationForm({
       </section>
 
       <section>
-        <div className="admin-form-heading">
+        <div className={adminTw.formHeading}>
           <div><h2>Authors</h2><p>Researchers credited on this publication, in author order.</p></div>
         </div>
-        <div className="admin-form-grid">
+        <div className={adminTw.formGrid}>
           <PeoplePicker
             emptyLabel="No authors added yet."
             fieldName="author_ids"
@@ -162,12 +163,12 @@ export function PublicationForm({
         </div>
       </section>
 
-      {state?.error && <p className="admin-editor-error" role="alert">{state.error}</p>}
+      {state?.error && <p className={adminTw.editorError} role="alert">{state.error}</p>}
 
-      <footer className="admin-form-actions">
+      <footer className={adminTw.formActions}>
         <Link href="/admin/publications">Cancel</Link>
         <button disabled={pending} type="submit">
-          {pending ? <LoaderCircle className="admin-spin" size={18} /> : <Save size={18} />}
+          {pending ? <LoaderCircle className={adminTw.spin} size={18} /> : <Save size={18} />}
           {pending ? "Saving…" : publication ? "Save changes" : "Create publication"}
         </button>
       </footer>

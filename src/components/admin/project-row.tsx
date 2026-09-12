@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ExternalLink, Pencil, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { deleteProjectAction } from "@/app/projects-actions";
+import { adminTw, statusTw } from "@/components/admin/admin-tailwind";
 
 type ProjectRowData = {
   id: string;
@@ -27,7 +28,7 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
   return (
     <article
       aria-label={`Edit ${project.title}`}
-      className="admin-researcher-row admin-clickable-row"
+      className={`${adminTw.row} ${adminTw.clickableRow}`}
       onClick={openEditor}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -38,17 +39,17 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
       role="link"
       tabIndex={0}
     >
-      <div className="admin-researcher-name"><div><strong>{project.title}</strong><small>/{project.slug}</small></div></div>
-      <p data-label="Research area">{project.researchArea}</p>
-      <p data-label="Project status"><i className="admin-status">{project.status}</i></p>
-      <p data-label="Visibility"><i className={`admin-status admin-status-${project.publish_status}`}>{project.publish_status}</i></p>
-      <div className="admin-row-actions" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}>
+      <div className={adminTw.personName}><div><strong>{project.title}</strong><small>/{project.slug}</small></div></div>
+      <p className={adminTw.rowMeta} data-label="Research area">{project.researchArea}</p>
+      <p className={adminTw.rowMeta} data-label="Project status"><i className={statusTw(project.status)}>{project.status}</i></p>
+      <p className={adminTw.rowMeta} data-label="Visibility"><i className={statusTw(project.publish_status)}>{project.publish_status}</i></p>
+      <div className={adminTw.rowActions} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}>
         <Link aria-label={`Edit ${project.title}`} href={editHref} title="Edit project"><Pencil size={17} /></Link>
         <Link aria-label={`View ${project.title} on the public site`} href={`/projects/${project.slug}`} target="_blank" title="View public project"><ExternalLink size={17} /></Link>
         {!confirming ? (
           <button aria-label={`Delete ${project.title}`} onClick={() => setConfirming(true)} title="Delete project" type="button"><Trash2 size={17} /></button>
         ) : (
-          <div className="admin-delete-confirm">
+          <div className={adminTw.deleteConfirm}>
             <button aria-label="Cancel deletion" onClick={() => setConfirming(false)} title="Cancel" type="button"><X size={16} /></button>
             <form action={deleteProjectAction.bind(null, project.id)}><button type="submit">Delete permanently</button></form>
           </div>

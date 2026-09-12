@@ -6,6 +6,7 @@ import {
   type ResearcherFormValues,
 } from "@/components/admin/researcher-form";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export default async function EditResearcherPage({
   params,
@@ -23,10 +24,10 @@ export default async function EditResearcherPage({
   if (!data) notFound();
 
   return (
-    <div className="admin-page-content admin-editor-page">
-      <header className="admin-page-header">
+    <div className={`${adminTw.pageContent} ${adminTw.editorPage}`}>
+      <header className={adminTw.pageHeader}>
         <div>
-          <Link className="admin-header-back-link" href="/admin/researchers">
+          <Link className={adminTw.headerBackLink} href="/admin/researchers">
             <ArrowLeft size={16} /> Researchers
           </Link>
           <h1>Edit profile</h1>

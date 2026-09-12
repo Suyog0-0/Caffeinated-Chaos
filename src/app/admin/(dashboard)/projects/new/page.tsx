@@ -1,5 +1,6 @@
 import { ProjectForm } from "@/components/admin/project-form";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export default async function NewProjectPage() {
   const { supabase } = await requireAdmin();
@@ -9,8 +10,8 @@ export default async function NewProjectPage() {
   ]);
 
   return (
-    <div className="admin-page-content admin-editor-page">
-      <header className="admin-page-header"><div><p>Projects</p><h1>Add project</h1></div></header>
+    <div className={`${adminTw.pageContent} ${adminTw.editorPage}`}>
+      <header className={adminTw.pageHeader}><div><p>Projects</p><h1>Add project</h1></div></header>
       <ProjectForm researchAreas={areas ?? []} researchers={researchers ?? []} />
     </div>
   );

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, Search, Users } from "lucide-react";
 import { ResearcherRow } from "@/components/admin/researcher-row";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 const PAGE_SIZE = 10;
 
@@ -57,7 +58,7 @@ export async function ResearcherDirectory({
 
   return (
     <>
-      <form className="admin-filters">
+      <form className={adminTw.filters}>
         <label>
           <Search size={17} />
           <span className="sr-only">Search researchers</span>
@@ -73,22 +74,22 @@ export async function ResearcherDirectory({
         {(query || status !== "all") && <Link href="/admin/researchers">Clear</Link>}
       </form>
 
-      {!error && <p className="admin-results-count">{total} researcher{total === 1 ? "" : "s"}</p>}
+      {!error && <p className={adminTw.resultsCount}>{total} researcher{total === 1 ? "" : "s"}</p>}
 
       {error ? (
-        <section className="admin-inline-state">
+        <section className={adminTw.inlineState}>
           <Users size={23} />
           <div><h2>Researchers could not be loaded</h2><p>Check the Supabase connection and RLS policies, then refresh this page.</p></div>
         </section>
       ) : researchers.length === 0 ? (
-        <section className="admin-inline-state">
+        <section className={adminTw.inlineState}>
           <Users size={23} />
           <div><h2>No researchers found</h2><p>Try a different name or publication status.</p></div>
         </section>
       ) : (
         <>
-          <div className="admin-researcher-table">
-            <div className="admin-researcher-head" aria-hidden="true">
+          <div className={adminTw.table}>
+            <div className={adminTw.tableHead} aria-hidden="true">
               <span>Researcher</span><span>Department</span><span>Status</span><span>Source</span><span>Actions</span>
             </div>
             {researchers.map((researcher) => (
@@ -97,7 +98,7 @@ export async function ResearcherDirectory({
           </div>
 
           {pageCount > 1 && (
-            <nav aria-label="Researcher pages" className="admin-pagination">
+            <nav aria-label="Researcher pages" className={adminTw.pagination}>
               {page > 1 ? (
                 <Link href={pageHref(page - 1, query, status)}><ChevronLeft size={15} /> Previous</Link>
               ) : (

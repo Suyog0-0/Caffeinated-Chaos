@@ -1,5 +1,6 @@
 import { PublicationForm } from "@/components/admin/publication-form";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export default async function NewPublicationPage() {
   const { supabase } = await requireAdmin();
@@ -10,8 +11,8 @@ export default async function NewPublicationPage() {
   ]);
 
   return (
-    <div className="admin-page-content admin-editor-page">
-      <header className="admin-page-header">
+    <div className={`${adminTw.pageContent} ${adminTw.editorPage}`}>
+      <header className={adminTw.pageHeader}>
         <div><p>Publications</p><h1>Add publication</h1></div>
       </header>
       <PublicationForm
