@@ -44,11 +44,12 @@ export default async function SearchPage({
   const projects = grouped["project"] || [];
   const publications = grouped["publication"] || [];
 
-  const getUrl = (type: string, id: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const getUrl = (type: string, id: string, metadata?: any) => {
     switch (type) {
-      case "research_area": return `/research-areas/${id}`;
+      case "research_area": return `/research-areas/${metadata?.slug || id}`;
       case "researcher": return `/people/${id}`;
-      case "project": return `/projects/${id}`;
+      case "project": return `/projects/${metadata?.slug || id}`;
       case "publication": return `/publications/${id}`;
       default: return "#";
     }
@@ -144,7 +145,7 @@ export default async function SearchPage({
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {areas.map((item) => (
-                  <Link key={item.id} href={getUrl("research_area", item.id)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
+                  <Link key={item.id} href={getUrl("research_area", item.id, item.metadata)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="text-xl font-serif text-[#0B3B24] font-semibold">{item.title}</h3>
                     </div>
@@ -172,7 +173,7 @@ export default async function SearchPage({
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 {researchers.map((item) => (
-                  <Link key={item.id} href={getUrl("researcher", item.id)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
+                  <Link key={item.id} href={getUrl("researcher", item.id, item.metadata)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
                     <div className="w-12 h-12 bg-[#0B3B24] rounded-full flex items-center justify-center text-white font-serif text-lg mb-4">
                       {getInitials(item.title)}
                     </div>
@@ -204,7 +205,7 @@ export default async function SearchPage({
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {projects.map((item) => (
-                  <Link key={item.id} href={getUrl("project", item.id)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
+                  <Link key={item.id} href={getUrl("project", item.id, item.metadata)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
                     <div className="flex justify-between items-start mb-2">
                       <span className="text-[10px] uppercase tracking-wider text-gray-400 font-medium">
                         {item.metadata?.slug || 'PRJ-0000-00'}
@@ -242,7 +243,7 @@ export default async function SearchPage({
                         <div className="text-[10px] uppercase tracking-wider text-gray-400 font-medium mb-2">
                           {item.metadata?.type || 'Publication'} • {item.metadata?.year || new Date().getFullYear()} • {item.metadata?.venue || 'Journal'}
                         </div>
-                        <Link href={getUrl("publication", item.id)}>
+                        <Link href={getUrl("publication", item.id, item.metadata)}>
                           <h3 className="text-lg font-serif text-[#0B3B24] font-semibold mb-2 group-hover:underline">{item.title}</h3>
                         </Link>
                         {item.description && <p className="text-gray-600 text-sm mb-3 line-clamp-1">{item.description}</p>}
