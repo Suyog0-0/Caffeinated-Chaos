@@ -17,7 +17,7 @@ export function Hero() {
           <h1 className="max-w-3xl text-[clamp(58px,6.5vw,94px)] leading-[.91] font-normal tracking-[-.045em] text-balance max-sm:text-[clamp(50px,15vw,68px)]">
             Research that begins here, and matters everywhere.
           </h1>
-          <p className="my-7 max-w-2xl text-[21px] leading-relaxed text-[#405149]">
+          <p className="my-7 max-w-2xl text-[21px] leading-relaxed text-[#405149] font-sans">
             Discover the people, projects and publications shaping Islington College’s growing
             research community.
           </p>
@@ -30,13 +30,13 @@ export function Hero() {
               Search the research ecosystem
             </label>
             <Input
-              className="border-0 bg-transparent px-0 focus-visible:ring-0"
+              className="border-0 bg-transparent px-0 placeholder:font-sans focus-visible:ring-0 "
               id="home-search"
               name="q"
               type="search"
-              placeholder="Search a topic, researcher or paper"
+              placeholder ="Search a topic, researcher or paper"
             />
-            <Button className="max-sm:col-span-2" size="lg" type="submit">
+            <Button className="font-sans font-medium max-sm:col-span-2" size="lg" type="submit">
               Explore
             </Button>
           </form>
@@ -69,7 +69,7 @@ export function Hero() {
               <span>Islington research paper</span>
               <span>No. 08</span>
             </CardHeader>
-            <CardContent className="p-6 max-sm:p-4">
+            <CardContent className="p-2 max-sm:p-4">
               <p className="mb-2 font-sans text-[10px] font-bold text-[#153c2e]">
                 Urban intelligence
               </p>
@@ -80,7 +80,7 @@ export function Hero() {
                 A community-led study of mobility data, public space and more inclusive decisions
                 for Kathmandu.
               </p>
-              <Separator className="mb-5" />
+              <Separator className="mb-0" />
               <div className="flex items-center gap-3">
                 <span className="grid size-9 place-items-center rounded-full bg-[#153c2e] font-sans text-[10px] text-white">
                   NM
