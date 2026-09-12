@@ -9,6 +9,7 @@ type Resource = {
     category: string | null;
     description: string | null;
     file_url: string | null;
+    content: string | null;
     badge: string | null;
     created_at: string;
 };
@@ -85,6 +86,22 @@ function downloadResourcePdf(resource: Resource) {
         doc.text(line, margin, y);
         y += 5.5;
     });
+
+    if (resource.content) {
+        y += 6;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(64, 81, 73);
+        const contentLines = doc.splitTextToSize(resource.content, contentW);
+        contentLines.forEach((line: string) => {
+            if (y > pageH - 28) {
+                doc.addPage();
+                y = 24;
+            }
+            doc.text(line, margin, y);
+            y += 5.5;
+        });
+    }
 
     if (resource.file_url) {
         if (y > pageH - 40) {
@@ -187,23 +204,8 @@ export function ResourceSection({
                                 )}
                             </div>
                             <div className="flex shrink-0 items-center gap-4">
-                                {resource.file_url && (
-                                    <a
-                                        href={resource.file_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group inline-flex items-center gap-1 border-b border-transparent pb-px font-sans uppercase tracking-widest transition-all duration-200 hover:border-[#267457] hover:text-[#267457]"
-                                        style={{ color: "#17251f", fontSize: "15px", fontWeight: 500 }}
-                                    >
-                                        Download
-                                        <ArrowUpRight
-                                            size={10}
-                                            strokeWidth={1.8}
-                                            className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                                            aria-hidden="true"
-                                        />
-                                    </a>
-                                )}
+
+
                                 <button
                                     type="button"
                                     onClick={() => downloadResourcePdf(resource)}

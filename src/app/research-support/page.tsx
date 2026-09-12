@@ -9,6 +9,7 @@ type ResourceRow = {
     category: string | null;
     description: string | null;
     file_url: string | null;
+    content: string | null;
     badge: string | null;
     created_at: string;
 };
@@ -18,7 +19,7 @@ export default async function ResearchSupportPage() {
 
     const { data, error } = await supabase
         .from("resource")
-        .select("id, title, category, description, file_url, badge, created_at")
+        .select("id, title, category, description, file_url, content, created_at")
         .eq("publish_status", "published")
         .order("category", { ascending: true })
         .order("created_at", { ascending: false });
