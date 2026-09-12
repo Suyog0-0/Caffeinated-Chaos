@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PartnerFilters, PartnerFilterState } from "./partner-filters";
 import type { PartnerRecord } from "./partners-actions";
@@ -11,6 +13,8 @@ import type { PartnerRecord } from "./partners-actions";
 interface PartnerListProps {
   partners: PartnerRecord[];
 }
+
+const PAGE_SIZE = 9;
 
 export function PartnerList({ partners }: PartnerListProps) {
   const categories = useMemo(
@@ -34,6 +38,7 @@ export function PartnerList({ partners }: PartnerListProps) {
     category: "all",
     researchType: "all",
   });
+  const [page, setPage] = useState(1);
 
   const filtered = partners.filter((partner) => {
     const matchesQuery = partner.name
@@ -46,6 +51,19 @@ export function PartnerList({ partners }: PartnerListProps) {
       partner.research_area_name === filters.researchType;
     return matchesQuery && matchesCategory && matchesResearch;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+
+  // reset to page 1 whenever the filters change the result set
+  useEffect(() => {
+    setPage(1);
+  }, [filters.query, filters.category, filters.researchType]);
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div>
@@ -68,14 +86,78 @@ export function PartnerList({ partners }: PartnerListProps) {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((partner) => (
-                <PartnerCard key={partner.id} partner={partner} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {paginated.map((partner) => (
+                  <PartnerCard key={partner.id} partner={partner} />
+                ))}
+              </div>
+
+              {totalPages > 1 && (
+                <PartnerPagination
+                  page={page}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function PartnerPagination({
+  page,
+  totalPages,
+  onPageChange,
+}: {
+  page: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}) {
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  return (
+    <div className="mt-10 flex items-center justify-center gap-2">
+      <Button
+        variant="outline"
+        size="icon"
+        className="h-9 w-9 border-neutral-300"
+        disabled={page === 1}
+        onClick={() => onPageChange(page - 1)}
+        aria-label="Previous page"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </Button>
+
+      {pages.map((p) => (
+        <Button
+          key={p}
+          variant={p === page ? "default" : "outline"}
+          size="icon"
+          className={
+            p === page
+              ? "h-9 w-9 bg-[#0d2818] text-white hover:bg-[#0d2818]/90"
+              : "h-9 w-9 border-neutral-300 text-neutral-700"
+          }
+          onClick={() => onPageChange(p)}
+        >
+          {p}
+        </Button>
+      ))}
+
+      <Button
+        variant="outline"
+        size="icon"
+        className="h-9 w-9 border-neutral-300"
+        disabled={page === totalPages}
+        onClick={() => onPageChange(page + 1)}
+        aria-label="Next page"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </Button>
     </div>
   );
 }

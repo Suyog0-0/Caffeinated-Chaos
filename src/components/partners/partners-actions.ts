@@ -41,8 +41,7 @@ export async function getPartners(): Promise<PartnerRecord[]> {
     .from("partner")
     .select("*")
     .eq("publish_status", "published")
-    .order("name", { ascending: true })
-    .limit(9);;
+    .order("name", { ascending: true });
 
   if (error) {
     console.error("getPartners error:", error.message);
