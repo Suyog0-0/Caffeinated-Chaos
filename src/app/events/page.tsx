@@ -14,7 +14,7 @@ export default async function EventsPage() {
 
     const { data } = await supabase
         .from("event")
-        .select("id, title, event_type, description, location, start_at, end_at, registration_url, research_area(name, slug), event_speaker(researcher(name))")
+        .select("id, title, event_type, description, location, start_at, end_at, registration_url, research_area(name, slug), event_speaker(researcher(name, photo_url))")
         .eq("publish_status", "published")
         .order("start_at", { ascending: true });
 
@@ -24,9 +24,9 @@ export default async function EventsPage() {
             ...e,
             area: area?.name ?? null,
             areaSlug: area?.slug ?? null,
-            speakers: (e.event_speaker as unknown as { researcher: { name: string } | null }[])
-                ?.map((s) => s.researcher?.name)
-                .filter((name): name is string => Boolean(name)) ?? [],
+            speakers: (e.event_speaker as unknown as { researcher: { name: string; photo_url: string | null } | null }[])
+                ?.map((s) => s.researcher)
+                .filter((r): r is { name: string; photo_url: string | null } => Boolean(r)) ?? [],
         };
     });
 

@@ -16,7 +16,7 @@ type Event = {
     registration_url: string | null;
     area: string | null;
     areaSlug: string | null;
-    speakers: string[];
+    speakers: { name: string; photo_url: string | null }[];
 };
 
 function formatDateRange(startAt: string | null, endAt: string | null) {
@@ -59,7 +59,7 @@ export function EventList({ events }: { events: Event[] }) {
         if (type !== "all" && e.event_type !== type) return false;
         if (area !== "all" && e.areaSlug !== area) return false;
         if (query) {
-            const haystack = `${e.title} ${e.description ?? ""} ${e.speakers.join(" ")}`.toLowerCase();
+            const haystack = `${e.title} ${e.description ?? ""} ${e.speakers.map((s) => s.name).join(" ")}`.toLowerCase();
             if (!haystack.includes(query)) return false;
         }
         return true;
@@ -124,10 +124,15 @@ export function EventList({ events }: { events: Event[] }) {
                                             <div className="pt-1.5 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-[#68726c]">
                                                 {chair && (
                                                     <div className="flex items-center gap-2">
-                                                        <span className="w-5 h-5 rounded-full bg-[#0e2820] text-white flex items-center justify-center font-serif text-[10px]">
-                                                            {initials(chair)}
+                                                        <span className="w-5 h-5 shrink-0 overflow-hidden rounded-full bg-[#0e2820] text-white flex items-center justify-center font-serif text-[10px]">
+                                                            {chair.photo_url ? (
+                                                                // eslint-disable-next-line @next/next/no-img-element
+                                                                <img src={chair.photo_url} alt="" className="h-full w-full object-cover" />
+                                                            ) : (
+                                                                initials(chair.name)
+                                                            )}
                                                         </span>
-                                                        <span>{chair}</span>
+                                                        <span>{chair.name}</span>
                                                     </div>
                                                 )}
                                                 {event.location && (
