@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/events", label: "Events" },
   { href: "/grants", label: "Grants" },
   { href: "/aboutsection", label: "About R&D" },
+  { href: "/partners", label: "Partners" },
 ];
 
 export function SiteHeader() {

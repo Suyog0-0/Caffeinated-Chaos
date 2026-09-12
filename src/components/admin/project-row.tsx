@@ -27,7 +27,7 @@ export function ProjectRow({ project }: { project: ProjectRowData }) {
   return (
     <article
       aria-label={`Edit ${project.title}`}
-      className="admin-researcher-row"
+      className="admin-researcher-row admin-clickable-row"
       onClick={openEditor}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {

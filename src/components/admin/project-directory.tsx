@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { FolderKanban, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, FolderKanban, Search } from "lucide-react";
 import { ProjectRow } from "@/components/admin/project-row";
 import { requireAdmin } from "@/app/admin/admin-auth";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 type ProjectRecord = {
   id: string;
@@ -68,9 +68,17 @@ export async function ProjectDirectory({ query, status, page }: { query: string;
           </div>
           {pageCount > 1 && (
             <nav aria-label="Project pages" className="admin-pagination">
-              {page > 1 ? <Link href={pageHref(page - 1, query, status)}>Previous</Link> : <span>Previous</span>}
-              <p>Page {page} of {pageCount}</p>
-              {page < pageCount ? <Link href={pageHref(page + 1, query, status)}>Next</Link> : <span>Next</span>}
+              {page > 1 ? (
+                <Link href={pageHref(page - 1, query, status)}><ChevronLeft size={15} /> Previous</Link>
+              ) : (
+                <span><ChevronLeft size={15} /> Previous</span>
+              )}
+              <p aria-live="polite">Page {page} of {pageCount}</p>
+              {page < pageCount ? (
+                <Link href={pageHref(page + 1, query, status)}>Next <ChevronRight size={15} /></Link>
+              ) : (
+                <span>Next <ChevronRight size={15} /></span>
+              )}
             </nav>
           )}
         </>

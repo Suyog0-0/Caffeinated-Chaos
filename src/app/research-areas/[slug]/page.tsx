@@ -18,7 +18,7 @@ export default async function ResearchAreaSlugPage({
       name, description, is_active,
       project(slug, title, description, status, publish_status),
       publication(id, title, publication_type, year, publish_status),
-      researcher_research_area(researcher(id, name, publish_status))
+      researcher_research_area(researcher(id, name, photo_url, publish_status))
     `)
     .eq("slug", slug)
     .eq("publish_status", "published")
@@ -50,12 +50,13 @@ export default async function ResearchAreaSlugPage({
     .filter((p) => p.publish_status === "published")
     .map((p) => ({ id: p.id, title: p.title, type: p.publication_type ?? "Publication", year: p.year ?? 0 }));
 
-  type LinkRow = { researcher: { id: string; name: string; publish_status: string } };
+  type LinkRow = { researcher: { id: string; name: string; photo_url: string | null; publish_status: string } };
   const researchers = (a.researcher_research_area as unknown as LinkRow[])
     .filter((r) => r.researcher.publish_status === "published")
     .map((r) => ({
       id: r.researcher.id,
       name: r.researcher.name,
+      photoUrl: r.researcher.photo_url,
       initials: r.researcher.name
         .split(" ")
         .map((n) => n[0])
