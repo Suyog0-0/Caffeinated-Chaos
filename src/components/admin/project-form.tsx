@@ -1,0 +1,123 @@
+"use client";
+
+import Link from "next/link";
+import { useActionState, useState } from "react";
+import { LoaderCircle, Save } from "lucide-react";
+import {
+  createProjectAction,
+  updateProjectAction,
+} from "@/app/admin/projects-actions";
+
+export type ProjectFormValues = {
+  id: string;
+  slug: string;
+  research_area_id: string | null;
+  title: string;
+  description: string | null;
+  objective: string | null;
+  status: string;
+  start_date: string | null;
+  end_date: string | null;
+  publish_status: string;
+  is_demo_data: boolean;
+};
+
+type ResearchAreaOption = { id: string; name: string };
+
+export function ProjectForm({
+  project,
+  researchAreas,
+}: {
+  project?: ProjectFormValues;
+  researchAreas: ResearchAreaOption[];
+}) {
+  const saveAction = project
+    ? updateProjectAction.bind(null, project.id)
+    : createProjectAction;
+  const [state, action, pending] = useActionState(saveAction, undefined);
+  const [values, setValues] = useState({
+    title: project?.title ?? "",
+    slug: project?.slug ?? "",
+    research_area_id: project?.research_area_id ?? "",
+    description: project?.description ?? "",
+    objective: project?.objective ?? "",
+    status: project?.status ?? "proposed",
+    start_date: project?.start_date?.slice(0, 10) ?? "",
+    end_date: project?.end_date?.slice(0, 10) ?? "",
+    publish_status: project?.publish_status ?? "draft",
+    is_demo_data: project?.is_demo_data ?? false,
+  });
+
+  function updateValue(name: keyof typeof values, value: string | boolean) {
+    setValues((current) => ({ ...current, [name]: value }));
+  }
+
+  return (
+    <form action={action} className="admin-editor-form">
+      <section>
+        <div className="admin-form-heading">
+          <div><h2>Project details</h2><p>Core information shown in the project directory and detail page.</p></div>
+        </div>
+        <div className="admin-form-grid">
+          <label className="admin-field-full">
+            Title <span className="admin-required">Required</span>
+            <input name="title" onChange={(event) => updateValue("title", event.target.value)} required value={values.title} />
+          </label>
+          <label>
+            URL slug <span className="admin-required">Required</span>
+            <input name="slug" onChange={(event) => updateValue("slug", event.target.value)} placeholder="urban-air-quality-study" required value={values.slug} />
+            <small className="admin-field-help">Lowercase letters, numbers, and hyphens only.</small>
+          </label>
+          <label>
+            Research area
+            <select name="research_area_id" onChange={(event) => updateValue("research_area_id", event.target.value)} value={values.research_area_id}>
+              <option value="">Not assigned</option>
+              {researchAreas.map((area) => <option key={area.id} value={area.id}>{area.name}</option>)}
+            </select>
+          </label>
+          <label>
+            Project status
+            <select name="status" onChange={(event) => updateValue("status", event.target.value)} value={values.status}>
+              <option value="proposed">Proposed</option><option value="ongoing">Ongoing</option><option value="completed">Completed</option><option value="archived">Archived</option>
+            </select>
+          </label>
+          <label>
+            Publication status
+            <select name="publish_status" onChange={(event) => updateValue("publish_status", event.target.value)} value={values.publish_status}>
+              <option value="draft">Draft</option><option value="preview">Preview</option><option value="published">Published</option>
+            </select>
+          </label>
+          <label>
+            Start date
+            <input name="start_date" onChange={(event) => updateValue("start_date", event.target.value)} type="date" value={values.start_date} />
+          </label>
+          <label>
+            End date
+            <input min={values.start_date || undefined} name="end_date" onChange={(event) => updateValue("end_date", event.target.value)} type="date" value={values.end_date} />
+          </label>
+          <label className="admin-field-full">
+            Description
+            <textarea name="description" onChange={(event) => updateValue("description", event.target.value)} placeholder="A concise overview of the project." rows={6} value={values.description} />
+          </label>
+          <label className="admin-field-full">
+            Objective
+            <textarea name="objective" onChange={(event) => updateValue("objective", event.target.value)} placeholder="What this project aims to achieve." rows={6} value={values.objective} />
+          </label>
+          <label className="admin-checkbox admin-field-full">
+            <input checked={values.is_demo_data} name="is_demo_data" onChange={(event) => updateValue("is_demo_data", event.target.checked)} type="checkbox" />
+            <span><strong>Demo data</strong><small>Mark this project as seeded sample content.</small></span>
+          </label>
+        </div>
+      </section>
+
+      {state?.error && <p className="admin-editor-error" role="alert">{state.error}</p>}
+      <footer className="admin-form-actions">
+        <Link href="/admin/projects">Cancel</Link>
+        <button disabled={pending} type="submit">
+          {pending ? <LoaderCircle className="admin-spin" size={18} /> : <Save size={18} />}
+          {pending ? "Saving…" : project ? "Save changes" : "Create project"}
+        </button>
+      </footer>
+    </form>
+  );
+}
