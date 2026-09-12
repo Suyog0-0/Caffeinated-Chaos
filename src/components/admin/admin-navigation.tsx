@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   Megaphone,
   Menu,
+  ShieldCheck,
   Telescope,
   Users,
 } from "lucide-react";
@@ -26,6 +27,7 @@ const links = [
   { href: "/admin/grants", label: "Grants", icon: Bell },
   { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
   { href: "/admin/opportunities", label: "Opportunities", icon: Telescope },
+  { href: "/admin/ethics-policies", label: "Ethics Policies", icon: ShieldCheck },
   { href: "/admin/research-areas", label: "Research Areas", icon: FlaskConical },
 ];
 
