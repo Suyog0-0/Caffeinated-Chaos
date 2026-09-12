@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond } from "next/font/google";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
+import { ConditionalChrome } from "@/components/layout/conditional-chrome";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -27,13 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", geist.variable)} data-scroll-behavior="smooth">
       <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <SiteHeader />
-
-        <main className="flex-1">
-          {children}
-        </main>
-
-        <SiteFooter />
+        <ConditionalChrome>{children}</ConditionalChrome>
       </body>
     </html>
   );

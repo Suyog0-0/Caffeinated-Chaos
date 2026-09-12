@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { Badge } from "@/src/components/ui/badge";
-import { Card, CardContent } from "@/src/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 type ProjectSummary = {
   slug: string;
@@ -30,10 +30,9 @@ export function PersonOverview({
               href={`/projects/${project.slug}`}
               key={project.slug}
             >
-              <Card className="border-x-0 border-b-0 bg-transparent">
-                <CardContent className="py-6">
-                  <Badge className="border-0 p-0">{project.status}</Badge>
-                  <h3 className="my-1 flex items-center gap-2 text-2xl font-medium">
+              <div className="border-t border-[#d7d5cd] bg-transparent py-6">
+                <span className="inline-block text-[10px] font-sans font-bold text-[#405149] uppercase tracking-widest">{project.status}</span>
+                <h3 className="my-1 flex items-center gap-2 text-2xl font-medium">
                     {project.title}
                     <ArrowUpRight
                       aria-hidden="true"
@@ -42,8 +41,7 @@ export function PersonOverview({
                     />
                   </h3>
                   <p className="text-sm text-[#405149]">{project.summary}</p>
-                </CardContent>
-              </Card>
+              </div>
             </Link>
           ))}
         </>
