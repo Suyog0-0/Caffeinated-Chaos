@@ -91,7 +91,7 @@ All public pages and the admin/login views exist with dummy content from `lib/du
 
 - `/events/[id]` follows the same hero + sticky-sidebar grid as `/projects/[slug]`.
 - Hero (`EventDetailHero`): dark background, breadcrumb, event-type + research-area pills, large serif title, icon-led date/time/location row.
-- Sidebar (`EventSidebar`, `lg:sticky lg:top-24`): registration CTA card, event-details card (date/time/location), speakers card (initials avatar + name + position, linking to `/people/[id]`).
+- Sidebar (`EventSidebar`, `lg:sticky lg:top-24`): registration CTA card, event-details card (date/time/location), speakers card (photo when `researcher.photo_url` is set, else initials avatar; name + position, linking to `/people/[id]`).
 - Main column: just the description — speaker info lives only in the sidebar to avoid repeating it twice on the page.
 - **Related publications:** shown only when the event has a linked `project_id` and that project has published publications (`publication.project_id` match — there's no direct event↔publication link in the schema). Rendered as a divided list of rows (type/year kicker, serif title with a hover-reveal arrow, authors · venue), matching `ProjectOverview`'s publications list pattern.
 - Hero kicker (event type / research area) is a plain uppercase mono line, dot-separated, no pill background — kept deliberately plain rather than a rounded chip badge.

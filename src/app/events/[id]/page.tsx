@@ -10,16 +10,16 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
     const { data: event } = await supabase
         .from("event")
-        .select("id, title, event_type, description, location, start_at, end_at, registration_url, research_area(name), event_speaker(researcher(id, name, position))")
+        .select("id, title, event_type, description, location, start_at, end_at, registration_url, research_area(name), event_speaker(researcher(id, name, position, photo_url))")
         .eq("id", id)
         .eq("publish_status", "published")
         .single();
 
     if (!event) notFound();
 
-    const speakers = (event.event_speaker as unknown as { researcher: { id: string; name: string; position: string | null } | null }[])
+    const speakers = (event.event_speaker as unknown as { researcher: { id: string; name: string; position: string | null; photo_url: string | null } | null }[])
         ?.map((s) => s.researcher)
-        .filter((r): r is { id: string; name: string; position: string | null } => Boolean(r)) ?? [];
+        .filter((r): r is { id: string; name: string; position: string | null; photo_url: string | null } => Boolean(r)) ?? [];
 
     const area = (event.research_area as unknown as { name: string } | null)?.name ?? null;
 
