@@ -32,7 +32,6 @@ export function IJMRSection() {
             >
               <a href={IJMR_LINKS.visit} target="_blank" rel="noreferrer">
                 Visit IJMR
-                <ArrowUpRight className="ml-1.5 h-4 w-4" />
               </a>
             </Button>
             <Button
