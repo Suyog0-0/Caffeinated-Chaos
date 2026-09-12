@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
@@ -17,6 +17,12 @@ export function HeroPaperStack() {
   const stageRef = useRef<HTMLDivElement>(null);
   const progress = useMotionValue(0);
   const reduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  const shouldReduceMotion = mounted && reduceMotion;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -96,18 +102,18 @@ export function HeroPaperStack() {
         aria-hidden="true"
         className="absolute inset-[66px_5px_36px_84px] will-change-transform max-sm:inset-[56px_2px_28px_58px]"
         style={{
-          x: reduceMotion ? 0 : backX,
-          y: reduceMotion ? 0 : backY,
-          rotate: reduceMotion ? 7 : backRotate,
-          opacity: reduceMotion ? 1 : backOpacity,
+          x: shouldReduceMotion ? 0 : backX,
+          y: shouldReduceMotion ? 0 : backY,
+          rotate: shouldReduceMotion ? 7 : backRotate,
+          opacity: shouldReduceMotion ? 1 : backOpacity,
           transformOrigin: "50% 12%",
         }}
       >
         <motion.div
           className="size-full bg-[#e1c451]"
-          initial={reduceMotion ? false : { opacity: 0, scale: 0.96, y: 18 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.96, y: 18 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={reduceMotion ? instantTransition : entranceTransition(0.08)}
+          transition={shouldReduceMotion ? instantTransition : entranceTransition(0.08)}
         />
       </motion.div>
 
@@ -115,36 +121,36 @@ export function HeroPaperStack() {
         aria-hidden="true"
         className="absolute inset-[24px_41px_60px_45px] will-change-transform max-sm:inset-[18px_22px_42px_25px]"
         style={{
-          x: reduceMotion ? 0 : middleX,
-          y: reduceMotion ? 0 : middleY,
-          rotate: reduceMotion ? -5 : middleRotate,
-          opacity: reduceMotion ? 1 : middleOpacity,
+          x: shouldReduceMotion ? 0 : middleX,
+          y: shouldReduceMotion ? 0 : middleY,
+          rotate: shouldReduceMotion ? -5 : middleRotate,
+          opacity: shouldReduceMotion ? 1 : middleOpacity,
           transformOrigin: "50% 12%",
         }}
       >
         <motion.div
           className="size-full border border-[#c9c7bd] bg-[#eeeae0] shadow-xl"
-          initial={reduceMotion ? false : { opacity: 0, scale: 0.965, y: 18 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.965, y: 18 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={reduceMotion ? instantTransition : entranceTransition(0.16)}
+          transition={shouldReduceMotion ? instantTransition : entranceTransition(0.16)}
         />
       </motion.div>
 
       <motion.div
         className="absolute inset-[18px_35px_54px_34px] z-2 will-change-transform max-sm:inset-[12px_20px_36px_14px]"
         style={{
-          x: reduceMotion ? 0 : frontX,
-          y: reduceMotion ? 0 : frontY,
-          rotate: reduceMotion ? 0.8 : frontRotate,
-          opacity: reduceMotion ? 1 : frontOpacity,
+          x: shouldReduceMotion ? 0 : frontX,
+          y: shouldReduceMotion ? 0 : frontY,
+          rotate: shouldReduceMotion ? 0.8 : frontRotate,
+          opacity: shouldReduceMotion ? 1 : frontOpacity,
           transformOrigin: "50% 12%",
         }}
       >
         <MotionCard
           className="h-full p-3 shadow-2xl"
-          initial={reduceMotion ? false : { opacity: 0, scale: 0.97, y: 20 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.97, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={reduceMotion ? instantTransition : entranceTransition(0.26)}
+          transition={shouldReduceMotion ? instantTransition : entranceTransition(0.26)}
         >
           <CardHeader className="flex-row justify-between border-b border-[#17251f] p-3 font-sans text-[9px] font-bold leading-5">
             <span>Islington research paper</span>
@@ -181,10 +187,10 @@ export function HeroPaperStack() {
 
       <motion.p
         className="absolute right-5 bottom-0 z-4 font-sans text-[10px] text-[#405149]"
-        style={{ opacity: reduceMotion ? 1 : captionOpacity }}
-        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+        style={{ opacity: shouldReduceMotion ? 1 : captionOpacity }}
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={reduceMotion ? instantTransition : entranceTransition(0.48)}
+        transition={shouldReduceMotion ? instantTransition : entranceTransition(0.48)}
       >
         <span className="mr-3 font-bold text-[#17251f]">Featured work</span> Five-minute read
       </motion.p>
