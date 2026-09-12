@@ -10,7 +10,7 @@ export default async function ProjectsPage() {
     .from("project")
     .select("slug, status, title, description, research_area(name), project_researcher(role, researcher(name))")
     .eq("publish_status", "published")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }); 
 
   const projects = (data ?? []).map((p) => ({
     slug: p.slug,
