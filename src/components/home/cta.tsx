@@ -1,6 +1,5 @@
 import { FlaskConical, Search } from "lucide-react";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
 import { pageShell, sectionTitle } from "./shared";
 
 export function CTA() {
@@ -12,15 +11,12 @@ export function CTA() {
         <p className="my-4 text-[#405149]">
           Search the whole Islington research ecosystem from one place.
         </p>
-      <Link
-  className={buttonVariants({
-    className:
-      "bg-[#315A72] text-white hover:bg-[#26485B]",
-  })}
-  href="/search"
->
-  Start exploring <Search size={17} />
-</Link>      </div>
+        <Link
+          className="mt-2 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#0F2D24] text-white text-sm font-medium hover:bg-[#0B231B] transition-colors cursor-pointer"
+          href="/search"
+        >
+          Start exploring <Search size={16} />
+        </Link>      </div>
     </section>
   );
 }
