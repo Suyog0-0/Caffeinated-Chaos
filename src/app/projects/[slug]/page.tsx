@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { createServerClient } from "@/src/supabase/server";
+import { createServerClient } from "@/supabase/server";
 import { ProjectDetailHero } from "@/components/projects/project-detail-hero";
 import { ProjectOverview } from "@/components/projects/project-overview";
 import { ProjectSidebar } from "@/components/projects/project-sidebar";
