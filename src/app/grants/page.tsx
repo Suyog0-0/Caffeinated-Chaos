@@ -37,6 +37,8 @@ export default async function GrantsPage() {
         .order("deadline", { ascending: true });
 
     const grants = data ?? [];
+    const openCount = grants.filter((g) => g.status === "open").length;
+    const awardedCount = grants.filter((g) => g.status === "awarded").length;
 
     return (
         <main className="pb-24">
@@ -49,6 +51,20 @@ export default async function GrantsPage() {
                     <p className="mt-6 max-w-2xl text-lg text-[#c5d2cb]">
                         Browse open funding opportunities, check eligibility and deadlines, and apply directly.
                     </p>
+                    <div className="mt-8 grid grid-cols-3 gap-6 border-t border-[#1e3a2d] pt-6 max-w-lg">
+                        <div>
+                            <span className="block text-2xl font-serif">{grants.length}</span>
+                            <span className="block text-[11px] uppercase tracking-wide text-[#8fa89a]">Total grants</span>
+                        </div>
+                        <div>
+                            <span className="block text-2xl font-serif text-[#6fd9a8]">{openCount}</span>
+                            <span className="block text-[11px] uppercase tracking-wide text-[#8fa89a]">Open now</span>
+                        </div>
+                        <div>
+                            <span className="block text-2xl font-serif">{awardedCount}</span>
+                            <span className="block text-[11px] uppercase tracking-wide text-[#8fa89a]">Awarded</span>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -60,19 +76,24 @@ export default async function GrantsPage() {
                         {grants.map((grant) => (
                             <details
                                 key={grant.id}
-                                className="bg-white border border-[#e5dfd3] rounded-sm p-6 group"
+                                className="bg-white border border-[#e5dfd3] hover:border-[#0e2820] rounded-sm p-6 group transition-colors"
                             >
-                                <summary className="flex flex-wrap items-start justify-between gap-4 cursor-pointer list-none">
-                                    <div>
+                                <summary className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start cursor-pointer list-none">
+                                    <div className="sm:col-span-2 sm:border-r border-[#e5dfd3] sm:pr-4">
+                                        <p className="text-[11px] uppercase tracking-wide text-[#8a938c]">Deadline</p>
+                                        <p className="text-sm font-semibold text-[#0e2820]">{formatDeadline(grant.deadline)}</p>
+                                    </div>
+                                    <div className="sm:col-span-8">
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium mb-2 ${getStatusStyles(grant.status)}`}>
                                             {grant.status.charAt(0).toUpperCase() + grant.status.slice(1)}
                                         </span>
                                         <h2 className="font-serif text-xl font-semibold text-[#141d18]">{grant.title}</h2>
                                         {grant.funder && <p className="text-sm text-[#68726c] mt-0.5">{grant.funder}</p>}
                                     </div>
-                                    <div className="text-right shrink-0">
-                                        <p className="text-xs uppercase tracking-wide text-[#8a938c]">Deadline</p>
-                                        <p className="text-sm font-semibold text-[#0e2820]">{formatDeadline(grant.deadline)}</p>
+                                    <div className="sm:col-span-2 sm:text-right">
+                                        {formatAmount(grant.amount, grant.currency) && (
+                                            <p className="text-sm font-semibold text-[#0e2820]">{formatAmount(grant.amount, grant.currency)}</p>
+                                        )}
                                     </div>
                                 </summary>
 

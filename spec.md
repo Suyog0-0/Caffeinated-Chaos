@@ -76,3 +76,22 @@ All public pages and the admin/login views exist with dummy content from `lib/du
 
 - `/grants` — single list page, no separate detail route. Each grant is a `<details>/<summary>` that expands to show amount, description, and an "Apply now" link to `external_url` (only when `status = 'open'`). Status badge shown for `open` / `closed` / `awarded`.
 - No `eligibility` column exists on `public.grant` — not shown as a separate field (would need a migration to add it properly).
+- Hero has a 3-number stat row (Total grants / Open now / Awarded), counted client-side from the fetched list.
+- Each `<summary>` row is a 12-col grid: deadline (left), title + funder + status badge (middle), amount (right) — visual only, same expand/collapse behavior.
+
+## Events UI
+
+- Upcoming event cards are full-width rows with a month/day date block on the left instead of a 2-column card grid.
+- Section headings ("Upcoming" / "Past events") show a live count ("N scheduled" / "N archived").
+- Past events render as one bordered list with a small initial-letter icon per row instead of a plain divided list.
+- `/events` has a sticky filter bar (search + event-type + research-area dropdowns, plus All/Upcoming/Past chips), same URL-param pattern as `/projects`' `ProjectFilters`/`ProjectList`. Filtering runs client-side in `EventList`; `page.tsx` just fetches and passes data down.
+- No filter for attendance mode (in-person/hybrid/virtual) — `public.event` has no column for it.
+
+## Event detail page
+
+- `/events/[id]` follows the same hero + sticky-sidebar grid as `/projects/[slug]`.
+- Hero (`EventDetailHero`): dark background, breadcrumb, event-type + research-area pills, large serif title, icon-led date/time/location row.
+- Sidebar (`EventSidebar`, `lg:sticky lg:top-24`): registration CTA card, event-details card (date/time/location), speakers card (initials avatar + name + position, linking to `/people/[id]`).
+- Main column: just the description — speaker info lives only in the sidebar to avoid repeating it twice on the page.
+- **Related publications:** shown only when the event has a linked `project_id` and that project has published publications (`publication.project_id` match — there's no direct event↔publication link in the schema). Rendered as a divided list of rows (type/year kicker, serif title with a hover-reveal arrow, authors · venue), matching `ProjectOverview`'s publications list pattern.
+- Hero kicker (event type / research area) is a plain uppercase mono line, dot-separated, no pill background — kept deliberately plain rather than a rounded chip badge.
