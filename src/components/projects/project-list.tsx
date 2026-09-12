@@ -99,7 +99,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                   </span>
                 </div>
 
-                <h2 className="mb-2.5 font-serif text-2xl font-semibold tracking-tight text-[#141d18] transition-colors group-hover:text-[#0e2820] md:text-[1.7rem]">
+                <h2 className="mb-2.5 font-inter text-2xl font-semibold tracking-tight text-[#141d18] transition-colors group-hover:text-[#0e2820] md:text-[1.7rem]">
                   {project.title}
                 </h2>
 
