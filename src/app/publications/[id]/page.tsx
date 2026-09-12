@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { createClient } from "@/src/supabase/client";
+import { createClient } from "@/supabase/client";
 import { PublicationDetailHero } from "@/components/publications/publication-detail-hero";
 import { PublicationOverview } from "@/components/publications/publication-overview";
 import { PublicationSidebar } from "@/components/publications/publication-sidebar";

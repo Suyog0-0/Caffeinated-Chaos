@@ -1,4 +1,4 @@
-import { createClient } from "@/src/supabase/client";
+import { createClient } from "@/supabase/client";
 import { PublicationsHero } from "@/components/publications/publications-hero";
 import { PublicationLibrary } from "@/components/publications/publication-library";
 
