@@ -1,3 +1,4 @@
+// src/components/projects/project-overview.tsx
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
@@ -40,7 +41,7 @@ export function ProjectOverview({ publications }: { publications: Publication[] 
       <Separator className="bg-[#d7d5cd]" />
       {publications.map((item) => (
         <Card
-          className="rounded-none border-0 border-b border-[#d7d5cd] bg-transparent py-0 shadow-none"
+          className="rounded-none border-0 border-b border-[#d7d5cd] bg-transparent py-0 shadow-none ring-0"
           key={item.id}
         >
           <CardContent className="p-0">

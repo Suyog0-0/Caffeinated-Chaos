@@ -1,3 +1,4 @@
+// src/components/projects/project-sidebar.tsx
 import { Users } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +21,7 @@ export function ProjectSidebar({
       </h2>
       {researchers.map((person) => (
         <Card
-          className="rounded-none border-0 border-t border-[#d7d5cd] bg-transparent py-0 shadow-none"
+          className="rounded-none border-0 border-t border-[#d7d5cd] bg-transparent py-0 shadow-none ring-0"
           key={person.id}
         >
           <CardContent className="p-0">
