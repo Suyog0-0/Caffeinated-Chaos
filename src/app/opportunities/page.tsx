@@ -30,9 +30,23 @@ export default async function OpportunitiesPage() {
     areaName: (op.research_area as unknown as { name: string } | null)?.name ?? "General Research",
   }));
 
+  const now = new Date();
+  const futureDeadlines = opportunities
+    .filter((op) => op.deadline && new Date(op.deadline) >= now)
+    .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime());
+
+  let nextCycleCutoff = "Open Cycle";
+  if (futureDeadlines.length > 0) {
+    nextCycleCutoff = new Date(futureDeadlines[0].deadline!).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  }
+
   return (
     <main>
-      <OpportunitiesHero />
+      <OpportunitiesHero totalOpenings={opportunities.length} nextCycleCutoff={nextCycleCutoff} />
       <Suspense fallback={null}>
         <OpportunitiesList opportunities={opportunities} />
       </Suspense>
