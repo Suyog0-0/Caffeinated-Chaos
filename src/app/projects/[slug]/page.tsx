@@ -18,7 +18,7 @@ export default async function ProjectSlugPage({
     .select(`
       slug, status, title, description, start_date, end_date,
       research_area(name),
-      project_researcher(role, researcher(id, name)),
+      project_researcher(role, researcher(id, name, photo_url)),
       publication(id, title, publication_type, year, summary)
     `)
     .eq("slug", slug)
@@ -40,7 +40,7 @@ export default async function ProjectSlugPage({
     end: p.end_date?.slice(0, 4) ?? "ongoing",
   };
 
-  type PRRow = { role: string; researcher: { id: string; name: string } };
+  type PRRow = { role: string; researcher: { id: string; name: string; photo_url: string | null } };
   const researchers = (p.project_researcher as unknown as PRRow[]).map((r) => ({
     id: r.researcher.id,
     initials: r.researcher.name
@@ -50,6 +50,7 @@ export default async function ProjectSlugPage({
       .slice(0, 2)
       .toUpperCase(),
     name: r.researcher.name,
+    photoUrl: r.researcher.photo_url,
   }));
 
   type PubRow = {
