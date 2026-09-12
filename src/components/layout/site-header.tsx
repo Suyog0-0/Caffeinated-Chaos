@@ -11,6 +11,8 @@ const navLinks = [
   { href: "/people", label: "People" },
   { href: "/projects", label: "Projects" },
   { href: "/publications", label: "Publications" },
+  { href: "/events", label: "Events" },
+  { href: "/grants", label: "Grants" },
   { href: "/aboutsection", label: "About R&D" },
   { href: "/partners", label: "Partners" },
 ];
