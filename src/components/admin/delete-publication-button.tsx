@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Trash2, X } from "lucide-react";
 import { deletePublicationAction } from "@/app/publications-actions";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export function DeletePublicationButton({ id, title }: { id: string; title: string }) {
   const [confirming, setConfirming] = useState(false);
@@ -17,7 +18,7 @@ export function DeletePublicationButton({ id, title }: { id: string; title: stri
   }
 
   return (
-    <div className="admin-delete-confirm" onClick={(event) => event.stopPropagation()}>
+    <div className={adminTw.deleteConfirm} onClick={(event) => event.stopPropagation()}>
       <button aria-label="Cancel deletion" onClick={() => setConfirming(false)} title="Cancel" type="button"><X size={16} /></button>
       <form action={action}><button type="submit">Delete permanently</button></form>
     </div>

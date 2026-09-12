@@ -27,13 +27,13 @@ export default async function EditResearchAreaPage({
   if (error || !data) notFound();
 
   return (
-    <div className="admin-page-content admin-editor-page">
-      <header className="admin-page-header">
+    <div className="mx-auto w-[min(calc(100%-2rem),55rem)] py-10 sm:w-[min(calc(100%-2.75rem),55rem)] sm:py-14">
+      <header className="border-b border-[#c9cbc4] pb-5">
         <div>
-          <Link className="admin-header-back-link" href="/admin/research-areas">
+          <Link className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#53645c] hover:text-[#153c2e] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#153c2e]" href="/admin/research-areas">
             <ArrowLeft size={16} /> Research Areas
           </Link>
-          <h1>Edit research area</h1>
+          <h1 className="text-4xl font-medium tracking-[-0.035em] text-[#17251f] sm:text-[3.25rem] sm:leading-none">Edit research area</h1>
         </div>
       </header>
       <ResearchAreaForm researchArea={data as ResearchAreaFormValues} />

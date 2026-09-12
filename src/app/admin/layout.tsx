@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./admin.css";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export const metadata: Metadata = {
   title: "Admin | Islington Research",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <div className="admin-surface">{children}</div>;
+  return <div className={adminTw.surface}>{children}</div>;
 }

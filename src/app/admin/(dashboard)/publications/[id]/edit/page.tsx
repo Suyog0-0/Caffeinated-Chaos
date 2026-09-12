@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PublicationForm, type PublicationFormValues } from "@/components/admin/publication-form";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export default async function EditPublicationPage({
   params,
@@ -48,10 +49,10 @@ export default async function EditPublicationPage({
     });
 
   return (
-    <div className="admin-page-content admin-editor-page">
-      <header className="admin-page-header">
+    <div className={`${adminTw.pageContent} ${adminTw.editorPage}`}>
+      <header className={adminTw.pageHeader}>
         <div>
-          <Link className="admin-header-back-link" href="/admin/publications"><ArrowLeft size={16} /> Publications</Link>
+          <Link className={adminTw.headerBackLink} href="/admin/publications"><ArrowLeft size={16} /> Publications</Link>
           <h1>Edit publication</h1>
         </div>
       </header>

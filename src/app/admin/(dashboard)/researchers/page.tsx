@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { ResearcherListLoading } from "@/components/admin/admin-loading";
 import { ResearcherDirectory } from "@/components/admin/researcher-directory";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export default async function ResearchersPage({
   searchParams,
@@ -26,23 +27,23 @@ export default async function ResearchersPage({
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
   return (
-    <div className="admin-page-content">
-      <header className="admin-page-header">
+    <div className={adminTw.pageContent}>
+      <header className={adminTw.pageHeader}>
         <div><p>Directory</p><h1>Researchers</h1></div>
-        <div className="admin-page-header-actions">
+        <div className={adminTw.headerActions}>
           <Link href="/admin/researchers/new"><Plus size={18} /> Add researcher</Link>
         </div>
       </header>
 
       {notice && (
-        <p className="admin-notice" role="status">
+        <p className={adminTw.notice} role="status">
           {notice === "created" && "Researcher created successfully."}
           {notice === "updated" && "Researcher updated successfully."}
           {notice === "deleted" && "Researcher deleted permanently."}
         </p>
       )}
       {actionError && (
-        <p className="admin-notice admin-notice-error" role="alert">
+        <p className={`${adminTw.notice} ${adminTw.noticeError}`} role="alert">
           {actionError === "delete-failed"
             ? "The researcher could not be deleted. Check linked records and try again."
             : "The researcher ID was invalid."}

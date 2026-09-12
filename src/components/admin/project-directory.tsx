@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, FolderKanban, Search } from "lucide-react";
 import { ProjectRow } from "@/components/admin/project-row";
 import { requireAdmin } from "@/app/admin/admin-auth";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 const PAGE_SIZE = 10;
 
@@ -42,7 +43,7 @@ export async function ProjectDirectory({ query, status, page }: { query: string;
 
   return (
     <>
-      <form className="admin-filters">
+      <form className={adminTw.filters}>
         <label><Search size={17} /><span className="sr-only">Search projects</span><input defaultValue={query} name="query" placeholder="Search by project title" /></label>
         <select aria-label="Filter by project status" defaultValue={status} name="status">
           <option value="all">All statuses</option><option value="proposed">Proposed</option><option value="ongoing">Ongoing</option><option value="completed">Completed</option><option value="archived">Archived</option>
@@ -50,16 +51,16 @@ export async function ProjectDirectory({ query, status, page }: { query: string;
         <button type="submit">Apply filters</button>
         {(query || status !== "all") && <Link href="/admin/projects">Clear</Link>}
       </form>
-      {!error && <p className="admin-results-count">{total} project{total === 1 ? "" : "s"}</p>}
+      {!error && <p className={adminTw.resultsCount}>{total} project{total === 1 ? "" : "s"}</p>}
 
       {error ? (
-        <section className="admin-inline-state"><FolderKanban size={23} /><div><h2>Projects could not be loaded</h2><p>Check the Supabase connection and project RLS policies, then refresh this page.</p></div></section>
+        <section className={adminTw.inlineState}><FolderKanban size={23} /><div><h2>Projects could not be loaded</h2><p>Check the Supabase connection and project RLS policies, then refresh this page.</p></div></section>
       ) : projects.length === 0 ? (
-        <section className="admin-inline-state"><FolderKanban size={23} /><div><h2>No projects found</h2><p>Try a different title or project status.</p></div></section>
+        <section className={adminTw.inlineState}><FolderKanban size={23} /><div><h2>No projects found</h2><p>Try a different title or project status.</p></div></section>
       ) : (
         <>
-          <div className="admin-researcher-table">
-            <div className="admin-researcher-head" aria-hidden="true"><span>Project</span><span>Research area</span><span>Status</span><span>Visibility</span><span>Actions</span></div>
+          <div className={adminTw.table}>
+            <div className={adminTw.tableHead} aria-hidden="true"><span>Project</span><span>Research area</span><span>Status</span><span>Visibility</span><span>Actions</span></div>
             {projects.map((project) => {
               const relation = project.research_area;
               const researchArea = Array.isArray(relation) ? relation[0]?.name : relation?.name;
@@ -67,7 +68,7 @@ export async function ProjectDirectory({ query, status, page }: { query: string;
             })}
           </div>
           {pageCount > 1 && (
-            <nav aria-label="Project pages" className="admin-pagination">
+            <nav aria-label="Project pages" className={adminTw.pagination}>
               {page > 1 ? (
                 <Link href={pageHref(page - 1, query, status)}><ChevronLeft size={15} /> Previous</Link>
               ) : (

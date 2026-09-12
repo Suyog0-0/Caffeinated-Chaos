@@ -8,6 +8,7 @@ import {
   updateProjectAction,
 } from "@/app/projects-actions";
 import { PeoplePicker, type PersonOption, type SelectedPerson } from "@/components/admin/people-picker";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export type ProjectFormValues = {
   id: string;
@@ -58,20 +59,20 @@ export function ProjectForm({
   }
 
   return (
-    <form action={action} className="admin-editor-form">
+    <form action={action} className={adminTw.editorForm}>
       <section>
-        <div className="admin-form-heading">
+        <div className={adminTw.formHeading}>
           <div><h2>Project details</h2><p>Core information shown in the project directory and detail page.</p></div>
         </div>
-        <div className="admin-form-grid">
-          <label className="admin-field-full">
-            Title <span className="admin-required">Required</span>
+        <div className={adminTw.formGrid}>
+          <label className={adminTw.fieldFull}>
+            Title <span className={adminTw.required}>Required</span>
             <input name="title" onChange={(event) => updateValue("title", event.target.value)} required value={values.title} />
           </label>
           <label>
-            URL slug <span className="admin-required">Required</span>
+            URL slug <span className={adminTw.required}>Required</span>
             <input name="slug" onChange={(event) => updateValue("slug", event.target.value)} placeholder="urban-air-quality-study" required value={values.slug} />
-            <small className="admin-field-help">Lowercase letters, numbers, and hyphens only.</small>
+            <small className={adminTw.fieldHelp}>Lowercase letters, numbers, and hyphens only.</small>
           </label>
           <label>
             Research area
@@ -100,15 +101,15 @@ export function ProjectForm({
             End date
             <input min={values.start_date || undefined} name="end_date" onChange={(event) => updateValue("end_date", event.target.value)} type="date" value={values.end_date} />
           </label>
-          <label className="admin-field-full">
+          <label className={adminTw.fieldFull}>
             Description
             <textarea name="description" onChange={(event) => updateValue("description", event.target.value)} placeholder="A concise overview of the project." rows={6} value={values.description} />
           </label>
-          <label className="admin-field-full">
+          <label className={adminTw.fieldFull}>
             Objective
             <textarea name="objective" onChange={(event) => updateValue("objective", event.target.value)} placeholder="What this project aims to achieve." rows={6} value={values.objective} />
           </label>
-          <label className="admin-checkbox admin-field-full">
+          <label className={`${adminTw.checkbox} ${adminTw.fieldFull}`}>
             <input checked={values.is_demo_data} name="is_demo_data" onChange={(event) => updateValue("is_demo_data", event.target.checked)} type="checkbox" />
             <span><strong>Demo data</strong><small>Mark this project as seeded sample content.</small></span>
           </label>
@@ -116,10 +117,10 @@ export function ProjectForm({
       </section>
 
       <section>
-        <div className="admin-form-heading">
+        <div className={adminTw.formHeading}>
           <div><h2>Team</h2><p>Researchers linked to this project, and their role.</p></div>
         </div>
-        <div className="admin-form-grid">
+        <div className={adminTw.formGrid}>
           <PeoplePicker
             emptyLabel="No team members added yet."
             fieldName="member_ids"
@@ -132,11 +133,11 @@ export function ProjectForm({
         </div>
       </section>
 
-      {state?.error && <p className="admin-editor-error" role="alert">{state.error}</p>}
-      <footer className="admin-form-actions">
+      {state?.error && <p className={adminTw.editorError} role="alert">{state.error}</p>}
+      <footer className={adminTw.formActions}>
         <Link href="/admin/projects">Cancel</Link>
         <button disabled={pending} type="submit">
-          {pending ? <LoaderCircle className="admin-spin" size={18} /> : <Save size={18} />}
+          {pending ? <LoaderCircle className={adminTw.spin} size={18} /> : <Save size={18} />}
           {pending ? "Saving…" : project ? "Save changes" : "Create project"}
         </button>
       </footer>

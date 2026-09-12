@@ -7,6 +7,7 @@ import {
   createResearcherAction,
   updateResearcherAction,
 } from "@/app/admin/actions";
+import { adminTw } from "@/components/admin/admin-tailwind";
 
 export type ResearcherFormValues = {
   id: string;
@@ -62,15 +63,15 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
   const showPreviewImage = previewUrl && failedPhotoUrl !== previewUrl;
 
   return (
-    <form action={action} className="admin-editor-form">
+    <form action={action} className={adminTw.editorForm}>
       <section>
-        <div className="admin-form-heading">
+        <div className={adminTw.formHeading}>
           <h2>Profile details</h2>
           <p>Information shown in the researcher directory and public profile.</p>
         </div>
 
-        <div className="admin-avatar-row">
-          <div className="admin-avatar" aria-hidden="true">
+        <div className="flex items-center gap-4 border-b border-[#d4d5ce] bg-[#f9f8f3] px-7 py-6 max-[720px]:px-5 max-[720px]:py-[18px]">
+          <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-full border border-[#d4d5ce] bg-[#153c2e] [&_img]:block [&_img]:h-full [&_img]:w-full [&_img]:object-cover [&_span]:font-sans [&_span]:text-xl [&_span]:font-semibold [&_span]:tracking-[.02em] [&_span]:text-white" aria-hidden="true">
             {showPreviewImage ? (
               // An arbitrary admin-provided URL cannot use next/image's fixed remote host allowlist.
               // eslint-disable-next-line @next/next/no-img-element
@@ -86,7 +87,7 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
               <span>{initials}</span>
             )}
           </div>
-          <div className="admin-avatar-meta">
+          <div className="grid min-w-0 gap-[3px] [&_strong]:text-[15px] [&_strong]:font-semibold [&_strong]:text-[#17251f] [&_small]:text-xs [&_small]:text-[#68756f]">
             <strong>{values.name || "Unnamed researcher"}</strong>
             {(values.position || values.department) && (
               <small>
@@ -97,9 +98,9 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
           </div>
         </div>
 
-        <div className="admin-form-grid">
-          <label className="admin-field-full">
-            Name <span className="admin-required">Required</span>
+        <div className={adminTw.formGrid}>
+          <label className={adminTw.fieldFull}>
+            Name <span className={adminTw.required}>Required</span>
             <input name="name" onChange={(event) => updateValue("name", event.target.value)} required value={values.name} />
           </label>
           <label>
@@ -122,7 +123,7 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
               <option value="published">Published</option>
             </select>
           </label>
-          <label className="admin-field-full">
+          <label className={adminTw.fieldFull}>
             Biography
             <textarea name="biography" onChange={(event) => updateValue("biography", event.target.value)} placeholder="Research background, current work, and areas of expertise." rows={7} value={values.biography} />
           </label>
@@ -130,7 +131,7 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
             Photo URL
             <input name="photo_url" onChange={(event) => updateValue("photo_url", event.target.value)} placeholder="https://…" type="url" value={values.photo_url} />
             {previewUrl && failedPhotoUrl === previewUrl && (
-              <small className="admin-field-help admin-field-help-error">
+              <small className={`${adminTw.fieldHelp} ${adminTw.fieldHelpError}`}>
                 <ImageIcon size={13} /> This image could not be loaded. Check the photo URL.
               </small>
             )}
@@ -138,21 +139,21 @@ export function ResearcherForm({ researcher }: { researcher?: ResearcherFormValu
           <label>
             Google Scholar URL
             <input name="google_scholar_url" onChange={(event) => updateValue("google_scholar_url", event.target.value)} placeholder="https://…" type="url" value={values.google_scholar_url} />
-            <small className="admin-field-help">Any valid profile link is accepted for now.</small>
+            <small className={adminTw.fieldHelp}>Any valid profile link is accepted for now.</small>
           </label>
-          <label className="admin-checkbox admin-field-full">
+          <label className={`${adminTw.checkbox} ${adminTw.fieldFull}`}>
             <input checked={values.is_demo_data} name="is_demo_data" onChange={(event) => updateValue("is_demo_data", event.target.checked)} type="checkbox" />
             <span><strong>Demo data</strong><small>Mark this profile as seeded sample content.</small></span>
           </label>
         </div>
       </section>
 
-      {state?.error && <p className="admin-editor-error" role="alert">{state.error}</p>}
+      {state?.error && <p className={adminTw.editorError} role="alert">{state.error}</p>}
 
-      <footer className="admin-form-actions">
+      <footer className={adminTw.formActions}>
         <Link href="/admin/researchers">Cancel</Link>
         <button disabled={pending} type="submit">
-          {pending ? <LoaderCircle className="admin-spin" size={18} /> : <Save size={18} />}
+          {pending ? <LoaderCircle className={adminTw.spin} size={18} /> : <Save size={18} />}
           {pending ? "Saving…" : researcher ? "Save changes" : "Create researcher"}
         </button>
       </footer>
