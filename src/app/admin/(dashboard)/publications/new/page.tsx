@@ -3,9 +3,10 @@ import { requireAdmin } from "@/app/admin/admin-auth";
 
 export default async function NewPublicationPage() {
   const { supabase } = await requireAdmin();
-  const [projectsResult, areasResult] = await Promise.all([
+  const [projectsResult, areasResult, researchersResult] = await Promise.all([
     supabase.from("project").select("id, title").order("title"),
     supabase.from("research_area").select("id, name").order("name"),
+    supabase.from("researcher").select("id, name").order("name"),
   ]);
 
   return (
@@ -13,7 +14,11 @@ export default async function NewPublicationPage() {
       <header className="admin-page-header">
         <div><p>Publications</p><h1>Add publication</h1></div>
       </header>
-      <PublicationForm projects={projectsResult.data ?? []} researchAreas={areasResult.data ?? []} />
+      <PublicationForm
+        projects={projectsResult.data ?? []}
+        researchAreas={areasResult.data ?? []}
+        researchers={researchersResult.data ?? []}
+      />
     </div>
   );
 }

@@ -11,7 +11,14 @@ This is the Islington College Research & Development Digital Hub.
 - Server Components use `src/supabase/client.ts` (`createClient`) for anon reads (simplification), **except the People, Publications, and Projects list pages, which now use `src/supabase/server.ts` (`createServerClient`)** — this is the correct client for Server Components and other pages should migrate to it too.
 - **People page performance:** `/people`'s Supabase query was moved out of `page.tsx` into `components/people/person-results.tsx`, a Server Component wrapped in `<Suspense>`. This lets the hero and filter bar render instantly while the researcher grid streams in, instead of blocking the whole page behind the DB round trip. `/people/[id]` now sets `export const revalidate = 300` so individual profiles are cached for 5 minutes instead of re-fetched on every request.
 - **Publications page performance:** `/publications` had `export const revalidate = 0`, forcing a fresh Supabase round trip (with a full join across authors/researchers/research area) on every single request even though the page takes no `searchParams` and all filtering/search/sorting happens client-side in `PublicationLibrary`. Changed to `revalidate = 300` so the page is cached and only re-queried at most every 5 minutes. No Suspense was added here — unlike `/people`, this page has no per-request dynamism, so ISR alone removes the bottleneck without adding a streaming boundary.
-- **Projects page performance:** `/projects` had no `revalidate` set, so with Next 16's fetch-caching defaults it re-ran the join query (research area + project team) on every request even though `page.tsx` never reads `searchParams`. Added `revalidate = 300`, same pattern as Publications. Note: `ProjectFilters` already pushes `status`/`area`/`query` into the URL, but neither `page.tsx` nor `ProjectList` currently reads those params to actually filter the list — this is a pre-existing gap, left as-is since fixing it is a functionality change, not a performance one.
+- **Projects page performance:** `/projects` had no `revalidate` set, so with Next 16's fetch-caching defaults it re-ran the join query (research area + project team) on every request even though `page.tsx` never reads `searchParams`. Added `revalidate = 300`, same pattern as Publications.
+- **Projects page filters/sort/pagination (fixed):** `ProjectFilters` pushes `query`/`status`/`area`/`sort`/`page` into the URL. `ProjectList` is now a client component that reads those params with `useSearchParams` and does the filtering, sorting, and pagination itself (data is fetched once in `page.tsx`, small dataset, so client-side is simplest). Because `ProjectList` calls `useSearchParams`, `page.tsx` wraps it in `<Suspense>` (same requirement `ProjectFilters` already had).
+  - Search matches `title`/`description`, case-insensitive.
+  - Status filter matches `project.status` directly (`ongoing`/`completed`/`proposed`/`archived`).
+  - Research area filter used to be 4 hardcoded slugs (`ai`, `data-science`, ...) that never matched real `research_area.slug` values from Supabase — that was the actual "filters not working" bug. `page.tsx` now selects `research_area(name, slug)` and builds `areaOptions` from the real projects returned, passed into `<ProjectFilters areaOptions={...} />`.
+  - Sort dropdown had no `onChange` handler at all (did nothing) and an "Active Impact" option with no backing field. Replaced with two working options: `recent` (default, keeps the server's `created_at desc` order) and `az` (alphabetical by title).
+  - Pagination: 6 projects per page, numbered page buttons + Prev/Next, driven by a `page` URL param. Any filter/search/sort change resets `page` back to 1.
+- **Navbar font (fixed):** `SiteHeader`'s nav links, search link, and tagline hard-coded `font-[Arial,Helvetica,sans-serif]`, which fought the site's actual font stack (Geist via `font-sans` on `<html>`) and looked inconsistent with the rest of the editorial design. Removed the hard-coded override so the header just inherits the site's default font.
 - The visual direction is editorial, minimal and Garamond-led.
 - Do not use gradients or generic rounded-card layouts.
 - Header is sticky and has no utility bar.
@@ -21,6 +28,17 @@ This is the Islington College Research & Development Digital Hub.
 - `components/ui/` holds minimal stubs for Input, Badge, Card, Separator until shadcn is installed.
 
 ## Component structure
+
+### About
+- `components/about/about-hero.tsx` — hero for `/aboutsection`
+- `components/about/impact-stats.tsx` — 4-number "Our impact" strip, static data (no Supabase)
+- `components/about/mission-statements.tsx` — vision + mission cards
+- `components/about/leadership.tsx` — leadership grid
+- `components/about/methodology.tsx` — methodology stages
+- `components/about/partners.tsx` — partner categories
+- `components/about/engage-cta.tsx` — call to action section
+
+### Research Areas
 
 ### Projects
 - `components/projects/projects-hero.tsx` — hero for the list page

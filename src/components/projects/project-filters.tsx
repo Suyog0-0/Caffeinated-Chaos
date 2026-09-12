@@ -1,9 +1,10 @@
+// src/components/projects/project-filters.tsx
 "use client";
 
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function ProjectFilters() {
+export function ProjectFilters({ areaOptions }: { areaOptions: { slug: string; name: string }[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -14,6 +15,8 @@ export function ProjectFilters() {
     } else {
       params.delete(key);
     }
+    // Any filter change should take the user back to page 1.
+    params.delete("page");
     router.push(`?${params.toString()}`);
   };
 
@@ -77,10 +80,11 @@ export function ProjectFilters() {
                 onChange={(e) => handleFilter("area", e.target.value)}
               >
                 <option value="all">All research areas</option>
-                <option value="ai">Artificial Intelligence</option>
-                <option value="data-science">Data Science</option>
-                <option value="bioinformatics">Bioinformatics</option>
-                <option value="cyber-physical">Cyber-Physical Systems</option>
+                {areaOptions.map((area) => (
+                  <option key={area.slug} value={area.slug}>
+                    {area.name}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2.5 pointer-events-none text-[#67756f]">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,10 +129,14 @@ export function ProjectFilters() {
           </div>
           <div className="flex items-center gap-1.5 text-[#627068] ml-auto">
             <span>Sort:</span>
-            <select className="bg-transparent border-none text-xs font-semibold text-[#0e2820] focus:ring-0 cursor-pointer p-0 pr-4">
-              <option>Active Impact</option>
-              <option>Recently Added</option>
-              <option>Alphabetical (A–Z)</option>
+            <select
+              className="bg-transparent border-none text-xs font-semibold text-[#0e2820] focus:ring-0 cursor-pointer p-0 pr-4"
+              aria-label="Sort projects"
+              defaultValue={searchParams.get("sort") || "recent"}
+              onChange={(e) => handleFilter("sort", e.target.value)}
+            >
+              <option value="recent">Recently Added</option>
+              <option value="az">Alphabetical (A–Z)</option>
             </select>
           </div>
         </div>

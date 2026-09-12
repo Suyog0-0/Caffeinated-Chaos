@@ -1,6 +1,10 @@
+// src/components/layout/site-header.tsx
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 const navLinks = [
   { href: "/research-areas", label: "Research areas" },
@@ -14,7 +18,7 @@ export function SiteHeader() {
   const path = usePathname();
 
   return (
-    <header className="sticky top-0 z-20 border-b border-[#d7d5cd] bg-[rgba(255,254,251,0.96)] backdrop-blur-[12px]">
+    <header className={`${poppins.className} sticky top-0 z-20 border-b border-[#d7d5cd] bg-[rgba(255,254,251,0.96)] backdrop-blur-[12px]`}>
       <div className="mx-auto flex min-h-[82px] w-[min(calc(100%-48px),1240px)] items-center gap-[34px] max-[760px]:w-[min(calc(100%-32px),1240px)] max-[760px]:min-h-[70px]">
         {/* Brand */}
         <Link
@@ -29,7 +33,7 @@ export function SiteHeader() {
             <strong className="block text-xl font-semibold leading-[1.05] tracking-[-0.01em] max-[760px]:text-[17px]">
               Islington Research
             </strong>
-            <small className="mt-[5px] block font-[Arial,Helvetica,sans-serif] text-[10px] text-[#405149] max-[760px]:hidden">
+            <small className="mt-[5px] block text-[10px] text-[#405149] max-[760px]:hidden">
               Research &amp; Development Hub
             </small>
           </span>
@@ -37,7 +41,7 @@ export function SiteHeader() {
 
         {/* Primary nav */}
         <nav
-          className="ml-auto flex items-center gap-7 font-[Arial,Helvetica,sans-serif] text-[13px] max-[1020px]:hidden"
+          className="ml-auto flex items-center gap-7 text-[13px] max-[1020px]:hidden"
           aria-label="Primary navigation"
         >
           {navLinks.map((link) => {
@@ -61,7 +65,7 @@ export function SiteHeader() {
 
         {/* Search link */}
         <Link
-          className="relative flex items-center gap-[9px] border-l border-[#d7d5cd] px-[14px] py-[11px] font-[Arial,Helvetica,sans-serif] text-xs font-bold max-[1020px]:ml-auto max-[760px]:hidden"
+          className="relative flex items-center gap-[9px] border-l border-[#d7d5cd] px-[14px] py-[11px] text-xs font-bold max-[1020px]:ml-auto max-[760px]:hidden"
           href="/search"
           aria-label="Search research"
         >

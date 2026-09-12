@@ -50,6 +50,40 @@ function nullable(value: string) {
   return value || null;
 }
 
+async function syncProjectTeam(
+  supabase: Awaited<ReturnType<typeof import("@/app/admin/admin-auth").getAdminContext>> extends infer T
+    ? T extends { supabase: infer S }
+      ? S
+      : never
+    : never,
+  projectId: string,
+  formData: FormData,
+) {
+  const memberIds = formData.getAll("member_ids").map(String).filter(Boolean);
+  const memberRoles = formData.getAll("member_roles").map(String);
+
+  const { error: deleteError } = await supabase.from("project_researcher").delete().eq("project_id", projectId);
+  if (deleteError) {
+    console.error("Project team clear failed:", deleteError.message);
+    return "The project was saved, but its team could not be updated. Try editing the project again.";
+  }
+
+  if (memberIds.length === 0) return null;
+
+  const rows = memberIds.map((researcherId, index) => ({
+    project_id: projectId,
+    researcher_id: researcherId,
+    role: memberRoles[index] === "lead" ? "lead" : "team_member",
+  }));
+
+  const { error: insertError } = await supabase.from("project_researcher").insert(rows);
+  if (insertError) {
+    console.error("Project team save failed:", insertError.message);
+    return "The project was saved, but its team could not be updated. Check that each researcher still exists.";
+  }
+  return null;
+}
+
 function projectSaveError(error: { code?: string }) {
   if (error.code === "42501") return "Your account does not have permission to save projects. Check the project RLS policies.";
   if (error.code === "23505") return "That project slug is already in use. Choose a different slug.";
@@ -84,11 +118,18 @@ export async function createProjectAction(
   const parsed = parseProject(formData);
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
-  const { error } = await context.supabase.from("project").insert(projectValues(parsed.data, formData));
-  if (error) {
-    console.error("Project create failed:", error.message);
-    return { error: projectSaveError(error) };
+  const { data: inserted, error } = await context.supabase
+    .from("project")
+    .insert(projectValues(parsed.data, formData))
+    .select("id")
+    .single();
+  if (error || !inserted) {
+    if (error) console.error("Project create failed:", error.message);
+    return { error: error ? projectSaveError(error) : "The project could not be saved. Check your connection and try again." };
   }
+
+  const teamError = await syncProjectTeam(context.supabase, inserted.id, formData);
+  if (teamError) return { error: teamError };
 
   revalidatePath("/admin");
   revalidatePath("/admin/projects");
@@ -125,6 +166,9 @@ export async function updateProjectAction(
         : "No project was updated. It may have been removed or your account may not have permission to edit it.",
     };
   }
+
+  const teamError = await syncProjectTeam(context.supabase, id.data, formData);
+  if (teamError) return { error: teamError };
 
   revalidatePath("/admin");
   revalidatePath("/admin/projects");

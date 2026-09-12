@@ -12,83 +12,83 @@ export async function FeaturedProject() {
   }
 
   return (
-<section className="relative overflow-hidden border-b border-[#d7d5cd] bg-[#153c2e] py-24 text-[#fffefb] max-sm:py-16">
-  <img
-    src="/tree.png"
-    alt=""
-    aria-hidden="true"
-    className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-30"
-  />
-
- 
-
-<div className={`${pageShell} relative z-10`}>    <div className="mb-12">
-      <FlaskConical
-        aria-hidden
-        className="mb-6"
-        size={28}
-        strokeWidth={1.4}
+    <section className="relative overflow-hidden border-b border-[#d7d5cd] bg-[#153c2e] py-24 text-[#fffefb] max-sm:py-16">
+      <img
+        src="/tree.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-30"
       />
 
-      <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#c7d4ce]">
-        Featured research
-      </p>
 
-      <h2 className={`${sectionTitle} mt-3`}>
-        One project from the work happening now.
-      </h2>
-    </div>
 
-    <div className="grid border border-[#6f8a7d] lg:grid-cols-[1.2fr_.8fr]">
-      <div className="p-8 sm:p-10">
+      <div className={`${pageShell} relative z-10`}>    <div className="mb-12">
+        <FlaskConical
+          aria-hidden
+          className="mb-6"
+          size={28}
+          strokeWidth={1.4}
+        />
+
         <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#c7d4ce]">
-          {project.research_area?.name ?? "Research"}
+          Featured research
         </p>
 
-        <h3 className="mt-4 max-w-2xl text-4xl leading-[1.05] font-medium tracking-[-0.03em] sm:text-5xl">
-          {project.title}
-        </h3>
-
-        {project.description && (
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#d7e0db]">
-            {project.description}
-          </p>
-        )}
-
-        <Link
-          className={buttonVariants({
-            variant: "link",
-            className: "mt-10 w-fit px-0 text-[#fffefb]",
-          })}
-          href={`/projects/${project.slug}`}
-        >
-          View project
-          <ArrowUpRight aria-hidden size={16} />
-        </Link>
+        <h2 className={`${sectionTitle} mt-3`}>
+          One project from the work happening now.
+        </h2>
       </div>
 
-      <div className="border-t border-[#6f8a7d] p-8 sm:p-10 lg:border-l lg:border-t-0">
-        <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#c7d4ce]">
-          Objective
-        </p>
+        <div className="grid border border-[#6f8a7d] lg:grid-cols-[1.2fr_.8fr]">
+          <div className="p-8 sm:p-10">
+            <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#c7d4ce]">
+              {project.research_area?.name ?? "Research"}
+            </p>
 
-        <p className="mt-4 text-xl leading-relaxed text-[#fffefb]">
-          {project.objective ??
-            "Explore the project's research objectives and current work."}
-        </p>
+            <h3 className="mt-4 max-w-2xl text-4xl leading-[1.05] font-medium tracking-[-0.03em] sm:text-5xl">
+              {project.title}
+            </h3>
 
-        <div className="mt-10 border-t border-[#6f8a7d] pt-6">
-          <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#c7d4ce]">
-            Research area
-          </p>
+            {project.description && (
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#d7e0db]">
+                {project.description}
+              </p>
+            )}
 
-          <p className="mt-2 text-lg font-medium">
-            {project.research_area?.name ?? "Not specified"}
-          </p>
+            <Link
+              className={buttonVariants({
+                variant: "link",
+                className: "mt-10 w-fit px-0 text-[#fffefb]",
+              })}
+              href={`/projects/${project.slug}`}
+            >
+              View project
+              <ArrowUpRight aria-hidden size={16} />
+            </Link>
+          </div>
+
+          <div className="border-t border-[#6f8a7d] p-8 sm:p-10 lg:border-l lg:border-t-0">
+            <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#c7d4ce]">
+              Objective
+            </p>
+
+            <p className="mt-4 text-xl leading-relaxed text-[#fffefb]">
+              {project.description ??
+                "Explore the project's research objectives and current work."}
+            </p>
+
+            <div className="mt-10 border-t border-[#6f8a7d] pt-6">
+              <p className="font-sans text-[10px] uppercase tracking-[0.16em] text-[#c7d4ce]">
+                Research area
+              </p>
+
+              <p className="mt-2 text-lg font-medium">
+                {project.research_area?.name ?? "Not specified"}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</section> 
+    </section>
   );
 }

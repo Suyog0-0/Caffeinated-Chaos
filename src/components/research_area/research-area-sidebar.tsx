@@ -1,7 +1,7 @@
 import { Users } from "lucide-react";
 import Link from "next/link";
 
-type Researcher = { id: string; initials: string; name: string };
+type Researcher = { id: string; initials: string; name: string; photoUrl?: string | null };
 type Publication = { id: string; type: string; year: number; title: string };
 
 export function ResearchAreaSidebar({
@@ -23,9 +23,18 @@ export function ResearchAreaSidebar({
               className="flex items-center gap-3 py-3 transition-colors hover:text-[#153c2e]"
               href={`/people/${researcher.id}`}
             >
-              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#eeeae0] font-sans text-[9px]">
-                {researcher.initials}
-              </span>
+              {researcher.photoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  alt=""
+                  className="size-12 shrink-0 rounded-full object-cover"
+                  src={researcher.photoUrl}
+                />
+              ) : (
+                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[#eeeae0] font-sans text-[10px]">
+                  {researcher.initials}
+                </span>
+              )}
               <span className="text-lg font-medium">{researcher.name}</span>
             </Link>
           </li>

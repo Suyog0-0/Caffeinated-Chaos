@@ -28,11 +28,17 @@ export default async function ProjectsPage() {
         ?.find((r) => r.role === "lead")?.researcher?.name ?? "—",
   }));
 
+  // Build the area filter options from the actual data instead of a hardcoded
+  // guess, so the "Research Area" filter always matches real project data.
+  const areaOptions = Array.from(
+    new Map(projects.filter((p) => p.areaSlug).map((p) => [p.areaSlug, p.area])).entries()
+  ).map(([slug, name]) => ({ slug, name }));
+
   return (
     <main className="pb-24">
       <ProjectsHero />
       <Suspense fallback={null}>
-        <ProjectFilters />
+        <ProjectFilters areaOptions={areaOptions} />
       </Suspense>
       <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)] pt-6">
         <Suspense fallback={null}>

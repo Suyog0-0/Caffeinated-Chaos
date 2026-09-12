@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ExternalLink, Pencil, Search, Users } from "lucide-react";
-import { DeleteResearcherButton } from "@/components/admin/delete-researcher-button";
+import { ChevronLeft, ChevronRight, Search, Users } from "lucide-react";
+import { ResearcherRow } from "@/components/admin/researcher-row";
 import { requireAdmin } from "@/app/admin/admin-auth";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 type Researcher = {
   id: string;
@@ -90,32 +90,24 @@ export async function ResearcherDirectory({
             <div className="admin-researcher-head" aria-hidden="true">
               <span>Researcher</span><span>Department</span><span>Status</span><span>Source</span><span>Actions</span>
             </div>
-            {researchers.map((researcher) => {
-              const initials = researcher.name.split(" ").map((part) => part[0]).join("").slice(0, 2);
-              return (
-                <article className="admin-researcher-row" key={researcher.id}>
-                  <div className="admin-researcher-name">
-                    <span>{initials}</span>
-                    <div><strong>{researcher.name}</strong><small>{researcher.position ?? researcher.email ?? "Position not added"}</small></div>
-                  </div>
-                  <p data-label="Department">{researcher.department ?? "Not assigned"}</p>
-                  <p data-label="Status"><i className={`admin-status admin-status-${researcher.publish_status}`}>{researcher.publish_status}</i></p>
-                  <p data-label="Source">{researcher.is_demo_data ? "Demo data" : "College record"}</p>
-                  <div className="admin-row-actions">
-                    <Link aria-label={`Edit ${researcher.name}`} href={`/admin/researchers/${researcher.id}/edit`} title="Edit researcher"><Pencil size={17} /></Link>
-                    <Link aria-label={`View ${researcher.name}'s public profile`} href={`/people/${researcher.id}`} title="View public profile"><ExternalLink size={17} /></Link>
-                    <DeleteResearcherButton id={researcher.id} name={researcher.name} />
-                  </div>
-                </article>
-              );
-            })}
+            {researchers.map((researcher) => (
+              <ResearcherRow key={researcher.id} researcher={researcher} />
+            ))}
           </div>
 
           {pageCount > 1 && (
             <nav aria-label="Researcher pages" className="admin-pagination">
-              {page > 1 ? <Link href={pageHref(page - 1, query, status)}>Previous</Link> : <span>Previous</span>}
-              <p>Page {page} of {pageCount}</p>
-              {page < pageCount ? <Link href={pageHref(page + 1, query, status)}>Next</Link> : <span>Next</span>}
+              {page > 1 ? (
+                <Link href={pageHref(page - 1, query, status)}><ChevronLeft size={15} /> Previous</Link>
+              ) : (
+                <span><ChevronLeft size={15} /> Previous</span>
+              )}
+              <p aria-live="polite">Page {page} of {pageCount}</p>
+              {page < pageCount ? (
+                <Link href={pageHref(page + 1, query, status)}>Next <ChevronRight size={15} /></Link>
+              ) : (
+                <span>Next <ChevronRight size={15} /></span>
+              )}
             </nav>
           )}
         </>

@@ -8,10 +8,13 @@ type Project = {
   slug: string;
   status: string;
   area: string;
+  areaSlug: string;
   title: string;
   summary: string;
   lead: string;
 };
+
+const PAGE_SIZE = 6;
 
 const getStatusStyles = (status: string) => {
   const normalized = (status || "").toLowerCase();
@@ -90,8 +93,13 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 <ArrowUpRight
                   className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
                   aria-hidden="true"
-                />
-              </Link>
+                  className="w-10 h-10 rounded-full border border-[#ded8cc] group-hover:border-[#0e2820] group-hover:bg-[#0e2820] flex items-center justify-center text-[#55645d] group-hover:text-white transition-all"
+                >
+                  <ArrowUpRight
+                    className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </article>

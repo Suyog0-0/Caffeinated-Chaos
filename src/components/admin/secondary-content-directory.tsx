@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { CalendarDays, Landmark, Megaphone, Pencil, Search } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, Landmark, Megaphone, Pencil, Search } from "lucide-react";
 import { requireAdmin } from "@/app/admin/admin-auth";
 import { DeleteSecondaryContentButton } from "@/components/admin/delete-secondary-content-button";
 import type { SecondaryContentKind } from "@/app/secondary-content-actions";
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 const config = {
   event: { route: "/admin/events", icon: CalendarDays, empty: "No events found", select: "id, title, event_type, location, start_at, publish_status, is_demo_data, created_at" },
   grant: { route: "/admin/grants", icon: Landmark, empty: "No grants found", select: "id, title, funder, deadline, status, publish_status, is_demo_data, created_at" },
@@ -79,7 +79,13 @@ export async function SecondaryContentDirectory({ kind, page, query, status }: {
           ))}
         </div>
       )}
-      {pageCount > 1 && <nav aria-label="Pages" className="admin-pagination">{page > 1 ? <Link href={pageHref(item.route, page - 1, query, status)}>Previous</Link> : <span>Previous</span>}<p>Page {page} of {pageCount}</p>{page < pageCount ? <Link href={pageHref(item.route, page + 1, query, status)}>Next</Link> : <span>Next</span>}</nav>}
+      {pageCount > 1 && (
+        <nav aria-label="Pages" className="admin-pagination">
+          {page > 1 ? <Link href={pageHref(item.route, page - 1, query, status)}><ChevronLeft size={15} /> Previous</Link> : <span><ChevronLeft size={15} /> Previous</span>}
+          <p aria-live="polite">Page {page} of {pageCount}</p>
+          {page < pageCount ? <Link href={pageHref(item.route, page + 1, query, status)}>Next <ChevronRight size={15} /></Link> : <span>Next <ChevronRight size={15} /></span>}
+        </nav>
+      )}
     </>
   );
 }

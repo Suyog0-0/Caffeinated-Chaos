@@ -1,0 +1,55 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ExternalLink, Pencil } from "lucide-react";
+import { DeleteResearcherButton } from "@/components/admin/delete-researcher-button";
+
+type ResearcherRowData = {
+  id: string;
+  name: string;
+  position: string | null;
+  department: string | null;
+  email: string | null;
+  publish_status: string;
+  is_demo_data: boolean;
+};
+
+export function ResearcherRow({ researcher }: { researcher: ResearcherRowData }) {
+  const router = useRouter();
+  const editHref = `/admin/researchers/${researcher.id}/edit`;
+  const initials = researcher.name.split(" ").map((part) => part[0]).join("").slice(0, 2);
+
+  function openEditor() {
+    router.push(editHref);
+  }
+
+  return (
+    <article
+      aria-label={`Edit ${researcher.name}`}
+      className="admin-researcher-row admin-clickable-row"
+      onClick={openEditor}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openEditor();
+        }
+      }}
+      role="link"
+      tabIndex={0}
+    >
+      <div className="admin-researcher-name">
+        <span>{initials}</span>
+        <div><strong>{researcher.name}</strong><small>{researcher.position ?? researcher.email ?? "Position not added"}</small></div>
+      </div>
+      <p data-label="Department">{researcher.department ?? "Not assigned"}</p>
+      <p data-label="Status"><i className={`admin-status admin-status-${researcher.publish_status}`}>{researcher.publish_status}</i></p>
+      <p data-label="Source">{researcher.is_demo_data ? "Demo data" : "College record"}</p>
+      <div className="admin-row-actions" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}>
+        <Link aria-label={`Edit ${researcher.name}`} href={editHref} title="Edit researcher"><Pencil size={17} /></Link>
+        <Link aria-label={`View ${researcher.name}'s public profile`} href={`/people/${researcher.id}`} title="View public profile"><ExternalLink size={17} /></Link>
+        <DeleteResearcherButton id={researcher.id} name={researcher.name} />
+      </div>
+    </article>
+  );
+}
