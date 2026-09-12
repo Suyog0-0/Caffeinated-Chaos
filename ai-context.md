@@ -45,4 +45,5 @@ This is the Islington College Research & Development Digital Hub.
 - `/publications` and `/publications/[id]`
 - `/admin` and `/admin/login`
 
-Next milestone: replace remaining dummy arrays (research-areas, publications) with Supabase reads and wire admin authentication/CRUD.
+Next milestone: replace dummy arrays with Supabase reads and wire admin authentication/CRUD.
+Next milestone: replace remaining dummy arrays (research-areas, people, publications) with Supabase reads and wire admin authentication/CRUD.
