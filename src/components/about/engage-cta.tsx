@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function EngageCTA() {
   return (
@@ -18,15 +19,20 @@ export function EngageCTA() {
             </p>
           </div>
           <div className="flex gap-4 justify-end max-lg:justify-start flex-wrap">
-            <Button className="bg-white text-[#0a2318] hover:bg-[#e5e4de] rounded-sm px-8 py-7 text-sm font-semibold tracking-wide">
+            <a 
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdG8Lb3SgR6PqoH6IYmZ8o9xGCdQDXtMgyl_l77-7DwuWCs-g/viewform" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-white text-[#0a2318] hover:bg-[#e5e4de] rounded-sm px-8 py-4 text-sm font-semibold tracking-wide transition-colors"
+            >
               Submit Research Proposal
-            </Button>
-            <Button
-              variant="outline"
-              className="border-[#47c97e] text-white hover:bg-white/10 hover:text-white rounded-sm px-8 py-7 text-sm font-semibold tracking-wide bg-transparent"
+            </a>
+            <Link 
+              href="/grants"
+              className="inline-flex items-center justify-center border border-[#47c97e] text-white hover:bg-white/10 hover:text-white rounded-sm px-8 py-4 text-sm font-semibold tracking-wide bg-transparent transition-colors"
             >
               Browse Active Grant Cycles
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

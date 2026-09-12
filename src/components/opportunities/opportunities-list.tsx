@@ -6,22 +6,22 @@ import { OpportunityCard, type Opportunity } from "./opportunity-card";
 export function OpportunitiesList({ opportunities }: { opportunities: Opportunity[] }) {
   const [activeFilter, setActiveFilter] = useState("All");
 
+  // Dynamically generate filter options based on the actual data
+  const uniqueTypes = Array.from(new Set(opportunities.map(op => op.type)));
+  
   const filterOptions = [
     { label: "All", value: "All" },
-    { label: "Assistantship", value: "Assistantship" },
-    { label: "Internship", value: "Internship" },
-    { label: "Call for Papers", value: "Call for Papers" },
-    { label: "Collaboration", value: "Collaboration" },
+    ...uniqueTypes.map(type => ({ label: type, value: type }))
   ];
 
   const filteredOpportunities = opportunities.filter(op => {
     if (activeFilter === "All") return true;
-    return op.type.toLowerCase().includes(activeFilter.toLowerCase());
+    return op.type === activeFilter;
   });
 
   const getFilterCount = (filterValue: string) => {
     if (filterValue === "All") return opportunities.length;
-    return opportunities.filter(op => op.type.toLowerCase().includes(filterValue.toLowerCase())).length;
+    return opportunities.filter(op => op.type === filterValue).length;
   };
 
   return (

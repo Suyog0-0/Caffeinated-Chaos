@@ -17,12 +17,14 @@ export function OpportunitiesCTA() {
         </div>
         
         <div className="flex items-center gap-4 shrink-0">
-          <Link 
-            href="/admin/opportunities/new" 
+          <a 
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdG8Lb3SgR6PqoH6IYmZ8o9xGCdQDXtMgyl_l77-7DwuWCs-g/viewform" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-[#0B3B24] hover:bg-[#072517] text-white px-6 py-3 rounded-lg font-medium transition-colors text-sm"
           >
             Submit Opportunity Notice
-          </Link>
+          </a>
 
         </div>
       </div>
