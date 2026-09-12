@@ -6,12 +6,12 @@ import { Card } from "@/components/ui/card";
 // Islington Journal of Multidisciplinary Research — swap these links for
 // the journal's real URLs / internal routes once they're available.
 const IJMR_LINKS = {
-  about: "/ijmr",
+  about: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/about",
   visit: "https://ijmr.islingtoncollege.edu.np",
-  latestArticles: "/ijmr/articles",
-  currentIssue: "/ijmr/current-issue",
-  submitPaper: "/ijmr/submit",
-  callForPapers: "/ijmr/call-for-papers",
+  latestArticles: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/index",
+  currentIssue: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/issue/view/2",
+  submitPaper: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/about/submissions",
+  callForPapers: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR/login?source=https%3A%2F%2Fijmr.islingtoncollege.edu.np%2Findex.php%2FIJMR%2Fsubmission",
 };
 
 export function IJMRSection() {
@@ -39,7 +39,9 @@ export function IJMRSection() {
               variant="outline"
               className="border-[#f4f2ec]/40 bg-transparent text-[#f4f2ec] hover:bg-white/10"
             >
-              <Link href={IJMR_LINKS.about}>About IJMR</Link>
+              <a href={IJMR_LINKS.about} target="_blank" rel="noreferrer">
+                About IJMR
+              </a>
             </Button>
           </div>
         </div>
