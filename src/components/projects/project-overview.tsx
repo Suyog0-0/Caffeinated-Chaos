@@ -1,7 +1,7 @@
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Separator } from "@/src/components/ui/separator";
 
 type Publication = {
   id: string;
