@@ -1,7 +1,7 @@
 import { createServerClient } from "@/src/supabase/server";
-import { PeopleHeader } from "@/components/people/people-hero";
-import { PersonList } from "@/components/people/person-list";
-import { PersonFilters } from "@/components/people/person-filters";
+import { PeopleHeader } from "@/src/components/people/people-hero";
+import { PersonList } from "@/src/components/people/person-list";
+import { PersonFilters } from "@/src/components/people/person-filters";
 
 export default async function PeoplePage({
   searchParams,
@@ -24,7 +24,7 @@ export default async function PeoplePage({
   if (department && department !== "All Departments" && department !== "All Faculty") {
     req = req.eq("department", department);
   }
-  
+
   if (query) {
     req = req.ilike("name", `%${query}%`);
   }
@@ -35,7 +35,7 @@ export default async function PeoplePage({
     // Determine counts from the aggregated array response
     const projectsArray = r.project_researcher as unknown as { count: number }[];
     const papersArray = r.publication_author as unknown as { count: number }[];
-    
+
     // In PostgREST, count=exact returns [{ count: N }] when selecting a related table with just count. 
     // If it's returning the rows themselves, taking length is fine. Let's handle both.
     const projectsCount = projectsArray?.[0]?.count ?? projectsArray?.length ?? 0;

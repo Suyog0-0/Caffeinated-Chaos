@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { createServerClient } from "@/src/supabase/server";
-import { ProjectDetailHero } from "@/components/projects/project-detail-hero";
-import { ProjectOverview } from "@/components/projects/project-overview";
-import { ProjectSidebar } from "@/components/projects/project-sidebar";
+import { ProjectDetailHero } from "@/src/components/projects/project-detail-hero";
+import { ProjectOverview } from "@/src/components/projects/project-overview";
+import { ProjectSidebar } from "@/src/components/projects/project-sidebar";
 
 export default async function ProjectSlugPage({
   params,
