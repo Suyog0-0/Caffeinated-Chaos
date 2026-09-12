@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ArrowUpRight, BookOpen, FileUp, Megaphone, Newspaper } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 // Islington Journal of Multidisciplinary Research — swap these links for
 // the journal's real URLs / internal routes once they're available.
@@ -21,26 +22,34 @@ export function IJMRSection() {
         <p className="text-sm font-medium text-[#9fb8a8]">
           Islington Journal of Multidisciplinary Research
         </p>
+
         <div className="mt-4 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <h2 className="max-w-xl font-serif text-4xl leading-tight md:text-5xl">
             Where our partners publish their findings.
           </h2>
+
           <div className="flex flex-wrap gap-3">
-            <Button
-              asChild
-              className="bg-white text-[#0d2818] hover:bg-neutral-100"
+            <a
+              href={IJMR_LINKS.visit}
+              target="_blank"
+              rel="noreferrer"
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                "bg-white text-[#0d2818] hover:bg-neutral-100"
+              )}
             >
-              <a href={IJMR_LINKS.visit} target="_blank" rel="noreferrer">
-                Visit IJMR
-              </a>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-[#f4f2ec]/40 bg-transparent text-[#f4f2ec] hover:bg-white/10"
+              Visit IJMR
+            </a>
+
+            <Link
+              href={IJMR_LINKS.about}
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "border-[#f4f2ec]/40 bg-transparent text-[#f4f2ec] hover:bg-white/10"
+              )}
             >
-              <Link href={IJMR_LINKS.about}>About IJMR</Link>
-            </Button>
+              About IJMR
+            </Link>
           </div>
         </div>
 
@@ -51,18 +60,21 @@ export function IJMRSection() {
             description="Recent research published by our partners and researchers."
             href={IJMR_LINKS.latestArticles}
           />
+
           <IJMRCard
             icon={<BookOpen className="h-5 w-5" />}
             title="Current issue"
             description="Browse the full table of contents for the latest volume."
             href={IJMR_LINKS.currentIssue}
           />
+
           <IJMRCard
             icon={<FileUp className="h-5 w-5" />}
             title="Submit a paper"
             description="Guidelines and the submission portal for new manuscripts."
             href={IJMR_LINKS.submitPaper}
           />
+
           <IJMRCard
             icon={<Megaphone className="h-5 w-5" />}
             title="Call for papers"
@@ -87,12 +99,15 @@ function IJMRCard({
   href: string;
 }) {
   const isExternal = href.startsWith("http");
+
   const content = (
     <Card className="h-full rounded-md border border-white/15 bg-white/5 p-6 transition-colors hover:border-white/40 hover:bg-white/10">
       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
         {icon}
       </div>
+
       <h3 className="mt-4 font-serif text-lg text-white">{title}</h3>
+
       <p className="mt-2 text-sm leading-relaxed text-[#cdd8cf]">
         {description}
       </p>
