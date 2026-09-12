@@ -15,10 +15,7 @@ type PublicationRow = {
   publication_author: PublicationAuthorRow[];
 };
 
-// All filtering/search/sorting happens client-side in PublicationLibrary — this
-// page takes no searchParams and has nothing request-specific about it, so it
-// can be cached and revalidated periodically instead of re-querying Supabase
-// on every single request.
+
 export const revalidate = 300;
 
 export default async function PublicationsPage() {
