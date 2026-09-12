@@ -1,3 +1,4 @@
+<!-- spec.md -->
 # UI specification
 
 ## Goal
@@ -16,7 +17,9 @@ Provide a responsive research-discovery website where visitors can move between 
 
 ## Page status
 
-Projects, People and Research Areas pages read from Supabase, and Research Areas also has working search/status/sort filters and restyled editorial cards (rounded, 12-col grid matching the reference design). The Research Area detail page now mirrors the Publication detail page's profile layout (hero fact list limited to real `research_area` columns; project cards and the People sidebar styled to match `publication-overview.tsx`/`publication-sidebar.tsx`). Publications and the admin/login views still use dummy content. Directory filters and admin buttons are visual placeholders except on Research Areas and Publications, which are wired up. Supabase authentication and write actions are intentionally deferred to the next milestone.
+All public pages and the admin/login views exist with dummy content. Directory filters and admin buttons are visual placeholders. Supabase data, authentication and write actions are intentionally deferred to the next milestone.
+- Documentary images are used only where they add context (picsum.photos placeholders for now).
+- Use TailwindCSS and shadcn components while preserving the minimal editorial design.
 
 ## Component naming convention
 
@@ -32,4 +35,21 @@ Same pattern applies to other features (research-areas, publications).
 
 ## Page status
 
-Projects, People and Research Areas pages read from Supabase. Publications and the admin/login views still use dummy content from `lib/dummy-data.ts`. Directory filters and admin buttons are visual placeholders. Supabase authentication and write actions are intentionally deferred to the next milestone.
+All public pages and the admin/login views exist with dummy content from `lib/dummy-data.ts`. Directory filters and admin buttons are visual placeholders. Supabase data, authentication and write actions are intentionally deferred to the next milestone.
+
+## People page performance
+
+- `/people` streams: the hero and filter bar render immediately; the researcher grid is fetched in `components/people/person-results.tsx` and streamed in via `<Suspense>`, with `person-list-skeleton.tsx` as the loading placeholder.
+- `/people` and `/people/[id]` use `src/supabase/server.ts` (`createServerClient`), not the browser client, since they run only on the server.
+- `/people/[id]` sets `revalidate = 300` (5 minutes) so a given researcher's profile is cached instead of re-querying Supabase on every visit.
+
+## Publications page performance
+
+- `/publications` fetches the full published list once per request and filters/sorts it entirely client-side in `PublicationLibrary` — there's no `searchParams` or per-request dynamism, so the page is now cached with `revalidate = 300` instead of forcing a fresh Supabase query every time (`revalidate = 0` previously).
+- Uses `src/supabase/server.ts` (`createServerClient`) instead of the browser client.
+
+## Projects page performance
+
+- `/projects` now sets `revalidate = 300` — the list query (project + research area + project team) doesn't depend on `searchParams`, so it's cached instead of re-fetched on every request.
+- Uses `src/supabase/server.ts` (`createServerClient`) instead of the browser client.
+- `ProjectFilters` updates the URL query string, but the list is not currently filtered by it server- or client-side; this was already the case before this change and was left alone.
