@@ -1,6 +1,7 @@
 import { FeaturedProject } from "@/components/home/home-featured-project";
 import { Hero } from "@/components/home/home-hero";
 import { Metrics } from "@/components/home/home-metrics";
+import { Publications } from "@/components/home/home-publications";
 import { ResearchAreas } from "@/components/home/home-research-areas";
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
       <Metrics />
       <ResearchAreas />
       <FeaturedProject />
-
+      <Publications />
     </main>
   );
 }
