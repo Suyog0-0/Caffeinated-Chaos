@@ -16,7 +16,7 @@ export async function PersonResults({
     let req = supabase
         .from("researcher")
         .select(`
-      id, name, department, position,
+      id, name, department, position, photo_url,
       project_researcher(count),
       publication_author(count)
     `)
@@ -49,6 +49,7 @@ export async function PersonResults({
             department: r.department ?? "—",
             name: r.name,
             position: r.position ?? "—",
+            photoUrl: r.photo_url ?? null,
             projects: projectsCount,
             papers: papersCount,
         };
