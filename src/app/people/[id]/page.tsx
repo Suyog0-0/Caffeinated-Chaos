@@ -1,10 +1,15 @@
+// src/app/people/[id]/page.tsx
 import { notFound } from "next/navigation";
-import { createClient } from "@/supabase/client";
+import { createServerClient } from "@/supabase/server";
 import Link from "next/link";
+
+// Public profile content doesn't need to be re-fetched on every request;
+// cache the rendered page for 5 minutes per researcher id.
+export const revalidate = 300;
 
 export default async function ResearcherProfile({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const { data: p } = await supabase
     .from("researcher")
