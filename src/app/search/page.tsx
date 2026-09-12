@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
-import { Search, ArrowRight, ChevronRight, FileText, Download } from "lucide-react";
+import { Search, ArrowRight, ChevronRight } from "lucide-react";
 
 export default async function SearchPage({
   searchParams,
@@ -15,6 +15,7 @@ export default async function SearchPage({
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let results: any[] = [];
   
   if (query) {
@@ -30,10 +31,12 @@ export default async function SearchPage({
   }
 
   // Group results
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const grouped = results.reduce((acc, result) => {
     if (!acc[result.result_type]) acc[result.result_type] = [];
     acc[result.result_type].push(result);
     return acc;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }, {} as Record<string, any[]>);
 
   const areas = grouped["research_area"] || [];
@@ -52,7 +55,7 @@ export default async function SearchPage({
   };
 
   const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    return name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase();
   };
 
   return (
@@ -124,7 +127,7 @@ export default async function SearchPage({
         {/* Results Sections */}
         {query && results.length === 0 && (
           <div className="text-center py-20 text-gray-500 text-lg font-serif">
-            No results found for "{query}". Please try a different term.
+            No results found for &quot;{query}&quot;. Please try a different term.
           </div>
         )}
 
@@ -144,7 +147,6 @@ export default async function SearchPage({
                   <Link key={item.id} href={getUrl("research_area", item.id)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-md transition-all flex flex-col group">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="text-xl font-serif text-[#0B3B24] font-semibold">{item.title}</h3>
-                      <span className="text-[10px] uppercase tracking-wider bg-gray-100 text-gray-500 px-2 py-1 rounded">Cluster</span>
                     </div>
                     <p className="text-gray-600 text-sm leading-relaxed mb-6 flex-1">{item.description}</p>
                     <div className="flex justify-between items-center pt-4 border-t border-gray-100 text-xs text-gray-500 font-medium">
@@ -228,7 +230,7 @@ export default async function SearchPage({
             <section>
               <div className="flex justify-between items-baseline mb-6 border-b border-gray-200 pb-2">
                 <h2 className="text-2xl font-serif text-[#0B3B24] flex items-center gap-3">
-                  Publications & Preprints <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-md font-sans">{publications.length} results</span>
+                  Publications <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-md font-sans">{publications.length} results</span>
                 </h2>
               </div>
               <div className="flex flex-col gap-4">
@@ -247,14 +249,6 @@ export default async function SearchPage({
                         <div className="text-xs text-gray-500">
                           Authors: <span className="text-gray-700">{authors}</span>
                         </div>
-                      </div>
-                      <div className="flex gap-3 w-full md:w-auto mt-4 md:mt-0">
-                        <button className="flex-1 md:flex-none px-4 py-2 border border-gray-200 text-gray-600 text-xs font-medium rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2">
-                          Read Abstract
-                        </button>
-                        <button className="flex-1 md:flex-none px-4 py-2 bg-[#0B3B24] text-white text-xs font-medium rounded-lg hover:bg-[#072517] flex items-center justify-center gap-2">
-                          <Download size={14} /> PDF
-                        </button>
                       </div>
                     </div>
                   );
