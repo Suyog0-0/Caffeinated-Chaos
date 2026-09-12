@@ -30,7 +30,7 @@ export function PublicationDetailHero({ publication }: { publication: Publicatio
                 {publication.title}
             </h1>
             <p className="mt-6 max-w-2xl text-xl text-[#405149]">{publication.authors}</p>
-            <dl className="mt-12 flex gap-14 max-sm:grid max-sm:gap-4">
+            <dl className="mt-12 flex gap-14 manpmx-sm:grid max-sm:gap-4">
                 {facts.map(([term, value]) => (
                     <div key={term}>
                         <dt className="font-sans text-[9px] text-[#405149]">{term}</dt>
