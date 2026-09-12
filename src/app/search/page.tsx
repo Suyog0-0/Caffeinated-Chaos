@@ -60,14 +60,15 @@ export default async function SearchPage({
   const researchers = grouped["researcher"] || [];
   const projects = grouped["project"] || [];
   const publications = grouped["publication"] || [];
+  const events = grouped["event"] || [];
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getUrl = (type: string, id: string, metadata?: any) => {
     switch (type) {
       case "research_area": return `/research-areas/${metadata?.slug || id}`;
       case "researcher": return `/people/${id}`;
       case "project": return `/projects/${metadata?.slug || id}`;
       case "publication": return `/publications/${id}`;
+      case "event": return `/events/${id}`;
       default: return "#";
     }
   };
@@ -265,6 +266,9 @@ export default async function SearchPage({
               <div className="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full font-medium">
                 Publications <span className="ml-1 opacity-50">{publications.length}</span>
               </div>
+              <div className="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full font-medium">
+                Events <span className="ml-1 opacity-50">{events.length}</span>
+              </div>
             </div>
             <div className="text-gray-500">
               Showing {results.length} of {results.length} results
@@ -401,6 +405,30 @@ export default async function SearchPage({
                     </div>
                   );
                 })}
+              </div>
+            </section>
+          )}
+
+          {/* Events */}
+          {events.length > 0 && (
+            <section>
+              <div className="flex justify-between items-baseline mb-6 border-b border-gray-200 pb-2">
+                <h2 className="text-2xl font-serif text-[#0B3B24] flex items-center gap-3">
+                  Events <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded-md font-sans">{events.length} results</span>
+                </h2>
+              </div>
+              <div className="flex flex-col gap-4">
+                {events.map((item: any) => (
+                    <Link key={item.id} href={getUrl("event", item.id, item.metadata)} className="bg-white rounded-2xl p-6 border border-gray-200 hover:shadow-sm transition-all flex flex-col md:flex-row justify-between items-center gap-6 group">
+                      <div className="flex-1">
+                        <div className="text-[10px] uppercase tracking-wider text-gray-400 font-medium mb-2">
+                          {item.metadata?.event_type || 'Event'} • {item.metadata?.location || 'Location'}
+                        </div>
+                        <h3 className="text-lg font-serif text-[#0B3B24] font-semibold mb-2 group-hover:underline">{item.title}</h3>
+                        {item.description && <p className="text-gray-600 text-sm mb-3 line-clamp-1">{item.description}</p>}
+                      </div>
+                    </Link>
+                ))}
               </div>
             </section>
           )}
