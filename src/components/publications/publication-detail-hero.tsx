@@ -1,5 +1,11 @@
 import { BookOpen } from "lucide-react";
 import Link from "next/link";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+    display: "swap",
+    subsets: ["latin"],
+});
 
 type Publication = {
     type: string;
@@ -31,11 +37,11 @@ export function PublicationDetailHero({ publication }: { publication: Publicatio
                 {publication.title}
             </h1>
             <p className="mt-6 max-w-2xl text-2xl text-[#405149]">{publication.authors}</p>
-            <dl className="mt-12 flex gap-14 manpmx-sm:grid max-sm:gap-4">
+            <dl className={`${inter.className} mt-12 flex gap-14 max-sm:grid max-sm:gap-4`}>
                 {facts.map(([term, value]) => (
                     <div key={term}>
-                        <dt className="font-sans text-[11px] text-[#405149]">{term}</dt>
-                        <dd className="mt-1 text-xl">{value}</dd>
+                        <dt className="text-[11px] font-semibold text-[#405149]">{term}</dt>
+                        <dd className="mt-1 text-xl font-medium">{value}</dd>
                     </div>
                 ))}
             </dl>

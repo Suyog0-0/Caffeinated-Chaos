@@ -81,9 +81,11 @@ export function ProjectList({ projects }: { projects: Project[] }) {
         const style = getStatusStyles(project.status);
 
         return (
-          <article
+          <Link
             key={project.slug}
-            className="group rounded-sm border border-[#e5dfd3] bg-white p-6 shadow-xs transition-all duration-200 hover:border-[#0e2820] hover:shadow-md sm:p-7"
+            aria-label={`View ${project.title} project`}
+            href={`/projects/${project.slug}`}
+            className="group block cursor-pointer rounded-sm border border-[#e5dfd3] bg-white p-6 shadow-xs transition-all duration-200 hover:border-[#0e2820] hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0e2820] sm:p-7"
           >
             <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-start">
               <div className="flex-1">
@@ -94,34 +96,40 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                     {style.label}
                   </span>
 
-                  <span className="rounded bg-[#f5f2ea] px-2 py-0.5 font-mono text-xs text-[#68726c]">
+                  <span className="rounded bg-[#f5f2ea] px-2 py-0.5 text-xs font-medium text-[#68726c]">
                     {project.area}
                   </span>
                 </div>
 
-                <h2 className="mb-2.5 font-inter text-2xl font-semibold tracking-tight text-[#141d18] transition-colors group-hover:text-[#0e2820] md:text-[1.7rem]">
+                <h2
+                  className="mb-2.5 font-semibold tracking-tight text-[#141d18] transition-colors group-hover:text-[#0e2820]"
+                  style={{
+                    fontFamily:
+                      'Garamond, "EB Garamond", "Times New Roman", serif',
+                    fontSize: "2rem",
+                  }}
+                >
                   {project.title}
                 </h2>
 
-                <p className="max-w-4xl text-sm font-light leading-relaxed text-[#425048] md:text-[15px]">
+                <p className="max-w-4xl text-justify text-sm font-normal leading-relaxed text-[#425048] md:text-[15px]">
                   {project.summary}
                 </p>
               </div>
 
               <div className="flex shrink-0 items-center justify-end self-end pt-4 lg:self-start lg:pt-0">
-                <Link
-                  aria-label={`View ${project.title} project`}
-                  href={`/projects/${project.slug}`}
+                <span
+                  aria-hidden="true"
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ded8cc] text-[#55645d] transition-all group-hover:border-[#0e2820] group-hover:bg-[#0e2820] group-hover:text-white"
                 >
                   <ArrowUpRight
                     className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                     aria-hidden="true"
                   />
-                </Link>
+                </span>
               </div>
             </div>
-          </article>
+          </Link>
         );
       })}
     </div>

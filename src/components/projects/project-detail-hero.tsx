@@ -1,5 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 type Project = {
   status: string;
@@ -57,18 +63,18 @@ export function ProjectDetailHero({ project }: { project: Project }) {
             {project.title}
           </h1>
 
-          <p className="mt-8 max-w-2xl text-xl leading-relaxed text-white/80">
+          <p className={`${inter.className} mt-8 max-w-2xl text-justify text-xl leading-relaxed text-white/80`}>
             {project.summary}
           </p>
 
-          <dl className="mt-12 flex gap-16 max-sm:grid max-sm:gap-5">
+          <dl className={`${inter.className} mt-12 flex gap-16 max-sm:grid max-sm:gap-5`}>
             {facts.map(([term, value]) => (
               <div key={term}>
-                <dt className="font-sans text-[9px] uppercase tracking-wider text-white/60">
+                <dt className="text-[10px] font-bold uppercase tracking-wider text-white/70">
                   {term}
                 </dt>
 
-                <dd className="mt-1 text-lg text-white">
+                <dd className="mt-1 text-lg font-semibold text-white">
                   {value}
                 </dd>
               </div>
