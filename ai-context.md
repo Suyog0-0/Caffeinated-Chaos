@@ -7,7 +7,7 @@ This is the Islington College Research & Development Digital Hub.
 - **Projects and People pages** (`/projects`, `/projects/[slug]`, `/people`, `/people/[id]`) now read from Supabase (`publish_status = 'published'`).
 - Other public pages (research-areas, publications) still use dummy data from `lib/dummy-data.ts`.
 - Supabase core schema and RLS migration are already deployed.
-- Server Components use `src/supabase/server.ts` (`createServerClient`) for anon reads.
+- Server Components use `src/supabase/client.ts` (`createClient`) for anon reads (simplification).
 - The visual direction is editorial, minimal and Garamond-led.
 - Do not use gradients or generic rounded-card layouts.
 - Header is sticky and has no utility bar.
