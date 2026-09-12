@@ -1,10 +1,23 @@
-import Image from "next/image";
+// src/components/partners/partner-detail-hero.tsx
+
 import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { PartnerRecord } from "./partners-actions";
 
-export function PartnerDetailHero({ partner }: { partner: PartnerRecord }) {
+export function PartnerDetailHero({
+  partner,
+}: {
+  partner: PartnerRecord;
+}) {
+  const initials = partner.name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+
   return (
     <section className="bg-[#f4f2ec] px-6 pb-14 pt-10 md:px-10 lg:px-16">
       <div className="mx-auto max-w-5xl">
@@ -17,30 +30,15 @@ export function PartnerDetailHero({ partner }: { partner: PartnerRecord }) {
         </Link>
 
         <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-          <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#eef0ea] font-serif text-2xl text-[#0d2818]">
-            {partner.logo_url ? (
-              <Image
-                src={partner.logo_url}
-                alt={partner.name}
-                width={80}
-                height={80}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <span>
-                {partner.name
-                  .split(" ")
-                  .slice(0, 2)
-                  .map((w) => w[0])
-                  .join("")}
-              </span>
-            )}
+          <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-[#eef0ea] font-serif text-2xl font-semibold text-[#0d2818]">
+            {initials}
           </div>
 
           <div>
             <h1 className="font-serif text-4xl text-[#0d2818] md:text-5xl">
               {partner.name}
             </h1>
+
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {partner.partner_type && (
                 <Badge
@@ -50,6 +48,7 @@ export function PartnerDetailHero({ partner }: { partner: PartnerRecord }) {
                   {partner.partner_type}
                 </Badge>
               )}
+
               {partner.research_area_name && (
                 <Badge
                   variant="outline"
