@@ -1,6 +1,9 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function SiteHeader() {
+  const path = usePathname();
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `
@@ -140,8 +143,12 @@ input {
   background: var(--forest);
   transition: right 0.2s ease;
 }
-.primary-nav a:hover:after {
+.primary-nav a:hover:after,
+.primary-nav a.active:after {
   right: 0;
+}
+.primary-nav a.active {
+  font-weight: 700;
 }
 .header-search-link {
   display: flex;
@@ -959,11 +966,11 @@ input {
             </span>
           </Link>
           <nav className="primary-nav" aria-label="Primary navigation">
-            <Link href="/research-areas">Research areas</Link>
-            <Link href="/people">People</Link>
-            <Link href="/projects">Projects</Link>
-            <Link href="/publications">Publications</Link>
-            <Link href="/aboutsection">About R&amp;D</Link>
+            <Link href="/research-areas" className={path.startsWith("/research-areas") ? "active" : ""}>Research areas</Link>
+            <Link href="/people" className={path.startsWith("/people") ? "active" : ""}>People</Link>
+            <Link href="/projects" className={path.startsWith("/projects") ? "active" : ""}>Projects</Link>
+            <Link href="/publications" className={path.startsWith("/publications") ? "active" : ""}>Publications</Link>
+            <Link href="/aboutsection" className={path.startsWith("/aboutsection") ? "active" : ""}>About R&amp;D</Link>
           </nav>
           <Link className="header-search-link" href="/search" aria-label="Search research">
             <svg

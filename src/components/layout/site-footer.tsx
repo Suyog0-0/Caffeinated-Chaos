@@ -33,6 +33,7 @@ export function SiteFooter() {
   font-size: 12px;
 }
 .footer-grid > div > a {
+  display: block;
   margin: 9px 0;
   color: #edf2ef;
   font-size: 16px;
@@ -822,6 +823,10 @@ export function SiteFooter() {
 }
 
 @media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 34px;
+  }
   .profile-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -868,6 +873,9 @@ export function SiteFooter() {
   }
 }
 @media (max-width: 650px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
   .page-hero {
     padding-block: 60px 45px;
   }

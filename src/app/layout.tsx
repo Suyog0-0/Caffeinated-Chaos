@@ -6,7 +6,7 @@ import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const ebGaramond = EB_Garamond({
   variable: "--font-eb-garamond",
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn("font-sans", geist.variable)} data-scroll-behavior="smooth">
       <body style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <SiteHeader />
 
