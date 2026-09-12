@@ -194,8 +194,9 @@ body:has(.admin-surface) > .site-footer {
 .admin-researcher-head { min-height: 42px; color: #68756f; font-size: 11px; font-weight: 700; }
 .admin-researcher-row { min-height: 82px; border-top: 1px solid #d4d5ce; }
 .admin-researcher-name { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.admin-researcher-name > div { min-width: 0; flex: 1 1 auto; }
 .admin-researcher-name > span { width: 40px; height: 40px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; background: #e7e8e2; color: #36594b; font-size: 12px; font-weight: 700; }
-.admin-researcher-name strong, .admin-researcher-name small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-researcher-name strong, .admin-researcher-name small { display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .admin-researcher-name strong { font-family: var(--font-sans); font-size: 21px; font-weight: 600; }
 .admin-researcher-name small, .admin-researcher-row > p { margin: 2px 0 0; color: #68756f; font-size: 12px; }
 .admin-status { display: inline-flex; padding: 4px 8px; border: 1px solid #c8cbc4; border-radius: 20px; color: #53645c; font-size: 11px; font-style: normal; text-transform: capitalize; }
@@ -282,7 +283,7 @@ body:has(.admin-surface) > .site-footer {
 .admin-checkbox strong, .admin-checkbox small { display: block; }
 .admin-checkbox small { margin-top: 3px; color: #68756f; font-size: 12px; font-weight: 400; }
 .admin-editor-error { margin: 16px 0 0; padding: 13px 16px; border: 1px solid #d9aaa6; background: #f6e9e7; color: #8a2c25; font-size: 13px; }
-.admin-form-actions { display: flex; justify-content: flex-end; align-items: center; gap: 14px; padding-top: 22px; }
+.admin-form-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 14px; padding-top: 22px; padding-bottom: 4px; }
 .admin-form-actions > a { color: #53645c; font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
 .admin-form-actions button { min-height: 48px; display: inline-flex; align-items: center; gap: 9px; padding: 0 18px; border: 0; background: #153c2e; color: #fff; cursor: pointer; font-size: 13px; font-weight: 700; }
 .admin-form-actions button:disabled { cursor: not-allowed; opacity: .6; }
@@ -355,7 +356,7 @@ body:has(.admin-surface) > .site-footer {
   .admin-filters > a { justify-self: start; }
   .admin-researcher-head { display: none; }
   .admin-researcher-row { grid-template-columns: 1fr auto; gap: 13px; padding: 20px 0; }
-  .admin-researcher-name { grid-column: 1; }
+  .admin-researcher-name { grid-column: 1; min-width: 0; }
   .admin-researcher-row > p { grid-column: 1; display: grid; grid-template-columns: 90px 1fr; margin: 0; }
   .admin-researcher-row > p::before { content: attr(data-label); color: #374a41; font-weight: 700; }
   .admin-researcher-row > p:nth-child(4) { display: grid; }
@@ -363,6 +364,9 @@ body:has(.admin-surface) > .site-footer {
   .admin-delete-confirm { top: 40px; }
   .admin-form-heading { display: block; padding: 22px 20px; }
   .admin-form-grid { grid-template-columns: 1fr; padding: 20px; }
+  .admin-form-actions { flex-direction: column-reverse; align-items: stretch; gap: 10px; padding: 18px 20px 4px; }
+  .admin-form-actions button { width: 100%; justify-content: center; }
+  .admin-form-actions > a { text-align: center; }
   .admin-field-full { grid-column: auto; }
   .admin-empty-state { min-height: 300px; padding: 28px; }
   .admin-login-page { display: block; }
