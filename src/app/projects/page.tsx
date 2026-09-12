@@ -26,8 +26,8 @@ export default async function ProjectsPage() {
   return (
     <main className="pb-24">
       <ProjectsHero />
-      <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
-        <ProjectFilters />
+      <ProjectFilters />
+      <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)] pt-6">
         <ProjectList projects={projects} />
       </section>
     </main>
