@@ -1,50 +1,57 @@
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-
-export function OpportunitiesHero({ totalOpenings, nextCycleCutoff }: { totalOpenings: number; nextCycleCutoff: string }) {
+export function OpportunitiesHero({
+  totalOpenings,
+  nextCycleCutoff,
+}: {
+  totalOpenings: number;
+  nextCycleCutoff: string;
+}) {
   return (
-    <section className="bg-[#F8F7F4] pt-32 pb-12 px-6 md:px-12 border-b border-[#E5E2D9] font-sans">
-      <div className="max-w-[1400px] mx-auto">
-        <div className="flex items-center gap-2 text-xs font-medium text-gray-500 mb-8">
-          <Link href="/search" className="hover:text-gray-900 transition-colors">
-            Academic Repository & Vacancies
-          </Link>
-          <ChevronRight size={14} className="text-gray-400" />
-          <span className="text-gray-900">Academic Year 2026/2027</span>
-        </div>
+    <header className="border-b border-[#d7d5cd] bg-[#f7f5ef] text-[#17251f]">
+      <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] py-16 max-sm:w-[calc(100%_-_32px)] sm:py-20 lg:py-24">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end lg:gap-20">
+          <div className="max-w-4xl">
+            <p className="mb-6 text-sm font-semibold text-[#52635b]">
+              Opportunities <span className="mx-2 text-[#a4ada7]">/</span>
+              Academic year 2026–27
+            </p>
 
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-serif text-[#0B3B24] mb-6 tracking-tight">
-              Academic Opportunities & Research Alliances
+            <h1
+              className="max-w-[16ch] text-[clamp(3.25rem,6.5vw,5.75rem)] font-normal leading-[0.94] tracking-[-0.045em] text-[#153c2e]"
+              style={{
+                fontFamily:
+                  'Garamond, "EB Garamond", "Times New Roman", serif',
+              }}
+            >
+              Find the work that moves your research forward.
             </h1>
-            <p className="text-gray-600 text-lg leading-relaxed max-w-2xl">
-              Assistantships, funded doctoral studentships, research internships, calls for papers, and active industry collaboration openings across Islington R&D labs.
+
+            <p className="mt-7 max-w-2xl text-base leading-7 text-[#52635b] sm:text-lg sm:leading-8">
+              Explore funded research roles, doctoral opportunities, calls for
+              papers, and collaboration openings across Islington R&amp;D.
             </p>
           </div>
 
-          <div className="bg-[#EFECE5] border border-[#E5E2D9] rounded-xl p-6 flex flex-col sm:flex-row gap-8 lg:min-w-[400px] shadow-sm">
-            <div>
-              <div className="text-xs font-medium text-gray-500 lowercase mb-2">
-                AVAILABLE OPENINGS
-              </div>
-              <div className="text-2xl font-serif font-semibold text-[#0B3B24]">
-                {totalOpenings} Positions
-              </div>
+          <dl className="grid grid-cols-2 border-y border-[#bfc5c0] lg:grid-cols-1">
+            <div className="py-5 pr-5 lg:grid lg:grid-cols-[1fr_auto] lg:items-end lg:gap-6 lg:pr-0">
+              <dt className="text-xs font-semibold text-[#68776f]">
+                Open listings
+              </dt>
+              <dd className="mt-2 text-3xl font-semibold tracking-[-0.035em] text-[#153c2e] lg:mt-0">
+                {totalOpenings.toString().padStart(2, "0")}
+              </dd>
             </div>
-            <div className="w-px bg-[#D9D6CE] hidden sm:block"></div>
-            <div className="h-px bg-[#D9D6CE] sm:hidden"></div>
-            <div>
-              <div className="text-xs font-medium text-gray-500 lowercase mb-2">
-                NEXT CYCLE CUTOFF
-              </div>
-              <div className="text-2xl font-serif font-semibold text-[#0B3B24]">
+
+            <div className="border-l border-[#bfc5c0] py-5 pl-5 lg:grid lg:grid-cols-[1fr_auto] lg:items-end lg:gap-6 lg:border-l-0 lg:border-t lg:pl-0">
+              <dt className="text-xs font-semibold text-[#68776f]">
+                Nearest deadline
+              </dt>
+              <dd className="mt-2 text-base font-semibold text-[#153c2e] lg:mt-0">
                 {nextCycleCutoff}
-              </div>
+              </dd>
             </div>
-          </div>
+          </dl>
         </div>
       </div>
-    </section>
+    </header>
   );
 }

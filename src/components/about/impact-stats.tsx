@@ -65,7 +65,7 @@ export async function ImpactStats() {
         >
             <div className="mb-8 flex items-center justify-between gap-6 sm:mb-10">
                 <div>
-                    <p className="mb-3 font-sans text-xs font-bold uppercase tracking-[0.14em] text-[#153c2e]/70">
+                    <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-[#153c2e]/70">
                         By the numbers
                     </p>
 
@@ -97,7 +97,7 @@ export async function ImpactStats() {
                         ].join(" ")}
                     >
                         <p
-                            className="font-sans text-[clamp(2.75rem,5vw,4.25rem)] font-medium leading-none tracking-[-0.045em] text-[#153c2e] tabular-nums"
+                            className="text-[clamp(2.75rem,5vw,4.25rem)] font-medium leading-none tracking-[-0.045em] text-[#153c2e] tabular-nums"
                             aria-label={
                                 stat.value === null
                                     ? `${stat.label}: unavailable`

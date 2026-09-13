@@ -33,11 +33,11 @@ export function MissionStatements() {
                 : "",
             ].join(" ")}
           >
-            <p className="mb-6 font-sans text-xs font-bold uppercase tracking-[0.16em] text-[#73837b]">
+            <p className="mb-6 text-xs font-bold uppercase tracking-[0.16em] text-[#73837b]">
               {statement.label}
             </p>
 
-            <h2 className="max-w-xl text-[clamp(2.25rem,4.5vw,3.5rem)] font-normal leading-[1.04] tracking-[-0.035em] text-[#153c2e]">
+            <h2 className="about-display max-w-xl text-[clamp(2.25rem,4.5vw,3.5rem)] font-normal leading-[1.04] tracking-[-0.035em] text-[#153c2e]">
               {statement.title}
             </h2>
 

@@ -23,12 +23,10 @@ export function PartnerFilters({
   onChange,
 }: PartnerFiltersProps) {
   return (
-    <div className="sticky top-20 border-y border-[#e2ded5] bg-[#f4f2ec] py-10">
-      <div className="mx-auto flex w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)] flex-col gap-3 md:flex-row md:items-center">
-        <div className="group relative md:basis-1/2">
-          <Search
-            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8a978f] transition-colors group-focus-within:text-[#0e2820]"
-          />
+    <div className="sticky top-20 z-40 border-y border-[#e2ded5]/70 bg-[#f4f2ec]/90 backdrop-blur-md py-10">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 md:flex-row md:items-center">
+        <div className="relative md:basis-1/2">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
           <Input
             value={value.query}
             onChange={(e) => onChange({ ...value, query: e.target.value })}

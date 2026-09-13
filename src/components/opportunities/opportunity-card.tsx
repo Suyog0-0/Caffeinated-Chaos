@@ -1,4 +1,4 @@
-import { Calendar } from "lucide-react";
+import { ArrowUpRight, CalendarDays } from "lucide-react";
 
 export type Opportunity = {
   id: string;
@@ -12,68 +12,105 @@ export type Opportunity = {
   areaName: string;
 };
 
-function getTypeColors(type: string) {
-  const normalized = type.toLowerCase();
-  if (normalized.includes("assistantship")) {
-    return "bg-[#E4EAE1] text-[#2F4A34] border-[#C9D6C2]";
-  } else if (normalized.includes("internship")) {
-    return "bg-[#F2E9D6] text-[#7A5A1E] border-[#E2D2A9]";
-  } else if (normalized.includes("call for papers")) {
-    return "bg-[#F1E3D8] text-[#8A4A2A] border-[#E3CCB9]";
-  } else if (normalized.includes("collaboration") || normalized.includes("partner")) {
-    return "bg-[#E1EAE8] text-[#245048] border-[#C3D9D4]";
-  } else if (normalized.includes("grant") || normalized.includes("fellowship")) {
-    return "bg-[#EEE3EA] text-[#6B3A5A] border-[#DCC3D3]";
-  }
-  return "bg-[#F1EFEA] text-[#5B5850] border-[#E1DED4]";
+function formatDeadline(deadline: string | null) {
+  if (!deadline) return "Rolling basis";
+
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${deadline}T00:00:00Z`));
 }
 
-export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
-  const typeColors = getTypeColors(opportunity.type);
-  const statusDisplay = opportunity.status.charAt(0).toUpperCase() + opportunity.status.slice(1);
+function getActionLabel(type: string) {
+  const normalized = type.toLowerCase();
+
+  if (normalized.includes("call for papers")) return "Visit author portal";
+  if (normalized.includes("collaboration")) return "Start a partner inquiry";
+  return "View application";
+}
+
+export function OpportunityCard({
+  opportunity,
+  index,
+}: {
+  opportunity: Opportunity;
+  index: number;
+}) {
+  const statusDisplay =
+    opportunity.status.charAt(0).toUpperCase() + opportunity.status.slice(1);
 
   return (
-    <div className="bg-white rounded-lg p-6 border border-gray-200 hover:border-[#0B3B24]/40 transition-colors flex flex-col group h-full font-sans">
-      <div className="flex justify-between items-start mb-6">
-        <span className={`text-[10px] font-bold uppercase px-3 py-1 rounded-full border ${typeColors}`}>
-          {opportunity.type}
-        </span>
-        <span className="text-[10px] font-bold text-gray-500 uppercase px-3 py-1 rounded-full bg-[#F4F1EA]">
-          {statusDisplay}
-        </span>
-      </div>
-
-      <h3 className="text-xl font-serif text-[#0B3B24] font-semibold mb-2 line-clamp-2">
-        {opportunity.title}
-      </h3>
-
-      <div className="flex items-center gap-2 mb-4">
-        <span className="w-1.5 h-1.5 bg-[#0B3B24] rounded-full"></span>
-        <span className="text-xs text-gray-500">{opportunity.areaName}</span>
-      </div>
-
-      <p className="text-gray-600 text-sm leading-relaxed mb-6 line-clamp-3 flex-1">
-        {opportunity.description}
-      </p>
-
-      <div className="space-y-3 mb-8">
-        <div className="flex items-start gap-3 text-xs text-gray-600">
-          <Calendar size={14} className="mt-0.5 text-gray-400" />
-          <span><strong className="text-gray-700">Deadline:</strong> {opportunity.deadline || 'Rolling basis'}</span>
+    <li
+      className={[
+        "border-b border-[#bfc5c0]",
+        index % 2 === 1 ? "lg:border-l lg:border-[#bfc5c0]" : "",
+      ].join(" ")}
+    >
+      <a
+        href={opportunity.applicationUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={[
+          "group flex min-h-[390px] cursor-pointer flex-col py-8 transition-colors hover:bg-[#f1efe8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#153c2e] sm:py-10",
+          index % 2 === 0 ? "lg:pr-10" : "lg:pl-10",
+        ].join(" ")}
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+          <span className="font-semibold text-[#153c2e]">
+            {opportunity.type}
+          </span>
+          <span className="inline-flex items-center gap-2 text-[#68776f]">
+            <span
+              aria-hidden="true"
+              className="size-1.5 rounded-full bg-[#2d8a5b]"
+            />
+            {statusDisplay}
+          </span>
         </div>
-      </div>
 
-      <div className="mt-auto flex justify-end items-center pt-5 border-t border-gray-100">
-        <a
-          href={opportunity.applicationUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-[#0B3B24] hover:bg-[#072517] text-white px-5 py-2 rounded-lg text-xs font-medium transition-colors"
-        >
-          {opportunity.type.toLowerCase().includes('call for papers') ? 'Author Portal' :
-           opportunity.type.toLowerCase().includes('collaboration') ? 'Partner Inquiry' : 'Apply Now'}
-        </a>
-      </div>
-    </div>
+        <div className="mt-9 flex flex-1 flex-col">
+          <p className="text-xs font-semibold text-[#7a877f]">
+            {opportunity.areaName}
+          </p>
+
+          <h3
+            className="mt-3 max-w-[24ch] text-[clamp(1.75rem,3vw,2.35rem)] font-medium leading-[1.06] tracking-[-0.025em] text-[#153c2e] decoration-1 underline-offset-4 group-hover:underline"
+            style={{
+              fontFamily:
+                'Garamond, "EB Garamond", "Times New Roman", serif',
+            }}
+          >
+            {opportunity.title}
+          </h3>
+
+          <p className="mt-5 line-clamp-3 max-w-xl text-sm leading-7 text-[#52635b] sm:text-[15px]">
+            {opportunity.description}
+          </p>
+
+          <div className="mt-auto flex flex-col gap-5 border-t border-[#d7d5cd] pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2 text-xs text-[#68776f]">
+              <CalendarDays size={15} aria-hidden="true" />
+              <span>
+                Deadline&nbsp;
+                <strong className="font-semibold text-[#33463c]">
+                  {formatDeadline(opportunity.deadline)}
+                </strong>
+              </span>
+            </div>
+
+            <span className="inline-flex min-h-10 items-center gap-2 self-start text-sm font-semibold text-[#153c2e] underline decoration-[#9eaaa3] underline-offset-4 transition-colors group-hover:decoration-[#153c2e]">
+              {getActionLabel(opportunity.type)}
+              <ArrowUpRight
+                size={15}
+                aria-hidden="true"
+                className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </span>
+          </div>
+        </div>
+      </a>
+    </li>
   );
 }

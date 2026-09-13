@@ -43,14 +43,14 @@ export function Methodology() {
               className="h-px w-8 bg-[#153c2e]"
             />
 
-            <p className="font-sans text-xs font-bold uppercase tracking-[0.16em] text-[#73837b]">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#73837b]">
               Our Methodology
             </p>
           </div>
 
           <h2
             id="methodology-title"
-            className="max-w-2xl text-[clamp(2.5rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.04em]"
+            className="about-display max-w-2xl text-[clamp(2.5rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.04em]"
           >
             From inception to published impact.
           </h2>
@@ -76,7 +76,7 @@ export function Methodology() {
               ].join(" ")}
             >
               <div className="flex items-start justify-between gap-4">
-                <span className="font-sans text-xs font-bold tracking-[0.12em] text-[#73837b]">
+                <span className="text-xs font-bold tracking-[0.12em] text-[#73837b]">
                   {stage.stage}
                 </span>
 
@@ -86,7 +86,7 @@ export function Methodology() {
                 />
               </div>
 
-              <h3 className="mt-8 max-w-[12ch] text-[clamp(1.75rem,3vw,2.25rem)] font-medium leading-[1.05] tracking-[-0.025em] text-[#153c2e]">
+              <h3 className="about-display mt-8 max-w-[12ch] text-[clamp(1.75rem,3vw,2.25rem)] font-medium leading-[1.05] tracking-[-0.025em] text-[#153c2e]">
                 {stage.title}
               </h3>
 
@@ -95,7 +95,7 @@ export function Methodology() {
               </p>
 
               <div className="mt-auto border-t border-[#e1dfd8] pt-5">
-                <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.09em] text-[#17251f]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.09em] text-[#17251f]">
                   Outputs
                 </p>
 
