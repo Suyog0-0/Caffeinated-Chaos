@@ -1,9 +1,9 @@
 // src/app/projects/[slug]/page.tsx
 import { notFound } from "next/navigation";
-import { createClient } from "@/supabase/client";
 import { ProjectDetailHero } from "@/components/projects/project-detail-hero";
 import { ProjectOverview } from "@/components/projects/project-overview";
 import { ProjectSidebar } from "@/components/projects/project-sidebar";
+import { createServerClient } from "@/supabase/server";
 
 export default async function ProjectSlugPage({
   params,
@@ -11,22 +11,53 @@ export default async function ProjectSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const supabase = createClient();
+  const supabase = createServerClient();
 
-  // Fetch the project with its research area, team and linked publications
   const { data: p } = await supabase
     .from("project")
     .select(`
-      id, slug, status, title, description, start_date, end_date,
+      id, slug, status, title, description, objective, start_date, end_date,
+      research_area_id,
       research_area(name),
-      project_researcher(role, researcher(id, name, photo_url)),
-      publication(id, title, publication_type, year, summary)
+      project_researcher(role, researcher(id, name, photo_url))
     `)
     .eq("slug", slug)
     .eq("publish_status", "published")
     .single();
 
   if (!p) notFound();
+
+  const publicationSelect = `
+    id, title, publication_type, year,
+    publication_author(
+      author_order,
+      researcher(name)
+    )
+  `;
+
+  // Prefer publications explicitly linked to the project. If there are none,
+  // include published records from the same area that are not assigned to a
+  // different project yet.
+  const { data: directPublicationRows } = await supabase
+    .from("publication")
+    .select(publicationSelect)
+    .eq("project_id", p.id)
+    .eq("publish_status", "published")
+    .order("year", { ascending: false, nullsFirst: false });
+
+  let publicationRows = directPublicationRows ?? [];
+
+  if (publicationRows.length === 0 && p.research_area_id) {
+    const { data: areaPublicationRows } = await supabase
+      .from("publication")
+      .select(publicationSelect)
+      .eq("research_area_id", p.research_area_id)
+      .is("project_id", null)
+      .eq("publish_status", "published")
+      .order("year", { ascending: false, nullsFirst: false });
+
+    publicationRows = areaPublicationRows ?? [];
+  }
 
   // Partners collaborating on this project.
   const { data: partnerRows } = await supabase
@@ -56,7 +87,6 @@ export default async function ProjectSlugPage({
   const project = {
     status: p.status,
     title: p.title,
-    summary: p.description ?? "",
     area,
     start: p.start_date?.slice(0, 4) ?? "—",
     end: p.end_date?.slice(0, 4) ?? "ongoing",
@@ -83,21 +113,35 @@ export default async function ProjectSlugPage({
     title: string;
     publication_type: string | null;
     year: number | null;
-    summary: string | null;
+    publication_author: {
+      author_order: number;
+      researcher: { name: string } | null;
+    }[];
   };
-  const publications = (p.publication as unknown as PubRow[]).map((pub) => ({
-    id: pub.id,
-    type: pub.publication_type ?? "Publication",
-    year: pub.year ?? 0,
-    title: pub.title,
-    authors: pub.summary ?? "",
-  }));
+  const publications = (publicationRows as unknown as PubRow[]).map((pub) => {
+    const authors = [...(pub.publication_author ?? [])]
+      .sort((a, b) => a.author_order - b.author_order)
+      .map((author) => author.researcher?.name)
+      .filter((name): name is string => Boolean(name));
+
+    return {
+      id: pub.id,
+      type: pub.publication_type ?? "Publication",
+      year: pub.year,
+      title: pub.title,
+      authors: authors.join(", "),
+    };
+  });
 
   return (
     <main className="pb-24">
       <ProjectDetailHero project={project} />
       <div className="mx-auto grid w-[min(calc(100%_-_48px),1240px)] grid-cols-[1fr_330px] gap-[9vw] pt-16 max-lg:grid-cols-1 max-sm:w-[calc(100%_-_32px)]">
-        <ProjectOverview publications={publications} />
+        <ProjectOverview
+          objective={p.objective}
+          publications={publications}
+          summary={p.description}
+        />
         <ProjectSidebar
           project={project}
           researchers={researchers}
