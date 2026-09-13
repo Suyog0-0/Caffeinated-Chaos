@@ -1,5 +1,11 @@
+import { Inter } from "next/font/google";
 import { createServerClient } from "@/supabase/server";
 import { ResourceContent } from "@/components/research-support/resource-content";
+
+const inter = Inter({
+    display: "swap",
+    subsets: ["latin"],
+});
 
 export const revalidate = 300;
 
@@ -32,7 +38,7 @@ export default async function ResearchSupportPage() {
     const categories = Array.from(new Set(resources.map((r) => r.category ?? "General")));
 
     return (
-        <main>
+        <main className={inter.className}>
             <ResourceContent categories={categories} resources={resources} />
         </main>
     );
