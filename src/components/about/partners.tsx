@@ -47,13 +47,13 @@ export function Partners() {
     >
       <div className="mx-auto w-[calc(100%-32px)] max-w-[1240px] border-t border-[#d7d5cd] pt-14 sm:w-[calc(100%-48px)] sm:pt-16 lg:pt-20">
         <div className="max-w-4xl">
-          <p className="mb-3 font-sans text-xs font-bold uppercase tracking-[0.16em] text-[#73837b] sm:text-sm">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-[#73837b] sm:text-sm">
             Research partners
           </p>
 
           <h2
             id="research-partners-heading"
-            className="max-w-3xl text-3xl font-medium leading-[1.1] tracking-[-0.025em] sm:text-4xl lg:text-[48px]"
+            className="about-display max-w-3xl text-3xl font-medium leading-[1.1] tracking-[-0.025em] sm:text-4xl lg:text-[48px]"
           >
             Built through collaboration.
           </h2>
@@ -86,7 +86,7 @@ export function Partners() {
                 </div>
 
                 <div className="mt-auto">
-                  <h3 className="text-lg font-medium leading-6 tracking-[-0.01em] text-[#17251f] sm:text-xl">
+                  <h3 className="about-display text-lg font-medium leading-6 tracking-[-0.01em] text-[#17251f] sm:text-xl">
                     {label}
                   </h3>
 
