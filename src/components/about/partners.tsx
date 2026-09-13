@@ -1,5 +1,5 @@
+// src/components/about/partners.tsx
 import { Building2, GraduationCap, Handshake, UsersRound } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 const partners = [
   [
@@ -39,24 +39,22 @@ export function Partners() {
           the industries we work alongside, and the institutions that share our standards.
         </p>
 
-        <div className="grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
+        <ul className="grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
           {partners.map(([label, Icon, desc]) => (
-            <div
+            <li
               className="rounded-sm border border-[#e5e4de] bg-white p-8 shadow-sm flex flex-col gap-6"
               key={label}
             >
               <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-[#f5f4ef]">
-                <Icon className="text-[#153c2e]" size={24} />
+                <Icon className="text-[#153c2e]" size={24} aria-hidden="true" />
               </div>
               <div>
                 <h3 className="mb-3 text-[22px] font-medium leading-tight">{label}</h3>
                 <p className="text-base text-[#405149] leading-relaxed">{desc}</p>
               </div>
-            </div>
+            </li>
           ))}
-        </div>
-
-
+        </ul>
       </div>
     </section>
   );

@@ -24,7 +24,7 @@ export function MissionStatements() {
           <CardHeader className="px-0">
             <p className="font-sans text-2xl capitalize">{statement.label}</p>
             <CardTitle className="text-[48px] leading-tight font-medium">
-              {statement.title}
+              <h2 className="contents">{statement.title}</h2>
             </CardTitle>
           </CardHeader>
           <CardContent className="px-0 text-lg text-[#405149]">{statement.copy}</CardContent>

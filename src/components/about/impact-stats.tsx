@@ -26,7 +26,7 @@ export async function ImpactStats() {
 
     return (
         <section className="mx-auto w-[min(calc(100%_-_48px),1240px)] border-b border-[#17251f] py-14 max-sm:w-[calc(100%_-_32px)]">
-            <p className="mb-8 font-sans text-2xl font-medium uppercase tracking-wide">Our impact</p>
+            <h2 className="mb-8 font-sans text-2xl font-medium uppercase tracking-wide">Our impact</h2>
             <div className="grid grid-cols-4 max-sm:grid-cols-2">
                 {stats.map(([value, label], index) => (
                     <div
