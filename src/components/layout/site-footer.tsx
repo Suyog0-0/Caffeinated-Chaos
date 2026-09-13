@@ -37,7 +37,7 @@ const NAV_COLUMNS: FooterColumn[] = [
       { href: "/aboutsection", label: "About us" },
       { href: "/opportunities", label: "Opportunities" },
       { href: "/ethics", label: "Ethics" },
-      { href: "/ijmr", label: "IJMR" },
+      { href: "https://ijmr.islingtoncollege.edu.np/index.php/IJMR", label: "IJMR" },
       { href: "/research-support", label: "Resources" },
       { href: "/admin", label: "Admin workspace" },
     ],
@@ -52,25 +52,43 @@ const CONTACT_EMAIL = "research@islingtoncollege.edu.np";
 /* ------------------------------------------------------------------ */
 
 function FooterLinkItem({ link }: { link: FooterLink }) {
+  const isExternal = link.href.startsWith("http");
+  const linkClassName =
+    "group inline-flex items-center gap-1.5 rounded-sm py-1 font-sans text-[15px] font-medium leading-[1.6] tracking-[0.01em] text-[#a8bfb2] transition-colors duration-200 hover:text-[#f2ede2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9c08a]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1b14]";
+
+  const content = (
+    <>
+      <span className="relative">
+        {link.label}
+        <span
+          aria-hidden
+          className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#d9c08a] transition-[width] duration-200 ease-out group-hover:w-full"
+        />
+      </span>
+      <ArrowUpRight
+        size={13}
+        className="-translate-x-0.5 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-60"
+        aria-hidden
+      />
+    </>
+  );
+
   return (
     <li>
-      <Link
-        href={link.href}
-        className="group inline-flex items-center gap-1.5 rounded-sm py-1 font-sans text-[15px] font-medium leading-[1.6] tracking-[0.01em] text-[#a8bfb2] transition-colors duration-200 hover:text-[#f2ede2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9c08a]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a1b14]"
-      >
-        <span className="relative">
-          {link.label}
-          <span
-            aria-hidden
-            className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#d9c08a] transition-[width] duration-200 ease-out group-hover:w-full"
-          />
-        </span>
-        <ArrowUpRight
-          size={13}
-          className="-translate-x-0.5 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-60"
-          aria-hidden
-        />
-      </Link>
+      {isExternal ? (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={linkClassName}
+        >
+          {content}
+        </a>
+      ) : (
+        <Link href={link.href} className={linkClassName}>
+          {content}
+        </Link>
+      )}
     </li>
   );
 }
