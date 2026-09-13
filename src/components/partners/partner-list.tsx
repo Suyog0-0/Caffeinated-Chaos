@@ -14,7 +14,7 @@ import { Card } from "@/components/ui/card";
 
 import { PartnerFilters, type PartnerFilterState } from "./partner-filters";
 import { PartnerLogo } from "./partner-logo";
-import type { PartnerRecord } from "./partners-actions";
+import type { PartnerRecord } from "./partner-actions";
 
 interface PartnerListProps {
   partners: PartnerRecord[];
