@@ -166,6 +166,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.about-display {
+  font-family: Garamond, "EB Garamond", "Times New Roman", serif;
+}
+
 button,
 input {
   font: inherit;

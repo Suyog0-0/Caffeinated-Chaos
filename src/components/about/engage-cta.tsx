@@ -19,14 +19,14 @@ export function EngageCTA() {
                   aria-hidden="true"
                   className="h-px w-8 bg-[#47c97e]"
                 />
-                <p className="font-sans text-xs font-bold uppercase tracking-[0.14em]">
+                <p className="text-xs font-bold uppercase tracking-[0.14em]">
                   Engage with R&amp;D
                 </p>
               </div>
 
               <h2
                 id="engage-cta-title"
-                className="max-w-2xl text-[clamp(2.25rem,4.5vw,3.75rem)] font-normal leading-[1.02] tracking-[-0.035em]"
+                className="about-display max-w-2xl text-[clamp(2.25rem,4.5vw,3.75rem)] font-normal leading-[1.02] tracking-[-0.035em]"
               >
                 Ready to initiate or sponsor an inquiry?
               </h2>

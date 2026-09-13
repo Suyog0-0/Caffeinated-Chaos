@@ -1,29 +1,36 @@
-import Link from "next/link";
-
 export function OpportunitiesCTA() {
   return (
-    <section className="bg-[#EFECE5] py-16 px-6 md:px-12 border-t border-[#E5E2D9] font-sans">
-      <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        <div>
-          <div className="text-xs font-medium text-gray-500 lowercase mb-2">
-            FOR PRINCIPAL INVESTIGATORS & INDUSTRY R&D
-          </div>
-          <h2 className="text-2xl font-serif text-[#0B3B24] font-semibold mb-2">
-            Have an open grant call or seeking doctoral talent?
+    <section className="bg-[#0d2a20] py-16 text-white sm:py-20">
+      <div className="mx-auto grid w-[min(calc(100%_-_48px),1240px)] gap-10 max-sm:w-[calc(100%_-_32px)] lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-20">
+        <div className="max-w-3xl">
+          <p className="mb-5 text-sm font-semibold text-[#7fd4a5]">
+            For research leads and industry partners
+          </p>
+
+          <h2
+            className="max-w-2xl text-[clamp(2.35rem,4.5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em]"
+            style={{
+              fontFamily:
+                'Garamond, "EB Garamond", "Times New Roman", serif',
+            }}
+          >
+            Bring the next opportunity into the room.
           </h2>
-          <p className="text-gray-600 text-sm">
-            Submit your project scope, laboratory vacancy, or inter-institutional symposium call to be indexed across the Islington Research Registry.
+
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-[#b7c6be] sm:text-base">
+            Share a funded project, laboratory vacancy, doctoral call, or
+            research partnership with the Islington community.
           </p>
         </div>
 
-        <div className="flex items-center gap-4 shrink-0">
+        <div>
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSdG8Lb3SgR6PqoH6IYmZ8o9xGCdQDXtMgyl_l77-7DwuWCs-g/viewform"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#0B3B24] hover:bg-[#072517] text-white px-6 py-3 rounded-lg font-medium transition-colors text-sm"
+            className="inline-flex min-h-12 items-center justify-center border border-[#7fd4a5] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#7fd4a5] hover:text-[#0d2a20] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d2a20] sm:px-7"
           >
-            Submit Opportunity Notice
+            Submit an opportunity
           </a>
         </div>
       </div>

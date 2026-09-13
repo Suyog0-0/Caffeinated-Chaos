@@ -1,10 +1,16 @@
 import { Suspense } from "react";
+import { Inter } from "next/font/google";
 import { createServerClient } from "@/supabase/server";
 import { OpportunitiesHero } from "@/components/opportunities/opportunities-hero";
 import { OpportunitiesList } from "@/components/opportunities/opportunities-list";
 import { OpportunitiesCTA } from "@/components/opportunities/opportunities-cta";
 
 export const revalidate = 300;
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 export default async function OpportunitiesPage() {
   const supabase = createServerClient();
@@ -46,7 +52,7 @@ export default async function OpportunitiesPage() {
   }
 
   return (
-    <main>
+    <main className={inter.className}>
       <OpportunitiesHero totalOpenings={opportunities.length} nextCycleCutoff={nextCycleCutoff} />
       <Suspense fallback={null}>
         <OpportunitiesList opportunities={opportunities} />

@@ -4,7 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { Search, ChevronDown } from "lucide-react";
 import { OpportunityCard, type Opportunity } from "./opportunity-card";
 
-export function OpportunitiesList({ opportunities }: { opportunities: Opportunity[] }) {
+export function OpportunitiesList({
+  opportunities,
+}: {
+  opportunities: Opportunity[];
+}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [areaFilter, setAreaFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
@@ -24,6 +28,15 @@ export function OpportunitiesList({ opportunities }: { opportunities: Opportunit
     return matchesSearch && matchesArea && matchesType;
   });
 
+  const hasActiveFilters =
+    searchQuery.trim() !== "" || areaFilter !== "All" || typeFilter !== "All";
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setAreaFilter("All");
+    setTypeFilter("All");
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && document.activeElement === searchInputRef.current) {
@@ -36,35 +49,65 @@ export function OpportunitiesList({ opportunities }: { opportunities: Opportunit
   }, []);
 
   return (
-    <section className="bg-[#F8F7F4] py-12 px-6 md:px-12 min-h-screen font-sans">
-      <div className="max-w-[1400px] mx-auto">
+    <section
+      className="min-h-[70vh] bg-[#f7f5ef] py-12 text-[#17251f] sm:py-16 lg:py-20"
+      aria-labelledby="opportunity-results-title"
+    >
+      <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
+        <div className="mb-8 border-b border-[#c9ccc7] pb-8 sm:mb-10">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="mb-2 text-xs font-semibold text-[#68776f]">
+                Current registry
+              </p>
+              <h2
+                id="opportunity-results-title"
+                className="text-2xl font-semibold tracking-[-0.025em] text-[#153c2e] sm:text-3xl"
+              >
+                Open opportunities
+              </h2>
+            </div>
 
-        {/* Search + dropdown filters */}
-        <div className="flex flex-col lg:flex-row gap-3 mb-12">
-          <div className="relative flex-1">
+            <div className="flex items-center gap-4 text-sm text-[#68776f]">
+              <span aria-live="polite">
+                {filteredOpportunities.length} of {opportunities.length} shown
+              </span>
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="font-semibold text-[#153c2e] underline decoration-[#9eaaa3] underline-offset-4 transition-colors hover:decoration-[#153c2e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#153c2e] focus-visible:ring-offset-4"
+                >
+                  Clear filters
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_240px_240px]">
+            <label className="relative block">
+              <span className="sr-only">Search opportunities</span>
             <Search
               size={16}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#75827b]"
+                aria-hidden="true"
             />
             <input
               ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
-              placeholder="Search opportunities, titles, keywords..."
-              className="w-full bg-white border border-[#E5E2D9] rounded-full pl-11 pr-14 py-2.5 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-[#0B3B24]"
+                placeholder="Search by title or keyword"
+                className="h-12 w-full border border-[#c9ccc7] bg-[#fffefb] pl-11 pr-4 text-sm text-[#17251f] placeholder:text-[#89938e] focus:border-[#153c2e] focus:outline-none focus:ring-1 focus:ring-[#153c2e]"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-medium text-gray-400 bg-[#F4F1EA] border border-[#E5E2D9] rounded px-1.5 py-0.5 pointer-events-none">
-              ESC
-            </span>
-          </div>
+            </label>
 
-          <div className="flex flex-wrap gap-3">
-            <div className="relative">
+            <label className="relative block">
+              <span className="sr-only">Filter by research area</span>
               <select
                 value={areaFilter}
                 onChange={(event) => setAreaFilter(event.target.value)}
-                className="appearance-none bg-white border border-[#E5E2D9] text-gray-700 text-sm rounded-full pl-4 pr-10 py-2.5 min-w-[190px] focus:outline-none focus:border-[#0B3B24] cursor-pointer"
+                className="h-12 w-full cursor-pointer appearance-none border border-[#c9ccc7] bg-[#fffefb] pl-4 pr-10 text-sm text-[#33463c] focus:border-[#153c2e] focus:outline-none focus:ring-1 focus:ring-[#153c2e]"
               >
                 <option value="All">All Research Areas</option>
                 {uniqueAreas.map((area) => (
@@ -75,15 +118,17 @@ export function OpportunitiesList({ opportunities }: { opportunities: Opportunit
               </select>
               <ChevronDown
                 size={16}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#75827b]"
+                aria-hidden="true"
               />
-            </div>
+            </label>
 
-            <div className="relative">
+            <label className="relative block">
+              <span className="sr-only">Filter by opportunity type</span>
               <select
                 value={typeFilter}
                 onChange={(event) => setTypeFilter(event.target.value)}
-                className="appearance-none bg-white border border-[#E5E2D9] text-gray-700 text-sm rounded-full pl-4 pr-10 py-2.5 min-w-[190px] focus:outline-none focus:border-[#0B3B24] cursor-pointer"
+                className="h-12 w-full cursor-pointer appearance-none border border-[#c9ccc7] bg-[#fffefb] pl-4 pr-10 text-sm text-[#33463c] focus:border-[#153c2e] focus:outline-none focus:ring-1 focus:ring-[#153c2e]"
               >
                 <option value="All">All Opportunity Types</option>
                 {uniqueTypes.map((type) => (
@@ -94,25 +139,41 @@ export function OpportunitiesList({ opportunities }: { opportunities: Opportunit
               </select>
               <ChevronDown
                 size={16}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#75827b]"
+                aria-hidden="true"
               />
-            </div>
+            </label>
           </div>
         </div>
 
-        {/* Grid */}
         {filteredOpportunities.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-            {filteredOpportunities.map((op) => (
-              <OpportunityCard key={op.id} opportunity={op} />
+          <ol className="grid border-t border-[#bfc5c0] lg:grid-cols-2">
+            {filteredOpportunities.map((op, index) => (
+              <OpportunityCard
+                key={op.id}
+                opportunity={op}
+                index={index}
+              />
             ))}
-          </div>
+          </ol>
         ) : (
-          <div className="text-center py-24 bg-white rounded-2xl border border-gray-200 mb-16">
-            <p className="text-gray-500 text-lg">No opportunities found for the selected filters.</p>
+          <div className="border-y border-[#c9ccc7] py-20 text-center">
+            <p className="text-lg font-semibold text-[#33463c]">
+              No matching opportunities
+            </p>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#68776f]">
+              Try a broader keyword or clear the filters to return to the full
+              registry.
+            </p>
+            <button
+              type="button"
+              onClick={clearFilters}
+              className="mt-6 border border-[#153c2e] px-5 py-2.5 text-sm font-semibold text-[#153c2e] transition-colors hover:bg-[#153c2e] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#153c2e] focus-visible:ring-offset-4"
+            >
+              View all opportunities
+            </button>
           </div>
         )}
-
       </div>
     </section>
   );
