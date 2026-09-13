@@ -112,12 +112,12 @@ export function SiteFooter() {
               className="mb-6 inline-flex items-center gap-3.5 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9c08a]/60 focus-visible:ring-offset-4 focus-visible:ring-offset-[#0a1b14]"
               aria-label="Islington Research — home"
             >
-              <span
-                aria-hidden
-                className="grid size-10 place-items-center rounded-[5px] bg-[#f2ede2] font-serif text-[15px] font-bold text-[#0a1b14]"
-              >
-                IR
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/ijmr-logo-white.svg"
+                alt="IJMR"
+                className="h-10 w-auto object-contain"
+              />
               <span className="font-serif text-[22px] font-semibold tracking-tight text-[#f2ede2]">
                 Islington Research
               </span>
