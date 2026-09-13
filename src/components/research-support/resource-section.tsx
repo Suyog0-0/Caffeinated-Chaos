@@ -186,15 +186,20 @@ export function ResourceSection({
                     {filtered.map((resource) => (
                         <article
                             key={resource.id}
-                            className="flex flex-col gap-4 py-8 md:flex-row md:items-start md:justify-between"
+                            className="group flex flex-col gap-4 py-8 transition-colors duration-300 hover:bg-[#faf9f5] md:flex-row md:items-start md:justify-between"
                         >
-                            <div className="max-w-3xl">
+                            <a
+                                href={resource.file_url ?? undefined}
+                                target={resource.file_url ? "_blank" : undefined}
+                                rel={resource.file_url ? "noopener noreferrer" : undefined}
+                                className={`max-w-3xl px-1 ${resource.file_url ? "cursor-pointer" : "pointer-events-none"}`}
+                            >
                                 {resource.badge && (
                                     <span className="mb-2 inline-block rounded bg-[#eae7e0] px-1.5 py-0.5 font-sans text-[10px] font-semibold uppercase tracking-wide text-[#17251f]">
                                         {resource.badge}
                                     </span>
                                 )}
-                                <h3 className="mb-2 text-2xl font-normal leading-tight text-[#17251f]">
+                                <h3 className="mb-2 text-2xl font-normal leading-tight text-[#17251f] underline decoration-transparent decoration-2 underline-offset-4 transition-colors duration-200 group-hover:decoration-[#17251f]">
                                     {resource.title}
                                 </h3>
                                 {resource.description && (
@@ -202,14 +207,14 @@ export function ResourceSection({
                                         {resource.description}
                                     </p>
                                 )}
-                            </div>
-                            <div className="flex shrink-0 items-center gap-4">
+                            </a>
+                            <div className="flex shrink-0 items-center gap-4 px-1">
 
 
                                 <button
                                     type="button"
                                     onClick={() => downloadResourcePdf(resource)}
-                                    className="group inline-flex items-center gap-1 border-b border-transparent pb-px font-sans uppercase tracking-widest transition-all duration-200 hover:border-[#267457] hover:text-[#267457]"
+                                    className="group inline-flex cursor-pointer items-center gap-1 border-b border-transparent pb-px font-sans uppercase tracking-widest transition-all duration-200 hover:border-[#267457] hover:text-[#267457]"
                                     style={{ color: "#17251f", fontSize: "15px", fontWeight: 500 }}
                                 >
                                     Download PDF
