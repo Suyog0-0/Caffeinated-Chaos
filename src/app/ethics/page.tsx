@@ -1,3 +1,4 @@
+import { Inter } from "next/font/google";
 import { createServerClient } from "@/supabase/server";
 import { EthicsContent } from "@/components/ethics/ethics-content";
 import { ReviewTiers } from "@/components/ethics/review-tiers";
@@ -5,6 +6,11 @@ import { SopList } from "@/components/ethics/sop-list";
 import { AiPrinciples } from "@/components/ethics/ai-principles";
 import { IrbCommittee } from "@/components/ethics/irb-committee";
 import { IntegrityDisclosures } from "@/components/ethics/integrity-disclosures";
+
+const inter = Inter({
+    display: "swap",
+    subsets: ["latin"],
+});
 
 export const revalidate = 300;
 
@@ -34,7 +40,7 @@ export default async function EthicsPage() {
     const categories = Array.from(new Set(policies.map((p) => p.category ?? "General")));
 
     return (
-        <main>
+        <main className={inter.className}>
             <EthicsContent categories={categories} policies={policies} />
             <ReviewTiers />
             <SopList />

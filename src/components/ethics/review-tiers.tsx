@@ -11,7 +11,7 @@ const tiers = [
         title: "Secondary Datasets, Public Repositories & De-Identified Metrics",
         description:
             "Applies to projects using publicly released corpora, secondary metadata analysis, strictly anonymized historical records, or non-interventional software performance benchmarking.",
-        auditor: "Departmental Ethics Representative Â· Exemption Certificate Issued",
+        auditor: "Departmental Ethics Representative · Exemption Certificate Issued",
     },
     {
         index: "02",

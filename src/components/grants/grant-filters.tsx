@@ -126,11 +126,7 @@ export function GrantFilters({ totalCount }: GrantFiltersProps) {
                             >
                                 <X size={13} strokeWidth={2.5} />
                             </button>
-                        ) : (
-                            <kbd className="pointer-events-none absolute right-3.5 top-1/2 hidden -translate-y-1/2 items-center gap-0.5 rounded-md border border-[#e2ded5] bg-[#ede8de] px-1.5 py-0.5 font-mono text-[10px] font-semibold text-[#67756f] sm:flex">
-                                ESC
-                            </kbd>
-                        )}
+                        ) : null}
                     </div>
 
                     <div className="md:col-span-5">
@@ -183,7 +179,7 @@ export function GrantFilters({ totalCount }: GrantFiltersProps) {
                                     type="button"
                                     onClick={() => handleFilter("tab", value)}
                                     className={[
-                                        "relative z-10 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200",
+                                        "relative z-10 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-semibold transition-colors duration-200",
                                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0e2820]/30",
                                         active ? "text-white" : "text-[#5c6a63] hover:text-[#141d18]",
                                     ].join(" ")}

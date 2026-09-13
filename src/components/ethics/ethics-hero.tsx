@@ -2,7 +2,6 @@
 
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 const quickFilters = [
     "Human Subjects",
@@ -25,7 +24,7 @@ export function EthicsHero({
                 <p className="mb-4 font-sans text-xs font-bold uppercase tracking-wider text-[#b6c7bd]">
                     Governance &amp; Integrity
                 </p>
-                <h1 className="max-w-4xl text-[clamp(46px,6vw,76px)] leading-[1.05] font-normal tracking-[-.025em]">
+                <h1 className="max-w-4xl font-serif text-[clamp(46px,6vw,76px)] leading-[1.05] font-normal tracking-[-.025em]">
                     Rigor, integrity, and ethical practice.
                 </h1>
                 <p className="mt-6 max-w-3xl text-xl text-[#c5d2cb]">
@@ -55,16 +54,14 @@ export function EthicsHero({
                         Quick:
                     </span>
                     {quickFilters.map((label) => (
-                        <Button
+                        <button
                             key={label}
                             type="button"
-                            variant="outline"
-                            size="sm"
                             onClick={() => onSearchChange?.(label)}
-                            className="rounded-full border-[#28453a] bg-[#123227] text-xs text-[#dfe9e3] hover:bg-[#153c2e] hover:text-white"
+                            className="inline-flex h-6 items-center rounded-full border border-[#28453a] bg-[#123227] px-2.5 text-[10px] font-medium text-[#dfe9e3] transition-colors hover:bg-[#153c2e] hover:text-white"
                         >
                             {label}
-                        </Button>
+                        </button>
                     ))}
                 </div>
             </div>

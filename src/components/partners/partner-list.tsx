@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { PartnerFilters, PartnerFilterState } from "./partner-filters";
 import { PartnerLogo } from "./partner-logo";
-import type { PartnerRecord } from "./partners-actions";
+import type { PartnerRecord } from "./partner-actions";
 
 interface PartnerListProps {
   partners: PartnerRecord[];
@@ -90,15 +90,15 @@ export function PartnerList({ partners }: PartnerListProps) {
         }}
       />
 
-      <div className="bg-[#faf9f5] px-6 py-14 md:px-10 lg:px-16">
-        <div className="mx-auto max-w-6xl">
+      <div className="bg-[#faf9f5] py-14">
+        <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
           {filtered.length === 0 ? (
-            <div className="rounded-md border border-dashed border-neutral-300 bg-white px-8 py-16 text-center">
-              <p className="font-serif text-2xl text-[#0d2818]">
+            <div className="rounded-md border border-dashed border-[#e2ded5] bg-white px-8 py-16 text-center">
+              <p className="font-serif text-2xl text-[#17251f]">
                 No partners match those filters.
               </p>
 
-              <p className="mt-2 text-sm text-neutral-600">
+              <p className="mt-2 text-sm text-[#68726c]">
                 Try clearing the search or choosing a different category.
               </p>
             </div>
@@ -147,7 +147,7 @@ function PartnerPagination({
       <Button
         variant="outline"
         size="icon"
-        className="h-9 w-9 border-neutral-300"
+        className="h-9 w-9 border-[#e2ded5]"
         disabled={page === 1}
         onClick={() => onPageChange(page - 1)}
         aria-label="Previous page"
@@ -162,8 +162,8 @@ function PartnerPagination({
           size="icon"
           className={
             p === page
-              ? "h-9 w-9 bg-[#0d2818] text-white hover:bg-[#0d2818]/90"
-              : "h-9 w-9 border-neutral-300 text-neutral-700"
+              ? "h-9 w-9 bg-[#153c2e] text-white hover:bg-[#153c2e]/90"
+              : "h-9 w-9 border-[#e2ded5] text-[#405149]"
           }
           onClick={() => onPageChange(p)}
         >
@@ -174,7 +174,7 @@ function PartnerPagination({
       <Button
         variant="outline"
         size="icon"
-        className="h-9 w-9 border-neutral-300"
+        className="h-9 w-9 border-[#e2ded5]"
         disabled={page === totalPages}
         onClick={() => onPageChange(page + 1)}
         aria-label="Next page"
@@ -192,7 +192,7 @@ function PartnerCard({
 }) {
   return (
     <Link href={`/partners/${partner.id}`}>
-      <Card className="h-full rounded-md border border-neutral-200 bg-white p-6 transition-colors hover:border-[#0d2818]">
+      <Card className="group h-full rounded-md border border-[#e5e4de] bg-white p-6 transition-colors hover:border-[#153c2e]">
         <div className="flex items-center gap-3">
           <PartnerLogo
             className="h-11 w-11 text-sm font-medium"
@@ -201,14 +201,14 @@ function PartnerCard({
           />
 
           <div>
-            <h3 className="font-serif text-lg text-[#0d2818]">
+            <h3 className="font-serif text-xl leading-snug text-[#17251f] transition-colors group-hover:text-[#0e2820]">
               {partner.name}
             </h3>
 
             {partner.partner_type && (
               <Badge
                 variant="outline"
-                className="mt-1 border-neutral-300 text-xs font-normal text-neutral-600"
+                className="mt-1 border-[#e2ded5] text-xs font-normal text-[#68726c]"
               >
                 {partner.partner_type}
               </Badge>
@@ -217,7 +217,7 @@ function PartnerCard({
         </div>
 
         {partner.description && (
-          <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-neutral-600">
+          <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-[#405149]">
             {partner.description}
           </p>
         )}

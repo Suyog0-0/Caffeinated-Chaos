@@ -111,12 +111,12 @@ function IJMRCard({
   const isExternal = href.startsWith("http");
 
   const content = (
-    <Card className="h-full rounded-md border border-white/15 bg-white/5 p-6 transition-colors hover:border-white/40 hover:bg-white/10">
+    <Card className="group h-full rounded-md border border-white/15 bg-white/5 p-6 transition-colors hover:border-white/40 hover:bg-white/10">
       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10">
         {icon}
       </div>
 
-      <h3 className="mt-4 font-serif text-lg text-white">{title}</h3>
+      <h3 className="mt-4 font-serif text-xl leading-snug text-white transition-colors group-hover:text-[#9fb8a8]">{title}</h3>
 
       <p className="mt-2 text-sm leading-relaxed text-[#cdd8cf]">
         {description}
