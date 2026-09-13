@@ -45,29 +45,30 @@ export function Methodology() {
           A reliable pipeline ensuring every inquiry receives mentorship, computational resources,
           and rigorous peer scrutiny.
         </p>
-        <div className="grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
+        <ol className="grid grid-cols-4 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1">
           {stages.map((s) => (
-            <Card
-              className="rounded-sm border border-[#e5e4de] bg-white p-8 shadow-sm"
-              key={s.stage}
-            >
-              <CardHeader className="px-0 pt-0">
-                <p className="font-sans text-xs font-bold uppercase tracking-wider text-[#73837b] mb-4">
-                  {s.stage}
-                </p>
-                <CardTitle className="text-[28px] font-medium leading-tight mb-4">{s.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="px-0 pb-0 flex flex-col justify-between min-h-[180px]">
-                <p className="text-[#405149] text-base mb-8 leading-relaxed">{s.description}</p>
-                <div className="mt-auto">
-                  <p className="font-sans text-xs font-medium text-[#17251f]">
-                    Outputs: <span className="font-normal text-[#73837b]">{s.outputs}</span>
+            <li key={s.stage}>
+              <Card className="rounded-sm border border-[#e5e4de] bg-white p-8 shadow-sm h-full">
+                <CardHeader className="px-0 pt-0">
+                  <p className="font-sans text-xs font-bold uppercase tracking-wider text-[#73837b] mb-4">
+                    {s.stage}
                   </p>
-                </div>
-              </CardContent>
-            </Card>
+                  <CardTitle className="text-[28px] font-medium leading-tight mb-4">
+                    <h3 className="contents">{s.title}</h3>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="px-0 pb-0 flex flex-col justify-between min-h-[180px]">
+                  <p className="text-[#405149] text-base mb-8 leading-relaxed">{s.description}</p>
+                  <div className="mt-auto">
+                    <p className="font-sans text-xs font-medium text-[#17251f]">
+                      Outputs: <span className="font-normal text-[#73837b]">{s.outputs}</span>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );
