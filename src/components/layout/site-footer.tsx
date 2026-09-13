@@ -38,7 +38,7 @@ const NAV_COLUMNS: FooterColumn[] = [
       { href: "/opportunities", label: "Opportunities" },
       { href: "/ethics", label: "Ethics" },
       { href: "/ijmr", label: "IJMR" },
-      { href: "/resources", label: "Resources" },
+      { href: "/research-support", label: "Resources" },
       { href: "/admin", label: "Admin workspace" },
     ],
   },
