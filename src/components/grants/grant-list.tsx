@@ -165,7 +165,7 @@ export function GrantList({ grants }: { grants: Grant[] }) {
                         </summary>
 
                         <div className="max-w-[70ch] space-y-4 pb-8 pl-0 lg:pl-[calc(16.6667%+2rem)]">
-                            <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#425048]">
+                            <p className="whitespace-pre-wrap text-justify text-sm leading-relaxed text-[#425048]">
                                 {grant.description ??
                                     "No further details available."}
                             </p>
@@ -176,7 +176,7 @@ export function GrantList({ grants }: { grants: Grant[] }) {
                                         Eligibility
                                     </p>
 
-                                    <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-[#425048]">
+                                    <p className="mt-1 whitespace-pre-wrap text-justify text-sm leading-relaxed text-[#425048]">
                                         {grant.eligibility}
                                     </p>
                                 </div>
