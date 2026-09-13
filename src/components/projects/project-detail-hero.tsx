@@ -10,7 +10,6 @@ const inter = Inter({
 type Project = {
   status: string;
   title: string;
-  summary: string;
   area: string;
   start: string;
   end: string;
@@ -62,10 +61,6 @@ export function ProjectDetailHero({ project }: { project: Project }) {
           <h1 className="mt-4 text-[clamp(48px,7vw,90px)] font-normal leading-[.94] tracking-[-.045em]">
             {project.title}
           </h1>
-
-          <p className={`${inter.className} mt-8 max-w-2xl text-justify text-xl leading-relaxed text-white/80`}>
-            {project.summary}
-          </p>
 
           <dl className={`${inter.className} mt-12 flex gap-16 max-sm:grid max-sm:gap-5`}>
             {facts.map(([term, value]) => (
