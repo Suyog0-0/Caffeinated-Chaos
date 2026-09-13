@@ -1,3 +1,4 @@
+import { Handshake, Tags } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface PartnersHeroProps {
@@ -23,23 +24,31 @@ export function PartnersHero({ totalPartners, totalCategories }: PartnersHeroPro
 
         <Separator className="mt-12 bg-[#e5e4de]" />
 
-        <div className="mt-8 flex flex-wrap items-stretch gap-10">
-          <div className="flex items-baseline gap-2.5">
-            <span className="size-1.5 rounded-full bg-[#153c2e]" />
-            <div className="font-serif text-5xl leading-none text-[#17251f]">
-              {totalPartners}
+        <div className="mt-8 flex flex-wrap items-stretch gap-8 max-sm:flex-col">
+          <div className="flex min-w-56 items-center gap-4">
+            <span className="grid size-10 shrink-0 place-items-center border border-[#b9c2bd] text-[#153c2e]">
+              <Handshake aria-hidden="true" size={18} strokeWidth={1.6} />
+            </span>
+            <div className="flex items-baseline gap-3">
+              <div className="font-serif text-5xl leading-none text-[#17251f]">
+                {totalPartners}
+              </div>
+              <div className="text-sm text-[#68726c]">Active partners</div>
             </div>
-            <div className="text-sm text-[#68726c]">Active partners</div>
           </div>
 
-          <div className="w-px self-stretch bg-[#e5e4de]" />
+          <div className="w-px self-stretch bg-[#d7d5cd] max-sm:hidden" />
 
-          <div className="flex items-baseline gap-2.5">
-            <span className="size-1.5 rounded-full bg-[#153c2e]" />
-            <div className="font-serif text-5xl leading-none text-[#17251f]">
-              {totalCategories}
+          <div className="flex min-w-56 items-center gap-4">
+            <span className="grid size-10 shrink-0 place-items-center border border-[#b9c2bd] text-[#153c2e]">
+              <Tags aria-hidden="true" size={18} strokeWidth={1.6} />
+            </span>
+            <div className="flex items-baseline gap-3">
+              <div className="font-serif text-5xl leading-none text-[#17251f]">
+                {totalCategories}
+              </div>
+              <div className="text-sm text-[#68726c]">Partner categories</div>
             </div>
-            <div className="text-sm text-[#68726c]">Partner categories</div>
           </div>
         </div>
       </div>

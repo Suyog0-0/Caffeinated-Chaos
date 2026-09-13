@@ -26,11 +26,11 @@ export default async function PartnerPage({ params }: PartnerPageProps) {
   ]);
 
   return (
-    <main className="bg-[#f4f2ec]">
+    <main className="bg-[#f7f5ef]">
       <PartnerDetailHero partner={partner} />
 
-      <section className="bg-[#faf9f5] px-6 py-14 md:px-10 lg:px-16">
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-12 lg:grid-cols-[1fr_320px]">
+      <section className="border-b border-[#d7d5cd] py-20 max-sm:py-16">
+        <div className="mx-auto grid w-[min(calc(100%_-_48px),1240px)] grid-cols-[minmax(0,1fr)_340px] gap-[9vw] max-lg:grid-cols-1 max-sm:w-[calc(100%_-_32px)]">
           <PartnerOverview partner={partner} />
           <PartnerSidebar projects={projects} publications={publications} />
         </div>
