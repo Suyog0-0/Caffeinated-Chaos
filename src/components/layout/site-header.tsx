@@ -134,21 +134,18 @@ function Brand() {
         "focus-visible:ring-offset-[#fffefb]",
       ].join(" ")}
     >
-      <span
-        aria-hidden="true"
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/ijmr-logo-white.svg"
+        alt="IJMR"
         className={[
-          "grid h-[43px] w-[43px] shrink-0 place-items-center",
-          "bg-[#153c2e]",
-          "text-[18px] font-semibold leading-none tracking-[-0.04em]",
-          "text-[#fffefb]",
-          "transition-colors duration-200",
-          "group-hover:bg-[#214d3d]",
-          "max-[759px]:h-[40px] max-[759px]:w-[40px]",
-          "max-[759px]:text-[17px]",
+          "h-[40px] w-auto shrink-0",
+          "object-contain",
+          "transition-transform duration-200",
+          "group-hover:scale-[1.03]",
+          "max-[759px]:h-[34px]",
         ].join(" ")}
-      >
-        IR
-      </span>
+      />
 
       <span className="min-w-0">
         <span
