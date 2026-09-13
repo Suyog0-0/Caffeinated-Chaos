@@ -11,12 +11,12 @@ export function AboutHero() {
               aria-hidden="true"
               className="h-px w-8 bg-[#153c2e]"
             />
-            <p className="font-sans text-sm font-bold uppercase tracking-[0.12em]">
+            <p className="text-sm font-bold uppercase tracking-[0.12em]">
               About R&amp;D
             </p>
           </div>
 
-          <h1 className="max-w-[11ch] text-[clamp(3.5rem,7vw,5.75rem)] font-normal leading-[0.93] tracking-[-0.045em] text-[#153c2e]">
+          <h1 className="about-display max-w-[11ch] text-[clamp(3.5rem,7vw,5.75rem)] font-normal leading-[0.93] tracking-[-0.045em] text-[#153c2e]">
             Curiosity with somewhere to go.
           </h1>
 

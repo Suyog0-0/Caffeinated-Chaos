@@ -5,10 +5,16 @@ import { MissionStatements } from "@/components/about/mission-statements";
 import { Partners } from "@/components/about/partners";
 import { Methodology } from "@/components/about/methodology";
 import { EngageCTA } from "@/components/about/engage-cta";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 export default function AboutPage() {
   return (
-    <main>
+    <main className={inter.className}>
       <AboutHero />
       <ImpactStats />
       <MissionStatements />
