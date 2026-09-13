@@ -157,10 +157,15 @@ export function PolicySection({
                     {filtered.map((policy) => (
                         <article
                             key={policy.id}
-                            className="flex flex-col gap-4 py-8 md:flex-row md:items-start md:justify-between"
+                            className="group flex flex-col gap-4 py-8 transition-colors duration-300 hover:bg-[#faf9f5] md:flex-row md:items-start md:justify-between"
                         >
-                            <div className="max-w-3xl">
-                                <h3 className="mb-2 text-2xl font-normal leading-tight text-[#17251f]">
+                            <a
+                                href={policy.file_url ?? undefined}
+                                target={policy.file_url ? "_blank" : undefined}
+                                rel={policy.file_url ? "noopener noreferrer" : undefined}
+                                className={`max-w-3xl px-1 ${policy.file_url ? "cursor-pointer" : "pointer-events-none"}`}
+                            >
+                                <h3 className="mb-2 text-2xl font-normal leading-tight text-[#17251f] underline decoration-transparent decoration-2 underline-offset-4 transition-colors duration-200 group-hover:decoration-[#17251f]">
                                     {policy.title}
                                 </h3>
                                 {policy.content && (
@@ -168,29 +173,12 @@ export function PolicySection({
                                         {policy.content}
                                     </p>
                                 )}
-                            </div>
-                            <div className="flex shrink-0 items-center gap-4">
-                                {policy.file_url && (
-                                    <a
-                                        href={policy.file_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group inline-flex items-center gap-1 border-b border-transparent pb-px font-sans uppercase tracking-widest transition-all duration-200 hover:border-[#267457] hover:text-[#267457]"
-                                        style={{ color: "#17251f", fontSize: "15px", fontWeight: 500 }}
-                                    >
-                                        Download
-                                        <ArrowUpRight
-                                            size={10}
-                                            strokeWidth={1.8}
-                                            className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                                            aria-hidden="true"
-                                        />
-                                    </a>
-                                )}
+                            </a>
+                            <div className="flex shrink-0 items-center gap-4 px-1">
                                 <button
                                     type="button"
                                     onClick={() => downloadPolicyPdf(policy)}
-                                    className="group inline-flex items-center gap-1 border-b border-transparent pb-px font-sans uppercase tracking-widest transition-all duration-200 hover:border-[#267457] hover:text-[#267457]"
+                                    className="group inline-flex cursor-pointer items-center gap-1 border-b border-transparent pb-px font-sans uppercase tracking-widest transition-all duration-200 hover:border-[#267457] hover:text-[#267457]"
                                     style={{ color: "#17251f", fontSize: "15px", fontWeight: 500 }}
                                 >
                                     Download PDF
