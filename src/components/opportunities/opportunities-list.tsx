@@ -1,69 +1,102 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Search, ChevronDown } from "lucide-react";
 import { OpportunityCard, type Opportunity } from "./opportunity-card";
 
 export function OpportunitiesList({ opportunities }: { opportunities: Opportunity[] }) {
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [areaFilter, setAreaFilter] = useState("All");
+  const [typeFilter, setTypeFilter] = useState("All");
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Dynamically generate filter options based on the actual data
-  const uniqueTypes = Array.from(new Set(opportunities.map(op => op.type)));
-  
-  const filterOptions = [
-    { label: "All", value: "All" },
-    ...uniqueTypes.map(type => ({ label: type, value: type }))
-  ];
+  const uniqueAreas = Array.from(new Set(opportunities.map((op) => op.areaName)));
+  const uniqueTypes = Array.from(new Set(opportunities.map((op) => op.type)));
 
-  const filteredOpportunities = opportunities.filter(op => {
-    if (activeFilter === "All") return true;
-    return op.type === activeFilter;
+  const filteredOpportunities = opportunities.filter((op) => {
+    const query = searchQuery.trim().toLowerCase();
+    const matchesSearch =
+      query === "" ||
+      op.title.toLowerCase().includes(query) ||
+      op.description.toLowerCase().includes(query);
+    const matchesArea = areaFilter === "All" || op.areaName === areaFilter;
+    const matchesType = typeFilter === "All" || op.type === typeFilter;
+    return matchesSearch && matchesArea && matchesType;
   });
 
-  const getFilterCount = (filterValue: string) => {
-    if (filterValue === "All") return opportunities.length;
-    return opportunities.filter(op => op.type === filterValue).length;
-  };
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && document.activeElement === searchInputRef.current) {
+        setSearchQuery("");
+        searchInputRef.current?.blur();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
-    <section className="bg-[#F8F7F4] py-12 px-6 md:px-12 min-h-screen">
+    <section className="bg-[#F8F7F4] py-12 px-6 md:px-12 min-h-screen font-sans">
       <div className="max-w-[1400px] mx-auto">
-        
-        {/* Filters */}
-        <div className="flex flex-col lg:flex-row justify-between gap-6 mb-12">
-          <div className="flex flex-wrap gap-2">
-            {filterOptions.map((option) => {
-              const count = getFilterCount(option.value);
-              const isActive = activeFilter === option.value;
-              return (
-                <button
-                  key={option.value}
-                  onClick={() => setActiveFilter(option.value)}
-                  className={`px-5 py-2 rounded-full font-medium text-sm transition-colors flex items-center gap-2 ${
-                    isActive 
-                      ? "bg-[#0B3B24] text-white" 
-                      : "bg-white border border-[#E5E2D9] text-gray-600 hover:border-gray-300"
-                  }`}
-                >
-                  {option.label} 
-                  <span className={isActive ? "opacity-80" : "opacity-50"}>
-                    ({count})
-                  </span>
-                </button>
-              );
-            })}
+
+        {/* Search + dropdown filters */}
+        <div className="flex flex-col lg:flex-row gap-3 mb-12">
+          <div className="relative flex-1">
+            <Search
+              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+            />
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search opportunities, titles, keywords..."
+              className="w-full bg-white border border-[#E5E2D9] rounded-full pl-11 pr-14 py-2.5 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:border-[#0B3B24]"
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-medium text-gray-400 bg-[#F4F1EA] border border-[#E5E2D9] rounded px-1.5 py-0.5 pointer-events-none">
+              ESC
+            </span>
           </div>
 
-          <div className="flex flex-wrap gap-4">
-            <select className="bg-white border border-[#E5E2D9] text-gray-700 text-sm rounded-lg px-4 py-2.5 min-w-[200px] focus:outline-none focus:border-[#0B3B24]">
-              <option>All Departments & Labs</option>
-              <option>Computer Science</option>
-              <option>Health AI Lab</option>
-            </select>
-            <select className="bg-white border border-[#E5E2D9] text-gray-700 text-sm rounded-lg px-4 py-2.5 focus:outline-none focus:border-[#0B3B24]">
-              <option>Sort: Deadline (Earliest)</option>
-              <option>Sort: Deadline (Latest)</option>
-              <option>Sort: Newest Added</option>
-            </select>
+          <div className="flex flex-wrap gap-3">
+            <div className="relative">
+              <select
+                value={areaFilter}
+                onChange={(event) => setAreaFilter(event.target.value)}
+                className="appearance-none bg-white border border-[#E5E2D9] text-gray-700 text-sm rounded-full pl-4 pr-10 py-2.5 min-w-[190px] focus:outline-none focus:border-[#0B3B24] cursor-pointer"
+              >
+                <option value="All">All Research Areas</option>
+                {uniqueAreas.map((area) => (
+                  <option key={area} value={area}>
+                    {area}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+              />
+            </div>
+
+            <div className="relative">
+              <select
+                value={typeFilter}
+                onChange={(event) => setTypeFilter(event.target.value)}
+                className="appearance-none bg-white border border-[#E5E2D9] text-gray-700 text-sm rounded-full pl-4 pr-10 py-2.5 min-w-[190px] focus:outline-none focus:border-[#0B3B24] cursor-pointer"
+              >
+                <option value="All">All Opportunity Types</option>
+                {uniqueTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                size={16}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+              />
+            </div>
           </div>
         </div>
 
@@ -76,7 +109,7 @@ export function OpportunitiesList({ opportunities }: { opportunities: Opportunit
           </div>
         ) : (
           <div className="text-center py-24 bg-white rounded-2xl border border-gray-200 mb-16">
-            <p className="text-gray-500 font-serif text-lg">No opportunities found for the selected category.</p>
+            <p className="text-gray-500 text-lg">No opportunities found for the selected filters.</p>
           </div>
         )}
 
