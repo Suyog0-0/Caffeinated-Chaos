@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+// src/components/about/engage-cta.tsx
 import Link from "next/link";
 
 export function EngageCTA() {
@@ -19,17 +19,18 @@ export function EngageCTA() {
             </p>
           </div>
           <div className="flex gap-4 justify-end max-lg:justify-start flex-wrap">
-            <a 
-              href="https://docs.google.com/forms/d/e/1FAIpQLSdG8Lb3SgR6PqoH6IYmZ8o9xGCdQDXtMgyl_l77-7DwuWCs-g/viewform" 
-              target="_blank" 
+            <a
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdG8Lb3SgR6PqoH6IYmZ8o9xGCdQDXtMgyl_l77-7DwuWCs-g/viewform"
+              target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-white text-[#0a2318] hover:bg-[#e5e4de] rounded-sm px-8 py-4 text-sm font-semibold tracking-wide transition-colors"
+              className="inline-flex items-center justify-center bg-white text-[#0a2318] hover:bg-[#e5e4de] rounded-sm px-8 py-4 text-sm font-semibold tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a2318]"
             >
               Submit Research Proposal
+              <span className="sr-only"> (opens in a new tab)</span>
             </a>
-            <Link 
+            <Link
               href="/grants"
-              className="inline-flex items-center justify-center border border-[#47c97e] text-white hover:bg-white/10 hover:text-white rounded-sm px-8 py-4 text-sm font-semibold tracking-wide bg-transparent transition-colors"
+              className="inline-flex items-center justify-center border border-[#47c97e] text-white hover:bg-white/10 hover:text-white rounded-sm px-8 py-4 text-sm font-semibold tracking-wide bg-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#47c97e] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a2318]"
             >
               Browse Active Grant Cycles
             </Link>

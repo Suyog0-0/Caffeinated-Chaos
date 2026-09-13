@@ -1,3 +1,4 @@
+// src/components/about/about-hero.tsx
 import Image from "next/image";
 
 export function AboutHero() {
@@ -19,6 +20,7 @@ export function AboutHero() {
         alt="Researchers collaborating in a Kathmandu computing lab"
         width={1536}
         height={1024}
+        sizes="(max-width: 1024px) 100vw, 55vw"
         priority
       />
     </header>
