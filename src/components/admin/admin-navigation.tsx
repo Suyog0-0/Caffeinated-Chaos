@@ -16,6 +16,7 @@ import {
   Network,
   ShieldCheck,
   Telescope,
+  UserCog,
   Users,
 } from "lucide-react";
 import { adminTw } from "@/components/admin/admin-tailwind";
@@ -43,10 +44,20 @@ const links = [
   { href: "/admin/research-areas", label: "Research Areas", icon: FlaskConical },
 ];
 
-function Navigation({ pathname }: { pathname: string }) {
+const staffLink = { href: "/admin/staff", label: "Staff", icon: UserCog };
+
+function Navigation({
+  pathname,
+  showStaffLink,
+}: {
+  pathname: string;
+  showStaffLink: boolean;
+}) {
+  const visibleLinks = showStaffLink ? [...links, staffLink] : links;
+
   return (
     <nav aria-label="Admin navigation" className={adminTw.nav}>
-      {links.map(({ href, label, icon: Icon }) => {
+      {visibleLinks.map(({ href, label, icon: Icon }) => {
         const active =
           href === "/admin"
             ? pathname === href
@@ -68,10 +79,11 @@ function Navigation({ pathname }: { pathname: string }) {
   );
 }
 
-export function AdminNavigation() {
+export function AdminNavigation({ showStaffLink }: { showStaffLink: boolean }) {
   const pathname = usePathname();
 
-  const current = links.find(({ href }) =>
+  const visibleLinks = showStaffLink ? [...links, staffLink] : links;
+  const current = visibleLinks.find(({ href }) =>
     href === "/admin" ? pathname === href : pathname.startsWith(href),
   );
 
@@ -84,11 +96,11 @@ export function AdminNavigation() {
           <ChevronDown size={17} />
         </summary>
 
-        <Navigation pathname={pathname} />
+        <Navigation pathname={pathname} showStaffLink={showStaffLink} />
       </details>
 
       <div className={adminTw.desktopNav}>
-        <Navigation pathname={pathname} />
+        <Navigation pathname={pathname} showStaffLink={showStaffLink} />
       </div>
     </>
   );

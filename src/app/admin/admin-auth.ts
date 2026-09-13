@@ -32,3 +32,9 @@ export async function requireAdmin() {
   if (!context) redirect("/admin/login");
   return context;
 }
+
+export async function requireSuperAdmin() {
+  const context = await requireAdmin();
+  if (context.admin.role !== "super_admin") redirect("/admin");
+  return context;
+}

@@ -7,7 +7,7 @@ export async function AuthenticatedAdminShell({ children }: { children: React.Re
 
   return (
     <div className={adminTw.shell}>
-      <AdminSidebar admin={admin} />
+      <AdminSidebar admin={admin} showStaffLink={admin.role === "super_admin"} />
       <main className={adminTw.main}>{children}</main>
     </div>
   );

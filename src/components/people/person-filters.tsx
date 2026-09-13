@@ -3,19 +3,23 @@
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function PersonFilters() {
+const ALL_DEPARTMENTS = "All Departments";
+
+export function PersonFilters({ departments }: { departments: string[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (value && value !== "All Departments" && value !== "All Faculty") {
+    if (value && value !== ALL_DEPARTMENTS) {
       params.set(key, value);
     } else {
       params.delete(key);
     }
     router.push(`?${params.toString()}`);
   };
+
+  const activeDepartment = searchParams.get("department") ?? ALL_DEPARTMENTS;
 
   return (
     <section className="py-4 md:py-8 px-4 md:px-6 lg:px-10 sticky top-16 md:top-20 z-40 bg-[#F8F7F3]/90 md:bg-[#FAF7F2]/90 backdrop-blur-md border-b md:border-b-0 border-[#E8E4DA]/70 md:border-[#E2DBD0]">
@@ -44,17 +48,20 @@ export function PersonFilters() {
               </svg>
             </button>
           </div>
-          
+
           <div className="hidden md:block md:col-span-3">
             <div className="relative">
-              <select 
+              <select
                 className="w-full appearance-none bg-white border border-[#E2DBD0] text-sm text-[#1F2923] py-3 pl-3.5 pr-10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#0B251E] focus:border-[#0B251E] transition-colors shadow-sm cursor-pointer"
-                defaultValue={searchParams.get("department")?.toString() || "All Departments"}
+                value={activeDepartment}
                 onChange={(e) => handleFilter("department", e.target.value)}
               >
-                <option>All Departments</option>
-                <option>Department of Computer Science</option>
-                <option>Department of Data Science</option>
+                <option value={ALL_DEPARTMENTS}>{ALL_DEPARTMENTS}</option>
+                {departments.map((department) => (
+                  <option key={department} value={department}>
+                    {department}
+                  </option>
+                ))}
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-[#6C7B72]">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,13 +73,13 @@ export function PersonFilters() {
 
           <div className="hidden md:block md:col-span-3">
             <div className="relative">
-              <select 
+              <select
                 className="w-full appearance-none bg-white border border-[#E2DBD0] text-sm text-[#1F2923] py-3 pl-3.5 pr-10 rounded-md focus:outline-none focus:ring-1 focus:ring-[#0B251E] focus:border-[#0B251E] transition-colors shadow-sm cursor-pointer"
                 defaultValue={searchParams.get("area")?.toString() || "All Research Areas"}
                 onChange={(e) => handleFilter("area", e.target.value)}
               >
                 <option>All Research Areas</option>
-                <option>Neural Architecture & ML</option>
+                <option>Neural Architecture &amp; ML</option>
                 <option>Cryptographic Systems</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-[#6C7B72]">
@@ -86,43 +93,37 @@ export function PersonFilters() {
 
         <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
           <div className="flex items-center gap-1.5 md:gap-2 overflow-x-auto no-scrollbar md:custom-scrollbar pb-1 text-xs">
-            <button 
-              className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-medium shadow-sm transition-transform md:transition-colors whitespace-nowrap cursor-pointer ${
-                !searchParams.get("department") || searchParams.get("department") === "All Faculty" 
-                  ? "bg-[#0F2C23] md:bg-[#0B251E] text-white" 
+            <button
+              className={`shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-medium shadow-sm transition-transform md:transition-colors whitespace-nowrap cursor-pointer ${activeDepartment === ALL_DEPARTMENTS
+                  ? "bg-[#0F2C23] md:bg-[#0B251E] text-white"
                   : "bg-[#FFFFFF] md:bg-white hover:bg-[#F4F1EA] md:hover:bg-[#F3EFE7] border border-[#E8E4DA] md:border-[#E2DBD0] text-neutral-700 md:text-[#2F3C35]"
-              }`}
-              onClick={() => handleFilter("department", "All Faculty")}
+                }`}
+              onClick={() => handleFilter("department", ALL_DEPARTMENTS)}
             >
               All Faculty
             </button>
-            <button 
-              className={`shrink-0 px-3.5 py-1.5 rounded-full font-medium transition-transform md:transition-colors whitespace-nowrap cursor-pointer ${
-                searchParams.get("department") === "Department of Computer Science"
-                  ? "bg-[#0F2C23] md:bg-[#0B251E] text-white" 
-                  : "bg-[#FFFFFF] md:bg-white hover:bg-[#F4F1EA] md:hover:bg-[#F3EFE7] border border-[#E8E4DA] md:border-[#E2DBD0] text-neutral-700 md:text-[#2F3C35]"
-              }`}
-              onClick={() => handleFilter("department", "Department of Computer Science")}
-            >
-              Computer Science
-            </button>
-            <button 
-              className={`shrink-0 px-3.5 py-1.5 rounded-full font-medium transition-transform md:transition-colors whitespace-nowrap cursor-pointer ${
-                searchParams.get("department") === "Department of Data Science"
-                  ? "bg-[#0F2C23] md:bg-[#0B251E] text-white" 
-                  : "bg-[#FFFFFF] md:bg-white hover:bg-[#F4F1EA] md:hover:bg-[#F3EFE7] border border-[#E8E4DA] md:border-[#E2DBD0] text-neutral-700 md:text-[#2F3C35]"
-              }`}
-              onClick={() => handleFilter("department", "Department of Data Science")}
-            >
-              Data Science
-            </button>
+            {departments.map((department) => (
+              <button
+                key={department}
+                className={`shrink-0 px-3.5 py-1.5 rounded-full font-medium transition-transform md:transition-colors whitespace-nowrap cursor-pointer ${activeDepartment === department
+                    ? "bg-[#0F2C23] md:bg-[#0B251E] text-white"
+                    : "bg-[#FFFFFF] md:bg-white hover:bg-[#F4F1EA] md:hover:bg-[#F3EFE7] border border-[#E8E4DA] md:border-[#E2DBD0] text-neutral-700 md:text-[#2F3C35]"
+                  }`}
+                onClick={() => handleFilter("department", department)}
+              >
+                {department}
+              </button>
+            ))}
           </div>
           <div className="flex items-center justify-between md:justify-end gap-4 text-xs text-[#737067] md:text-[#4D5B53] w-full md:w-auto px-0.5 md:px-0 pt-1 md:pt-0">
-            <span>Showing <strong className="text-[#0A201A] md:text-[#141A17] font-semibold">8</strong> <span className="md:hidden">featured experts</span><span className="hidden md:inline">of 148 researchers</span></span>
+            <span>
+              <span className="md:hidden">Featured experts</span>
+              <span className="hidden md:inline">{departments.length} departments listed</span>
+            </span>
             <div className="h-4 w-px bg-[#E2DBD0] hidden sm:block"></div>
             <div className="flex items-center gap-1 md:gap-2">
               <span className="hidden sm:inline">Sort:</span>
-              <select 
+              <select
                 className="hidden md:block bg-transparent border-0 py-0 pl-1 pr-6 text-xs font-semibold text-[#141A17] focus:ring-0 cursor-pointer"
                 defaultValue={searchParams.get("sort")?.toString() || "Active Impact"}
                 onChange={(e) => handleFilter("sort", e.target.value)}
