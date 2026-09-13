@@ -2,43 +2,66 @@
 
 import { useState } from "react";
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
+interface PartnerLogoProps {
+  name: string;
+  logoUrl: string | null;
+  className?: string;
+}
+
+function getInitials(name: string): string {
+  const words = name.trim().split(/\s+/).filter(Boolean);
+
+  if (words.length === 0) {
+    return "P";
+  }
+
+  return words
     .slice(0, 2)
-    .map((word) => word[0])
+    .map((word) => word.charAt(0))
     .join("")
-    .toUpperCase() || "P";
+    .toUpperCase();
 }
 
 export function PartnerLogo({
   name,
   logoUrl,
   className,
-}: {
-  name: string;
-  logoUrl: string | null;
-  className?: string;
-}) {
+}: PartnerLogoProps) {
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
-  const canDisplay = Boolean(logoUrl) && failedUrl !== logoUrl;
+
+  const hasLogo = Boolean(logoUrl) && failedUrl !== logoUrl;
+  const initials = getInitials(name);
+
+  const rootClassName = [
+    "flex shrink-0 items-center justify-center overflow-hidden",
+    "rounded-full bg-[#eef0ea] text-[#0d2818]",
+    "ring-1 ring-inset ring-black/5",
+    className ?? "",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <span className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#eef0ea] text-[#0d2818] ${className ?? ""}`}>
-      {canDisplay ? (
-        // Partner logo hosts are entered by admins and cannot be exhaustively listed in next.config.
+    <span className={rootClassName}>
+      {hasLogo && logoUrl ? (
+        // Logo URLs are admin-managed and may come from hosts that are not
+        // configured in next.config.ts, so a native img element is intentional.
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          src={logoUrl}
           alt={`${name} logo`}
           className="h-full w-full object-contain p-1.5"
           decoding="async"
           loading="lazy"
           onError={() => setFailedUrl(logoUrl)}
-          src={logoUrl ?? undefined}
         />
       ) : (
-        <span aria-label={`${name} initials`}>{initials(name)}</span>
+        <span
+          aria-label={`${name} logo`}
+          className="select-none text-xs font-semibold tracking-[0.04em] sm:text-sm"
+        >
+          {initials}
+        </span>
       )}
     </span>
   );
