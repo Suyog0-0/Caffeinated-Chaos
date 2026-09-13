@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Poppins } from "next/font/google";
+import { NotificationCenter } from "@/components/layout/notification-center";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -250,8 +251,7 @@ function DesktopSearch() {
       aria-label="Search research"
       className={[
         "group flex min-h-[42px] items-center gap-2",
-        "border-l border-[#d7d5cd]",
-        "pl-5 pr-1",
+        "px-4",
         "text-[12px] font-semibold text-[#26372f]",
         "outline-none",
         "transition-colors duration-150",
@@ -337,7 +337,7 @@ function MobileMenu({
   pathname: string;
 }) {
   return (
-    <details className="group relative ml-auto hidden max-[1079px]:block">
+    <details className="group relative hidden max-[1079px]:block">
       <summary
         aria-label="Open navigation menu"
         className={[
@@ -527,11 +527,14 @@ export function SiteHeader() {
 
         <DesktopNavigation pathname={pathname} />
 
-        <div className="ml-1 hidden min-[1080px]:block">
-          <DesktopSearch />
-        </div>
+        <div className="ml-auto flex shrink-0 items-center max-[1079px]:gap-2 min-[1080px]:ml-1 min-[1080px]:border-l min-[1080px]:border-[#d7d5cd]">
+          <div className="hidden min-[1080px]:block">
+            <DesktopSearch />
+          </div>
 
-        <MobileMenu pathname={pathname} />
+          <NotificationCenter />
+          <MobileMenu pathname={pathname} />
+        </div>
       </div>
     </header>
   );
