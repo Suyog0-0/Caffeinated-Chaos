@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 import { sendEmail } from "../_shared/resend.ts";
+import { buildStatusUpdateEmail } from "../_shared/email-templates.ts";
 
 serve(async (req: Request) => {
   try {
@@ -20,7 +21,7 @@ serve(async (req: Request) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-    
+
     if (!supabaseUrl || !supabaseServiceKey) {
       throw new Error("Missing Supabase environment variables");
     }
@@ -55,16 +56,12 @@ serve(async (req: Request) => {
 
     // Send emails
     const subject = `Project Status Update: ${record.title}`;
-    const html = `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Project Status Changed</h2>
-        <p>The project <strong>${record.title}</strong> has changed status.</p>
-        <p><strong>Previous Status:</strong> ${old_record.status}</p>
-        <p><strong>New Status:</strong> <span style="color: #0B3B24;">${record.status}</span></p>
-        <br/>
-        <p>View the project in the R&D Hub for more details.</p>
-      </div>
-    `;
+    const html = buildStatusUpdateEmail({
+      title: record.title,
+      previousStatus: old_record.status,
+      newStatus: record.status,
+      ctaUrl: "https://caffeinated-chaos.vercel.app/",
+    });
 
     await sendEmail({
       to: emails,
