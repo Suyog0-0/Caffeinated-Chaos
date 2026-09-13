@@ -6,8 +6,10 @@ import { adminTw } from "@/components/admin/admin-tailwind";
 
 export function AdminSidebar({
   admin,
+  showStaffLink,
 }: {
   admin: { name: string; email: string; role: string };
+  showStaffLink: boolean;
 }) {
   return (
     <aside className={adminTw.sidebar}>
@@ -22,7 +24,7 @@ export function AdminSidebar({
         <small>Admin workspace</small>
       </div>
 
-      <AdminNavigation />
+      <AdminNavigation showStaffLink={showStaffLink} />
 
       <a
         className={adminTw.publicLink}
@@ -35,13 +37,13 @@ export function AdminSidebar({
       </a>
 
       <div className={adminTw.account}>
-        <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-[#213451] text-[11px] font-bold text-white">{admin.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}</span>
+        <span className="grid h-[34px] w-[34px] place-items-center rounded-full bg-[#1d4938] text-[11px] font-bold text-white">{admin.name.split(" ").map((part) => part[0]).join("").slice(0, 2)}</span>
         <div className="min-w-0">
           <strong className="block truncate text-[13px] text-white">{admin.name}</strong>
-          <small className="mt-0.5 block text-[11px] text-[#8996aa]">{admin.role === "super_admin" ? "Super admin" : "Admin"}</small>
+          <small className="mt-0.5 block text-[11px] text-[#8fa79b]">{admin.role === "super_admin" ? "Super admin" : "Admin"}</small>
         </div>
         <form action={logoutAction}>
-          <button className="grid cursor-pointer place-items-center border-0 bg-transparent p-[7px] text-[#8996aa] hover:text-white" aria-label="Sign out" title="Sign out" type="submit">
+          <button className="grid cursor-pointer place-items-center border-0 bg-transparent p-[7px] text-[#8fa79b] hover:text-white" aria-label="Sign out" title="Sign out" type="submit">
             <LogOut size={18} />
           </button>
         </form>
