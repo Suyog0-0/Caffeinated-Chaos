@@ -1,8 +1,14 @@
 // src/app/grants/page.tsx
 import { Suspense } from "react";
+import { Inter } from "next/font/google";
 import { createServerClient } from "@/supabase/server";
 import { GrantFilters } from "@/components/grants/grant-filters";
 import { GrantList, type Grant } from "@/components/grants/grant-list";
+
+const inter = Inter({
+    display: "swap",
+    subsets: ["latin"],
+});
 
 // Nothing on this page is request-specific (page.tsx never reads
 // searchParams itself — GrantList/GrantFilters do), so cache it and
@@ -23,11 +29,11 @@ export default async function GrantsPage() {
     const awardedCount = grants.filter((g) => g.status === "awarded").length;
 
     return (
-        <main className="pb-24">
+        <main className={`${inter.className} pb-24`}>
             <header className="bg-[#0d2a20] py-16 text-white">
                 <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
                     <p className="mb-4 font-sans text-xs font-bold text-[#b6c7bd]">Grants & Funding</p>
-                    <h1 className="text-[clamp(44px,6vw,76px)] leading-[.98] font-normal tracking-[-.03em]">
+                    <h1 className="font-serif text-[clamp(44px,6vw,76px)] leading-[.98] font-normal tracking-[-.03em]">
                         Funding to move research forward.
                     </h1>
                     <p className="mt-6 max-w-2xl text-lg text-[#c5d2cb]">
