@@ -1,90 +1,171 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// src/components/about/leadership.tsx
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { createServerClient } from "@/supabase/server";
 
-const leaders = [
-  {
-    initials: "SK",
-    name: "Prof. Sunita Koirala",
-    role: "Director of Research & Development",
-    desc: "Chair in Applied Computing. Former Fulbright Senior Scholar specializing in distributed sensor protocols and rural high-latency mesh networks.",
-    linkText: "View Publications",
-    href: "/publications",
-  },
-  {
-    initials: "BR",
-    name: "Dr Bikash Rai",
-    role: "Research Programmes Lead",
-    desc: "Fellow in Big Data Architectures. Supervises undergraduate honor theses, lab hardware allocations, and cross-institutional seed grants.",
-    linkText: "View Publications",
-    href: "/publications",
-  },
-  {
-    initials: "MJ",
-    name: "Meena Joshi",
-    role: "Partnerships & Impact Lead",
-    desc: "Coordinates technology transfer, civic partner integration, and IP governance to ensure college research benefits public health and municipal infrastructure.",
-    linkText: "Partner Enquiries",
-    href: "/partners",
-  },
-  {
-    initials: "MV",
-    name: "Dr Marcus Vance",
-    role: "Ethics & Open Science Advisor",
-    desc: "Oversees research data integrity protocols, FAIR data compliance, and human algorithmic ethics boards across all active cohorts.",
-    linkText: "Ethics Standards",
-    href: "/ethics",
-  },
-] as const;
+interface LeadershipRow {
+  id: string;
+  name: string;
+  position: string | null;
+  biography: string | null;
+  photo_url: string | null;
+}
+
+interface LeadershipPerson {
+  id: string;
+  name: string;
+  role: string;
+  bio: string | null;
+  photoUrl: string | null;
+  initials: string;
+  linkText: string;
+  href: string;
+}
+
+const MAX_PEOPLE = 3;
+
+// Ordered by seniority signal in `position` text. There's no dedicated
+// "is_leadership" column on `researcher`, so this section is populated by
+// matching on title text — earlier patterns in this list outrank later ones
+// when picking who appears, so department heads surface before professors.
+const TITLE_PRIORITY: RegExp[] = [
+  /director/i,
+  /\bhead\b/i,
+  /\blead\b/i,
+  /chair/i,
+  /advisor/i,
+  /professor/i,
+  /fellow/i,
+];
+
+function titlePriority(position: string): number {
+  const rank = TITLE_PRIORITY.findIndex((pattern) => pattern.test(position));
+  return rank === -1 ? TITLE_PRIORITY.length : rank;
+}
+
+function linkFor(position: string): { linkText: string; href: string } {
+  if (/ethic/i.test(position)) return { linkText: "Ethics Standards", href: "/ethics" };
+  if (/partner/i.test(position)) return { linkText: "Partner Enquiries", href: "/partners" };
+  return { linkText: "View Publications", href: "/publications" };
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+async function getLeadership(): Promise<LeadershipPerson[]> {
+  const supabase = createServerClient();
+
+  const { data, error } = await supabase
+    .from("researcher")
+    .select("id, name, position, biography, photo_url")
+    .eq("publish_status", "published")
+    .order("name", { ascending: true })
+    .returns<LeadershipRow[]>();
+
+  if (error) {
+    console.error("Leadership: failed to load researchers:", error.message);
+    return [];
+  }
+  if (!data) return [];
+
+  return data
+    .filter((row): row is LeadershipRow & { position: string } =>
+      Boolean(row.position && titlePriority(row.position) < TITLE_PRIORITY.length),
+    )
+    .sort((a, b) => titlePriority(a.position) - titlePriority(b.position) || a.name.localeCompare(b.name))
+    .slice(0, MAX_PEOPLE)
+    .map((row) => ({
+      id: row.id,
+      name: row.name,
+      role: row.position,
+      bio: row.biography,
+      photoUrl: row.photo_url,
+      initials: getInitials(row.name),
+      ...linkFor(row.position),
+    }));
+}
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#47c97e] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0d2a20] rounded-sm";
 
-export function Leadership() {
+export async function Leadership() {
+  const people = await getLeadership();
+
+  if (people.length === 0) return null;
+
   return (
     <section className="bg-[#0d2a20] py-20 text-white">
       <div className="mx-auto w-[min(calc(100%_-_48px),1240px)] max-sm:w-[calc(100%_-_32px)]">
-        <p className="mb-4 font-sans text-xs font-bold uppercase tracking-wider text-[#47c97e]">
-          Leadership & Governance
-        </p>
-        <h2 className="text-[48px] leading-tight font-medium mb-6">
-          Guided by researchers and educators.
-        </h2>
-        <p className="max-w-3xl text-xl text-[#b7c6be] mb-12">
-          Our advisory council unites faculty chairs, lab directors, and student ethics representatives committed to high academic rigor and societal utility.
-        </p>
-        <ul className="grid grid-cols-4 gap-8 border-t border-[#173e2e] pt-12 max-lg:grid-cols-2 max-sm:grid-cols-1">
-          {leaders.map((leader) => (
-            <li key={leader.initials}>
-              <Card className="rounded-none border-0 bg-transparent flex flex-col justify-between h-full text-white shadow-none">
-                <div>
-                  <CardHeader className="px-0 pt-0 pb-6">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="mb-3 font-sans text-xs font-bold uppercase tracking-[0.2em] text-[#47c97e]">
+              Leadership &amp; Governance
+            </p>
+            <h2 className="max-w-xl text-[40px] leading-[1.1] font-medium max-sm:text-[30px]">
+              Guided by researchers and educators.
+            </h2>
+          </div>
+          <p className="max-w-sm text-sm leading-relaxed text-[#b7c6be]">
+            Faculty chairs and lab leads committed to high academic rigor and societal utility.
+          </p>
+        </div>
+
+        <ul className="grid grid-cols-3 gap-px overflow-hidden rounded-sm bg-[#173e2e] max-sm:grid-cols-1">
+          {people.map((person) => (
+            <li key={person.id} className="bg-[#0d2a20]">
+              <Link
+                href={person.href}
+                className={`group flex h-full flex-col gap-5 p-7 transition-colors hover:bg-[#103327] ${focusRing}`}
+              >
+                <div className="flex items-center gap-3">
+                  {person.photoUrl ? (
+                    // Arbitrary admin-provided URL, not covered by
+                    // next.config.ts's remote image allowlist — plain <img>,
+                    // same convention used for researcher photos elsewhere.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={person.photoUrl}
+                      alt={person.name}
+                      className="size-12 shrink-0 rounded-full object-cover"
+                    />
+                  ) : (
                     <span
                       aria-hidden="true"
-                      className="grid size-14 place-items-center rounded-full border border-[#173e2e] font-sans text-[18px] text-[#47c97e] bg-[#103327]"
+                      className="grid size-12 shrink-0 place-items-center rounded-full border border-[#173e2e] bg-[#103327] font-sans text-sm text-[#47c97e]"
                     >
-                      {leader.initials}
+                      {person.initials}
                     </span>
-                    <CardTitle className="mt-6 text-[24px] font-medium leading-tight">
-                      <h3 className="contents">{leader.name}</h3>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="px-0 pb-8">
-                    <p className="font-sans text-xs font-bold uppercase tracking-wider text-[#47c97e] mb-4">
-                      {leader.role}
+                  )}
+                  <div className="min-w-0">
+                    <h3 className="truncate text-[17px] font-medium leading-tight">{person.name}</h3>
+                    <p className="truncate font-sans text-[11px] font-bold uppercase tracking-wider text-[#47c97e]">
+                      {person.role}
                     </p>
-                    <p className="text-base text-[#b7c6be] leading-relaxed">{leader.desc}</p>
-                  </CardContent>
+                  </div>
                 </div>
-                <div className="px-0 mt-auto pt-4">
-                  <Link
-                    href={leader.href}
-                    className={`inline-flex items-center gap-2 font-sans text-sm font-medium text-[#47c97e] transition-colors hover:text-white ${focusRing}`}
-                  >
-                    {leader.linkText} <ArrowRight size={16} aria-hidden="true" />
-                  </Link>
-                </div>
-              </Card>
+
+                {person.bio && (
+                  <p className="line-clamp-3 flex-1 text-sm leading-relaxed text-[#b7c6be]">
+                    {person.bio}
+                  </p>
+                )}
+
+                <span className="inline-flex items-center gap-1.5 font-sans text-xs font-medium text-[#47c97e] transition-colors group-hover:text-white">
+                  {person.linkText}
+                  <ArrowRight
+                    size={14}
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
