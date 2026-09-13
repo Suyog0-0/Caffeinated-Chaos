@@ -1,7 +1,13 @@
+import { Inter } from "next/font/google";
 import { PartnersHero } from "@/components/partners/partner-hero";
 import { PartnerList } from "@/components/partners/partner-list";
 import { IJMRSection } from "@/components/partners/partner-ijmr-section";
 import { getPartners } from "@/components/partners/partner-actions";
+
+const inter = Inter({
+  display: "swap",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "Partners | Islington Research",
@@ -16,7 +22,7 @@ export default async function PartnersPage() {
   ).size;
 
   return (
-    <main className="bg-[#f4f2ec]">
+    <main className={`${inter.className} bg-[#f4f2ec]`}>
       <PartnersHero
         totalPartners={partners.length}
         totalCategories={categoryCount}
