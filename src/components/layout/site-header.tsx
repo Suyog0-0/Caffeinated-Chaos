@@ -136,7 +136,7 @@ function Brand() {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/ijmr-logo-white.svg"
+        src="/ijmr-logo-black.svg"
         alt="IJMR"
         className={[
           "h-[40px] w-auto shrink-0",
