@@ -1,3 +1,4 @@
+ // @ts-nocheck -- Deno edge function, not part of the Next.js TypeScript project
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { sendEmail } from "../_shared/resend.ts";
 

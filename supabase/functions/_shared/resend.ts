@@ -1,3 +1,4 @@
+ // @ts-nocheck -- Deno edge function, not part of the Next.js TypeScript project
 export async function sendEmail({
   to,
   subject,
